@@ -93,8 +93,8 @@
       <HintPath>..\packages\Gibe.DittoServices.1.1.2\lib\Gibe.DittoServices.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Gibe.Pager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Gibe.Pager.1.0.251\lib\Gibe.Pager.dll</HintPath>
+    <Reference Include="Gibe.Pager, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Gibe.Pager.1.1.0\lib\Gibe.Pager.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Gibe.Tools, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
