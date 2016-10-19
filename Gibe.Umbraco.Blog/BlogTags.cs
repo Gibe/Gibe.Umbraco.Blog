@@ -19,7 +19,7 @@ namespace Gibe.Umbraco.Blog
 		{
 			var allTags = new Dictionary<string, BlogTag>();
 			var posts = _blogSearch.Search(Enumerable.Empty<IBlogPostFilter>());
-			foreach (var tag in posts.Where(post => !String.IsNullOrEmpty(post.Fields["settingsNewsTags"])).SelectMany(post => post.Fields["settingsNewsTags"].Split(','))) // TODO not hard coded
+			foreach (var tag in posts.Where(post => post.Fields.ContainsKey("settingsNewsTags") && !String.IsNullOrEmpty(post.Fields["settingsNewsTags"])).SelectMany(post => post.Fields["settingsNewsTags"].Split(','))) // TODO not hard coded
 			{
 				if (allTags.ContainsKey(tag))
 				{
