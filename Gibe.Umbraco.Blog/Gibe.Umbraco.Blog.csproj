@@ -349,6 +349,7 @@
     <Compile Include="Filters\SectionBlogPostFilter.cs" />
     <Compile Include="Filters\TagBlogPostFilter.cs" />
     <Compile Include="UmbracoEvents.cs" />
+    <Compile Include="Utilities\ExactPhraseExamineValue.cs" />
     <Compile Include="Utilities\Import.cs" />
     <Compile Include="Wrappers\ISearchIndex.cs" />
     <Compile Include="Wrappers\NewsIndex.cs" />

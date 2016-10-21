@@ -1,5 +1,6 @@
 ﻿using Examine.SearchCriteria;
 using Gibe.Umbraco.Blog.Models;
+using Gibe.Umbraco.Blog.Utilities;
 
 namespace Gibe.Umbraco.Blog.Filters
 {
@@ -14,7 +15,9 @@ namespace Gibe.Umbraco.Blog.Filters
 		
 		public IBooleanOperation GetCriteria(IQuery query)
 		{
-			return query.Field("tag", _tag);
+			return query.Field("tag", new ExactPhraseExamineValue(_tag.ToLower()));
 		}
+
+		
 	}
 }

@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibe.Umbraco.Blog", "Gibe.U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibe.Umbraco.Blog.Tests", "Gibe.Umbraco.Blog.Tests\Gibe.Umbraco.Blog.Tests.csproj", "{8CE36655-ED65-444C-9101-3A986C317C3F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D8F40142-8850-4A21-B19D-3AFF1382533D}"
+	ProjectSection(SolutionItems) = preProject
+		VERSION.txt = VERSION.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Admin|Any CPU = Admin|Any CPU

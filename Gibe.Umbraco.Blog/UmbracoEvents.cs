@@ -58,7 +58,7 @@ namespace Gibe.Umbraco.Blog
 				{
 					foreach (var tag in tags.Split(','))
 					{
-						document.Add(new Field("tag", tag, Field.Store.YES, Field.Index.NOT_ANALYZED));
+						document.Add(new Field("tag", tag.ToLower(), Field.Store.YES, Field.Index.NOT_ANALYZED));
 					}
 				}
 			}
