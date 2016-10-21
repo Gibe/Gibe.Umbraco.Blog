@@ -18,7 +18,7 @@ namespace Gibe.Umbraco.Blog
 			_userService = userService;
 		}
 
-		public IEnumerable<IUser> All()
+		public IEnumerable<IUser> All(string rootPath)
 		{
 			var posts = _blogSearch.Search(Enumerable.Empty<IBlogPostFilter>());
 			var allUserIds = posts.Select(p => Convert.ToInt32(p.Fields["postAuthor"])).Distinct();

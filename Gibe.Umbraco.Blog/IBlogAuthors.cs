@@ -9,7 +9,7 @@ namespace Gibe.Umbraco.Blog
 {
 	public interface IBlogAuthors
 	{
-		IEnumerable<IUser> All();
+		IEnumerable<IUser> All(string rootPath);
 	}
 
 	public class FakeBlogAuthors : IBlogAuthors
@@ -21,7 +21,7 @@ namespace Gibe.Umbraco.Blog
 			_authors = authors;
 		}
 
-		public IEnumerable<IUser> All()
+		public IEnumerable<IUser> All(string rootPath)
 		{
 			return _authors;
 		}

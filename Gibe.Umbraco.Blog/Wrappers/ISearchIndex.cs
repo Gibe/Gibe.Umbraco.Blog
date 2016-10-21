@@ -2,6 +2,7 @@
 using Examine;
 using Examine.SearchCriteria;
 using Examine.LuceneEngine;
+using UmbracoExamine;
 
 namespace Gibe.Umbraco.Blog.Wrappers
 {
@@ -10,7 +11,8 @@ namespace Gibe.Umbraco.Blog.Wrappers
 		ISearchCriteria CreateSearchCriteria();
 		ISearchResults Search(ISearchCriteria criteria);
 
-		event EventHandler<DocumentWritingEventArgs> DocumentWriting;
+		UmbracoContentIndexer GetIndexer();
+
 	}
 
 	public class FakeSearchIndex : ISearchIndex
@@ -32,6 +34,9 @@ namespace Gibe.Umbraco.Blog.Wrappers
 			return _searchResults;
 		}
 
-		public event EventHandler<DocumentWritingEventArgs> DocumentWriting;
+		public UmbracoContentIndexer GetIndexer()
+		{
+			return null;
+		}
 	}
 }

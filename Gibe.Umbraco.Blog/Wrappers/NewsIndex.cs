@@ -1,6 +1,7 @@
 ﻿using System;
 using Examine;
 using Examine.LuceneEngine;
+using Examine.Providers;
 using Examine.SearchCriteria;
 using UmbracoExamine;
 
@@ -8,12 +9,9 @@ namespace Gibe.Umbraco.Blog.Wrappers
 {
 	public class NewsIndex : ISearchIndex
 	{
-		public event EventHandler<DocumentWritingEventArgs> DocumentWriting;
-
-		public NewsIndex()
+		public UmbracoContentIndexer GetIndexer()
 		{
-			var indexer = (UmbracoContentIndexer)ExamineManager.Instance.IndexProviderCollection["BlogIndexer"];
-			indexer.DocumentWriting += DocumentWriting;
+			return (UmbracoContentIndexer)ExamineManager.Instance.IndexProviderCollection["BlogIndexer"];
 		}
 
 		public ISearchCriteria CreateSearchCriteria()

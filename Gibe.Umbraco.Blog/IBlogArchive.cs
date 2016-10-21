@@ -9,7 +9,7 @@ namespace Gibe.Umbraco.Blog
 {
 	public interface IBlogArchive
 	{
-		BlogArchiveModel All();
+		BlogArchiveModel All(string rootPath);
 	}
 
 	public class FakeBlogArchive :IBlogArchive
@@ -21,7 +21,7 @@ namespace Gibe.Umbraco.Blog
 			_blogArchiveModel = blogArchiveModel;
 		}
 
-		public BlogArchiveModel All()
+		public BlogArchiveModel All(string rootPath)
 		{
 			return _blogArchiveModel;
 		}

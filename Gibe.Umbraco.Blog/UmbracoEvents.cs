@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -38,7 +39,7 @@ namespace Gibe.Umbraco.Blog
 			{
 				ContentService.Saving += ContentService_Saving;
 				// TODO : Nicer than this
-				new NewsIndex().DocumentWriting += IndexerOnDocumentWriting;
+				new NewsIndex().GetIndexer().DocumentWriting += IndexerOnDocumentWriting;
 			}
 		}
 
@@ -47,8 +48,8 @@ namespace Gibe.Umbraco.Blog
 			var document = documentWritingEventArgs.Document;
 			if (document.Get("nodeTypeAlias") == "blogPost")
 			{
-				var postDate = DateTime.Parse(document.Get("postDate"));
-				document.Add(new Field("postDateYear", postDate.Year.ToString("00"), Field.Store.YES, Field.Index.NOT_ANALYZED));
+				var postDate = DateTime.ParseExact(document.Get("postDate").Substring(0,8), "yyyyMMdd", CultureInfo.InvariantCulture);
+				document.Add(new Field("postDateYear", postDate.Year.ToString("0000"), Field.Store.YES, Field.Index.NOT_ANALYZED));
 				document.Add(new Field("postDateMonth", postDate.Month.ToString("00"), Field.Store.YES, Field.Index.NOT_ANALYZED));
 				document.Add(new Field("postDateDay", postDate.Day.ToString("00"), Field.Store.YES, Field.Index.NOT_ANALYZED));
 

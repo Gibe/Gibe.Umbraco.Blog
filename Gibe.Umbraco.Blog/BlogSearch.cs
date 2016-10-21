@@ -11,7 +11,7 @@ namespace Gibe.Umbraco.Blog
 	{
 		private const string BlogPostDoctype = "blogPost";
 
-		private ISearchIndex _newsIndex;
+		private readonly ISearchIndex _newsIndex;
 
 		public BlogSearch(ISearchIndex newsIndex)
 		{

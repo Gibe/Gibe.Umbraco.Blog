@@ -10,7 +10,7 @@ namespace Gibe.Umbraco.Blog
 {
 	public interface IBlogTags
 	{
-		IEnumerable<BlogTag> All();
+		IEnumerable<BlogTag> All(string rootPath);
 	}
 
 	public class FakeBlogTags : IBlogTags
@@ -22,7 +22,7 @@ namespace Gibe.Umbraco.Blog
 			_blogTags = blogTags;
 		}
 
-		public IEnumerable<BlogTag> All()
+		public IEnumerable<BlogTag> All(string rootPath)
 		{
 			return _blogTags;
 		}

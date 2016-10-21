@@ -15,7 +15,7 @@ namespace Gibe.Umbraco.Blog
 			_blogSearch = blogSearch;
 		}
 
-		public IEnumerable<BlogTag> All()
+		public IEnumerable<BlogTag> All(string rootPath)
 		{
 			var allTags = new Dictionary<string, BlogTag>();
 			var posts = _blogSearch.Search(Enumerable.Empty<IBlogPostFilter>());
@@ -27,7 +27,7 @@ namespace Gibe.Umbraco.Blog
 				}
 				else
 				{
-					allTags.Add(tag, new BlogTag { Count = 1, Tag = tag});
+					allTags.Add(tag, new BlogTag { Count = 1, Tag = tag, Url = $"{rootPath}?tag={tag}"});
 				}
 			}
 			return allTags.Values;

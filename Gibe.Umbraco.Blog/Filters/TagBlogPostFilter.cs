@@ -14,9 +14,7 @@ namespace Gibe.Umbraco.Blog.Filters
 		
 		public IBooleanOperation GetCriteria(IQuery query)
 		{
-			// TODO : Need to put tags individually into search index
-			// TODO : Not hardcode
-			return query.Field("settingsNewsTags", _tag);
+			return query.Field("tag", _tag);
 		}
 	}
 }
