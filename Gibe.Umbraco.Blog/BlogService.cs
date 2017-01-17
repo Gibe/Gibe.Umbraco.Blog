@@ -31,19 +31,19 @@ namespace Gibe.Umbraco.Blog
 		{
 			return GetPosts(Enumerable.Empty<IBlogPostFilter>(), itemsPerPage, currentPage);
 		}
-		
+
 		public PageQueryResultModel<T> GetPosts(IEnumerable<IBlogPostFilter> filters, int itemsPerPage, int currentPage)
 		{
 			var results = _blogSearch.Search(filters, true);
 			var posts = results.Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage);
 			return PageQueryResultModel(itemsPerPage, currentPage, ToBlogPosts(posts), results.TotalItemCount);
 		}
-		
+
 		private PageQueryResultModel<T> PageQueryResultModel(int itemsPerPage, int currentPage, IEnumerable<T> posts, int totalPostCount)
 		{
 			return _pagerService.GetPageQueryResultModel(posts, itemsPerPage, currentPage, totalPostCount);
 		}
-		
+
 		private T ToBlogPost(IPublishedContent content)
 		{
 			return _modelConverter.ToModel<T>(content);
@@ -61,12 +61,16 @@ namespace Gibe.Umbraco.Blog
 
 		public T GetNextPost(T current, IEnumerable<IBlogPostFilter> filters)
 		{
-			throw new NotImplementedException();
+			var results = _blogSearch.Search(filters, true);
+			var post = results.TakeWhile(r => r.Id != current.Id).LastOrDefault();
+			return post != null ? ToBlogPost(_umbracoWrapper.TypedContent(post.Id)) : null;
 		}
 
 		public T GetPreviousPost(T current, IEnumerable<IBlogPostFilter> filters)
 		{
-			throw new NotImplementedException();
+			var results = _blogSearch.Search(filters, true);
+			var post = results.SkipWhile(r => r.Id != current.Id).Skip(1).FirstOrDefault();
+			return post != null ? ToBlogPost(_umbracoWrapper.TypedContent(post.Id)) : null;
 		}
 
 		public IEnumerable<T> GetRelatedPosts(T post, int count)
