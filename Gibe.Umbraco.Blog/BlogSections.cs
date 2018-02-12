@@ -29,7 +29,6 @@ namespace Gibe.Umbraco.Blog
 			return results.Select(r => _modelConverter.ToModel<T>(_umbracoWrapper.TypedContent(r.Id)));
 		}
 		
-
 		private ISearchResults SearchForBlogSections()
 		{
 			var query = _searchIndex.CreateSearchCriteria().NodeTypeAlias(BlogSectionDocType).Compile();
