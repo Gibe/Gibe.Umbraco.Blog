@@ -4,6 +4,10 @@ Install using Nuget
 
 ``` install-package Gibe.Umbraco.Blog ```
 
+Ninject module is available
+
+``` Gibe.Umbraco.Blog.Ninject.GibeUmbracoBlogModule ```
+
 ## Setting up the Examine indexes
 
 Add this to ExamineSettings.config 
