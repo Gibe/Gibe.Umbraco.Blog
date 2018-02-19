@@ -3,25 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Gibe.Umbraco.Blog.Models;
 using Umbraco.Core.Models.Membership;
 
 namespace Gibe.Umbraco.Blog
 {
 	public interface IBlogAuthors
 	{
-		IEnumerable<IUser> All(string rootPath);
+		IEnumerable<BlogAuthor> All(string rootPath);
 	}
 
 	public class FakeBlogAuthors : IBlogAuthors
 	{
-		private readonly IEnumerable<IUser> _authors;
+		private readonly IEnumerable<BlogAuthor> _authors;
 
-		public FakeBlogAuthors(IEnumerable<IUser> authors)
+		public FakeBlogAuthors(IEnumerable<BlogAuthor> authors)
 		{
 			_authors = authors;
 		}
 
-		public IEnumerable<IUser> All(string rootPath)
+		public IEnumerable<BlogAuthor> All(string rootPath)
 		{
 			return _authors;
 		}
