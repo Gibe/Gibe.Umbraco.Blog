@@ -3,6 +3,7 @@ using Examine;
 using Examine.LuceneEngine.SearchCriteria;
 using Examine.SearchCriteria;
 using Gibe.Umbraco.Blog.Filters;
+using Gibe.Umbraco.Blog.Sort;
 using Gibe.Umbraco.Blog.Wrappers;
 
 namespace Gibe.Umbraco.Blog
@@ -17,39 +18,21 @@ namespace Gibe.Umbraco.Blog
 		{
 			_newsIndex = newsIndex;
 		}
-
-		public ISearchResults Search(IBlogPostFilter filter)
+		
+		public ISearchResults Search(IBlogPostFilter filter, ISort sort)
 		{
-			return Search(new List<IBlogPostFilter> {filter});
+			return Search(new List<IBlogPostFilter> { filter }, sort);
 		}
-
-		public ISearchResults Search(IBlogPostFilter filter, bool sortByDate)
+		
+		public ISearchResults Search(IEnumerable<IBlogPostFilter> filters, ISort sort)
 		{
-			return Search(new List<IBlogPostFilter> { filter }, sortByDate);
+			return SearchForBlogPosts(GetSearchQuery(filters, sort));
 		}
-
-		public ISearchResults Search(IEnumerable<IBlogPostFilter> filters)
+		
+		private ISearchCriteria GetSearchQuery(IEnumerable<IBlogPostFilter> filters, ISort sort)
 		{
-			return SearchForBlogPosts(GetSearchQuery(filters));
-		}
-
-		public ISearchResults Search(IEnumerable<IBlogPostFilter> filters, bool sortByDate)
-		{
-			return SearchForBlogPosts(GetSearchQuery(filters, sortByDate));
-		}
-
-		private ISearchCriteria GetSearchQuery(IEnumerable<IBlogPostFilter> filters)
-		{
-			return GetQuery(filters).Compile();
-		}
-
-		private ISearchCriteria GetSearchQuery(IEnumerable<IBlogPostFilter> filters, bool sortByDate)
-		{
-			if (sortByDate)
-			{
-				return GetQuery(filters).And().OrderByDescending(new SortableField("postDate", SortType.String)).Compile();
-			}
-			return GetSearchQuery(filters);
+			
+			return sort.GetCriteria(GetQuery(filters)).Compile();
 		}
 
 		private IBooleanOperation GetQuery(IEnumerable<IBlogPostFilter> filters)

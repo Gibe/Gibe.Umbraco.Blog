@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
+using Gibe.Umbraco.Blog.Sort;
 
 namespace Gibe.Umbraco.Blog
 {
@@ -19,7 +20,7 @@ namespace Gibe.Umbraco.Blog
 		{
 			
 			var mfi = new DateTimeFormatInfo();
-			var blogPosts = _blogSearch.Search(Enumerable.Empty<IBlogPostFilter>());
+			var blogPosts = _blogSearch.Search(Enumerable.Empty<IBlogPostFilter>(), new DateSort());
 			var years = blogPosts.GroupBy(x => GetPostDate(x.Fields["postDate"]).Year, (key, g) => new BlogArchiveYear { Name = key.ToString("0000"), Count = g.Count(), Year = key, Url = $"{rootPath}?year={key.ToString("0000")}" }).ToList();
 			foreach (var year in years)
 			{

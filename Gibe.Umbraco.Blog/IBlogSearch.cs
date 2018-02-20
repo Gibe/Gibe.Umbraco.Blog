@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using Examine;
 using Gibe.Umbraco.Blog.Filters;
+using Gibe.Umbraco.Blog.Sort;
 
 namespace Gibe.Umbraco.Blog
 {
 	public interface IBlogSearch
 	{
-		ISearchResults Search(IBlogPostFilter filter);
-		ISearchResults Search(IBlogPostFilter filter, bool sortByDate);
-		ISearchResults Search(IEnumerable<IBlogPostFilter> filters);
-		ISearchResults Search(IEnumerable<IBlogPostFilter> filters, bool sortByDate);
+		ISearchResults Search(IBlogPostFilter filter, ISort sort);
+		ISearchResults Search(IEnumerable<IBlogPostFilter> filters, ISort sort);
 	}
 
 	public class FakeBlogSearch : IBlogSearch
@@ -22,22 +21,12 @@ namespace Gibe.Umbraco.Blog
 		}
 
 
-		public ISearchResults Search(IBlogPostFilter filter)
+		public ISearchResults Search(IBlogPostFilter filter, ISort sort)
 		{
 			return _searchResults;
 		}
 
-		public ISearchResults Search(IBlogPostFilter filter, bool sortByDate)
-		{
-			return _searchResults;
-		}
-
-		public ISearchResults Search(IEnumerable<IBlogPostFilter> filters)
-		{
-			return _searchResults;
-		}
-
-		public ISearchResults Search(IEnumerable<IBlogPostFilter> filters, bool sortByDate)
+		public ISearchResults Search(IEnumerable<IBlogPostFilter> filters, ISort sort)
 		{
 			return _searchResults;
 		}

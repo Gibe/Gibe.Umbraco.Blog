@@ -351,6 +351,9 @@
     <Compile Include="Filters\StandardBlogPostFilter.cs" />
     <Compile Include="Filters\SectionBlogPostFilter.cs" />
     <Compile Include="Filters\TagBlogPostFilter.cs" />
+    <Compile Include="Sort\DateSort.cs" />
+    <Compile Include="Sort\ISort.cs" />
+    <Compile Include="Sort\RelevanceSort.cs" />
     <Compile Include="UmbracoEvents.cs" />
     <Compile Include="Utilities\ExactPhraseExamineValue.cs" />
     <Compile Include="Utilities\Import.cs" />
