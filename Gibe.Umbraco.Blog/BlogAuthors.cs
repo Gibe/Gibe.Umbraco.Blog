@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Gibe.Umbraco.Blog.Filters;
+using Gibe.Umbraco.Blog.Models;
 using Umbraco.Core.Models.Membership;
 using Umbraco.Core.Services;
 
@@ -18,11 +19,13 @@ namespace Gibe.Umbraco.Blog
 			_userService = userService;
 		}
 
-		public IEnumerable<IUser> All(string rootPath)
+		public IEnumerable<BlogAuthor> All(string rootPath)
 		{
 			var posts = _blogSearch.Search(Enumerable.Empty<IBlogPostFilter>());
 			var allUserIds = posts.Select(p => Convert.ToInt32(p.Fields["postAuthor"])).Distinct();
-			return allUserIds.Select(id => _userService.GetUserById(id));
+			return allUserIds
+				.Select(id => _userService.GetUserById(id))
+				.Select(user => new BlogAuthor {User = user, Url = $"{rootPath}?author={user.Name}"});
 		}
 	}
 }
