@@ -55,7 +55,7 @@ namespace Gibe.Umbraco.Blog
 				document.Add(new Field("postDateDay", postDate.Day.ToString("00"), Field.Store.YES, Field.Index.NOT_ANALYZED));
 				
 				var authorId = Convert.ToInt32(document.Get("postAuthor"));
-				document.Add(new Field("postAuthorName", GetUserName(authorId), Field.Store.YES, Field.Index.NOT_ANALYZED));
+				document.Add(new Field("postAuthorName", GetUserName(authorId).ToLower(), Field.Store.YES, Field.Index.NOT_ANALYZED));
 
 				var tags = document.Get("settingsNewsTags");
 				if (tags != null)

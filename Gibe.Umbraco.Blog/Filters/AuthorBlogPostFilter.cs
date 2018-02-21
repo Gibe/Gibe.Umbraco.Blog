@@ -1,4 +1,5 @@
 ﻿using Examine.SearchCriteria;
+using Gibe.Umbraco.Blog.Utilities;
 
 namespace Gibe.Umbraco.Blog.Filters
 {
@@ -13,7 +14,7 @@ namespace Gibe.Umbraco.Blog.Filters
 
 		public IBooleanOperation GetCriteria(IQuery query)
 		{
-			return query.Field("postAuthorName", _author);
+			return query.Field("postAuthorName", new ExactPhraseExamineValue(_author.ToLower()));
 		}
 	}
 }
