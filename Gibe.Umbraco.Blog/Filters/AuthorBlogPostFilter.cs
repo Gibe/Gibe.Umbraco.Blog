@@ -13,7 +13,7 @@ namespace Gibe.Umbraco.Blog.Filters
 
 		public IBooleanOperation GetCriteria(IQuery query)
 		{
-			return query.Field("postAuthor", _author);
+			return query.Field("postAuthorName", _author);
 		}
 	}
 }

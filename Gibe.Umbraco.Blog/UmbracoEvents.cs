@@ -13,6 +13,7 @@ using Umbraco.Core;
 using Umbraco.Core.Events;
 using Umbraco.Core.Models;
 using Umbraco.Core.Services;
+using Umbraco.Core.Persistence;
 using Umbraco.Web;
 using UmbracoExamine;
 
@@ -52,6 +53,9 @@ namespace Gibe.Umbraco.Blog
 				document.Add(new Field("postDateYear", postDate.Year.ToString("0000"), Field.Store.YES, Field.Index.NOT_ANALYZED));
 				document.Add(new Field("postDateMonth", postDate.Month.ToString("00"), Field.Store.YES, Field.Index.NOT_ANALYZED));
 				document.Add(new Field("postDateDay", postDate.Day.ToString("00"), Field.Store.YES, Field.Index.NOT_ANALYZED));
+				
+				var authorId = Convert.ToInt32(document.Get("postAuthor"));
+				document.Add(new Field("postAuthorName", GetUserName(authorId), Field.Store.YES, Field.Index.NOT_ANALYZED));
 
 				var tags = document.Get("settingsNewsTags");
 				if (tags != null)
@@ -95,6 +99,12 @@ namespace Gibe.Umbraco.Blog
 					// This happens if you try to get ParentId during install of a package with content
 				}
 			}
+		}
+
+		private string GetUserName(int userId)
+		{
+			var userService = ApplicationContext.Current.Services.UserService;
+			return userService.GetUserById(userId).Name;
 		}
 	}
 }
