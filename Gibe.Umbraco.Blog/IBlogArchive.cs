@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Gibe.Umbraco.Blog.Models;
+using Umbraco.Core.Models;
 
 namespace Gibe.Umbraco.Blog
 {
 	public interface IBlogArchive
 	{
-		BlogArchiveModel All(string rootPath);
+		BlogArchiveModel All(IPublishedContent blogRoot);
 	}
 
 	public class FakeBlogArchive :IBlogArchive
@@ -21,7 +22,7 @@ namespace Gibe.Umbraco.Blog
 			_blogArchiveModel = blogArchiveModel;
 		}
 
-		public BlogArchiveModel All(string rootPath)
+		public BlogArchiveModel All(IPublishedContent blogRoot)
 		{
 			return _blogArchiveModel;
 		}

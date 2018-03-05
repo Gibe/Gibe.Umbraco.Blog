@@ -65,6 +65,15 @@ namespace Gibe.Umbraco.Blog
 						document.Add(new Field("tag", tag.ToLower(), Field.Store.YES, Field.Index.NOT_ANALYZED));
 					}
 				}
+
+				var path = document.Get("path");
+				if (path != null)
+				{
+					foreach (var id in path.Split(','))
+					{
+						document.Add(new Field("path", id, Field.Store.YES, Field.Index.NOT_ANALYZED));
+					}
+				}
 			}
 		}
 

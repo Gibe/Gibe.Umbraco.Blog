@@ -13,7 +13,7 @@ namespace Gibe.Umbraco.Blog.Filters
 
 		public IBooleanOperation GetCriteria(IQuery query)
 		{
-			return query.Field("parentID", _sectionNodeId.ToString());
+			return query.Field("path", _sectionNodeId.ToString());
 		}
 	}
 }
