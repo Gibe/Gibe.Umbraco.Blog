@@ -17,5 +17,7 @@ namespace Gibe.Umbraco.Blog.Filters
 		{
 			return query.GroupedOr(new []{"tag"}, _tags.ToArray());
 		}
+
+		public IEnumerable<string> Tags => _tags;
 	}
 }
