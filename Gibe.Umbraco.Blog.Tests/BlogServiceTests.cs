@@ -24,26 +24,17 @@ namespace Gibe.Umbraco.Blog.Tests
 	[TestFixture]
 	public class BlogServiceTests
 	{
-		private Mock<IPagerService> _pagerService;
-
-		[SetUp]
-		public void SetUp()
+		private IPagerService PagerService()
 		{
-			_pagerService = new Mock<IPagerService>();
-		}
-
-		[Test]
-		public void GetPosts_returns_all_posts_in_a_page()
-		{
-
-			//var blogService = new BlogService<BlogModel>(new FakeModelConverter(new List<BlogModel>()), new PagerService() , new FakeBlogSearch(), new DefaultUmbracoWrapper());
+			var pagerService = new Mock<IPagerService>();
+			return pagerService.Object;
 		}
 
 		[Test]
 		public void GetRelatedPosts_Uses_Correct_Filters()
 		{
 			var blogSearch = new FakeBlogSearch(GetSearchResults());
-			var blogService = new BlogService<BlogModel>(new FakeModelConverter(GetBlogPosts()), _pagerService.Object, blogSearch, UmbracoWrapper(Content(1), Content(2), Content(3)));
+			var blogService = new BlogService<BlogModel>(new FakeModelConverter(GetBlogPosts()), PagerService(), blogSearch, UmbracoWrapper(Content(1), Content(2), Content(3)));
 			var testPost = new BlogModel
 			{
 				Tags = new List<string>
