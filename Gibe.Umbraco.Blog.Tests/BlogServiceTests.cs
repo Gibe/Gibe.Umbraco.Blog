@@ -30,10 +30,6 @@ namespace Gibe.Umbraco.Blog.Tests
 		public void SetUp()
 		{
 			_pagerService = new Mock<IPagerService>();
-
-			_pagerService.Setup(p =>
-					p.GetPageQueryResultModel(It.IsAny<IEnumerable<BlogModel>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()))
-				.Returns(GetQueryResultModel());
 		}
 
 		[Test]
@@ -85,18 +81,6 @@ namespace Gibe.Umbraco.Blog.Tests
 			return new SearchResult
 			{
 				Id = id
-			};
-		}
-
-		private PageQueryResultModel<BlogModel> GetQueryResultModel()
-		{
-			return new PageQueryResultModel<BlogModel>
-			{
-				CurrentPage = 1,
-				ItemsPerPage = 3,
-				TotalPages = 1,
-				TotalItemCount = 3,
-				CurrentPageItems = GetBlogPosts()
 			};
 		}
 
