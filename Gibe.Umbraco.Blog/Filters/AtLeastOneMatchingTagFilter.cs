@@ -4,11 +4,11 @@ using Examine.SearchCriteria;
 
 namespace Gibe.Umbraco.Blog.Filters
 {
-	public class TagsBlogPostFilter : IBlogPostFilter
+	public class AtLeastOneMatchingTagFilter : IBlogPostFilter
 	{
 		private readonly IEnumerable<string> _tags;
 
-		public TagsBlogPostFilter(IEnumerable<string> tags)
+		public AtLeastOneMatchingTagFilter(IEnumerable<string> tags)
 		{
 			_tags = tags;
 		}
@@ -17,5 +17,7 @@ namespace Gibe.Umbraco.Blog.Filters
 		{
 			return query.GroupedOr(new []{"tag"}, _tags.ToArray());
 		}
+
+		public IEnumerable<string> Tags => _tags;
 	}
 }

@@ -86,7 +86,9 @@ namespace Gibe.Umbraco.Blog
 
 		public IEnumerable<T> GetRelatedPosts(T post, int count)
 		{
-			throw new NotImplementedException();
+			var filter = new AtLeastOneMatchingTagFilter(post.Tags);
+			var results = _blogSearch.Search(filter, new RelevanceSort());
+			return ToBlogPosts(results.Take(count));
 		}
 	}
 }
