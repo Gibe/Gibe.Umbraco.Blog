@@ -86,8 +86,13 @@ namespace Gibe.Umbraco.Blog
 
 		public IEnumerable<T> GetRelatedPosts(T post, int count)
 		{
-			var filter = new AtLeastOneMatchingTagFilter(post.Tags);
-			var results = _blogSearch.Search(filter, new RelevanceSort()).Where(r => r.Id != post.Id);
+			return GetRelatedPosts(post.Tags, post.Id, count);
+		}
+
+		public IEnumerable<T> GetRelatedPosts(IEnumerable<string> tags, int postId, int count)
+		{
+			var filter = new AtLeastOneMatchingTagFilter(tags);
+			var results = _blogSearch.Search(filter, new RelevanceSort()).Where(r => r.Id != postId);
 			return ToBlogPosts(results.Take(count));
 		}
 	}
