@@ -4,11 +4,11 @@ using Examine.SearchCriteria;
 
 namespace Gibe.Umbraco.Blog.Filters
 {
-	public class TagsBlogPostFilter : IBlogPostFilter
+	public class AtLeastOneMatchingTagFilter : IBlogPostFilter
 	{
 		private readonly IEnumerable<string> _tags;
 
-		public TagsBlogPostFilter(IEnumerable<string> tags)
+		public AtLeastOneMatchingTagFilter(IEnumerable<string> tags)
 		{
 			_tags = tags;
 		}

@@ -329,7 +329,7 @@
     <Compile Include="Filters\DateBlogPostFilter.cs" />
     <Compile Include="Filters\IBlogPostFilter.cs" />
     <Compile Include="Filters\SearchTermBlogPostFilter.cs" />
-    <Compile Include="Filters\TagsBlogPostFilter.cs" />
+    <Compile Include="Filters\AtLeastOneMatchingTagFilter.cs" />
     <Compile Include="IBlogArchive.cs" />
     <Compile Include="IBlogAuthors.cs" />
     <Compile Include="IBlogSearch.cs" />

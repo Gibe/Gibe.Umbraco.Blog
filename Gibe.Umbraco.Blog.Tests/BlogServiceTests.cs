@@ -1,23 +1,17 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Examine;
-using Gibe.DittoServices;
 using Gibe.DittoServices.ModelConverters;
 using Gibe.Pager.Interfaces;
-using Gibe.Pager.Models;
-using Gibe.Pager.Services;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.UmbracoWrappers;
 using NUnit.Framework;
 using Moq;
 using Our.Umbraco.Ditto;
-using umbraco.cms.presentation.create.controls;
 using Umbraco.Core.Models;
 using Umbraco.Core.Models.Membership;
-using Umbraco.Web.Models.TemplateQuery;
 
 namespace Gibe.Umbraco.Blog.Tests
 {
@@ -46,9 +40,9 @@ namespace Gibe.Umbraco.Blog.Tests
 			};
 			var relatedPosts = blogService.GetRelatedPosts(testPost, 3);
 
-			Assert.That(blogSearch.LastUsedFilters.Any(t => typeof(TagsBlogPostFilter) == t.GetType()), Is.EqualTo(true));
+			Assert.That(blogSearch.LastUsedFilters.Any(t => typeof(AtLeastOneMatchingTagFilter) == t.GetType()), Is.EqualTo(true));
 
-			var tagsFilter = blogSearch.LastUsedFilters.First(t => typeof(TagsBlogPostFilter) == t.GetType()) as TagsBlogPostFilter;
+			var tagsFilter = blogSearch.LastUsedFilters.First(t => typeof(AtLeastOneMatchingTagFilter) == t.GetType()) as AtLeastOneMatchingTagFilter;
 			foreach (var tag in testPost.Tags)
 			{
 				Assert.That(tagsFilter.Tags.Contains(tag), Is.True);
