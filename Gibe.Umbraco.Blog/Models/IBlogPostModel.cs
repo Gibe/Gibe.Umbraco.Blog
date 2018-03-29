@@ -13,7 +13,5 @@ namespace Gibe.Umbraco.Blog.Models
 		bool HasTags { get; }
 		IUser Author { get; set; }
 		bool HasAuthor { get; }
-		IEnumerable<string> Categories { get; set; }
-		bool HasCategories { get; }
 	}
 }

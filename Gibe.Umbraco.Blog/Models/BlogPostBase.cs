@@ -20,7 +20,5 @@ namespace Gibe.Umbraco.Blog.Models
 		[UserPicker]
 		public IUser Author { get; set; }
 		public bool HasAuthor => Author != null;
-		public IEnumerable<string> Categories { get; set; }
-		public bool HasCategories => Tags != null && Categories.Any();
 	}
 }
