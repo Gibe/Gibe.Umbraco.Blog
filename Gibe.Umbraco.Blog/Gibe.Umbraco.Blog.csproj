@@ -321,6 +321,7 @@
   <ItemGroup>
     <Compile Include="BlogArchive.cs" />
     <Compile Include="BlogAuthors.cs" />
+    <Compile Include="BlogCategories.cs" />
     <Compile Include="BlogSearch.cs" />
     <Compile Include="BlogSections.cs" />
     <Compile Include="BlogService.cs" />
@@ -332,6 +333,7 @@
     <Compile Include="Filters\AtLeastOneMatchingTagFilter.cs" />
     <Compile Include="IBlogArchive.cs" />
     <Compile Include="IBlogAuthors.cs" />
+    <Compile Include="IBlogCategories.cs" />
     <Compile Include="IBlogSearch.cs" />
     <Compile Include="IBlogSections.cs" />
     <Compile Include="IBlogService.cs" />
@@ -340,6 +342,7 @@
     <Compile Include="Models\BlogArchiveMonth.cs" />
     <Compile Include="Models\BlogArchiveYear.cs" />
     <Compile Include="Models\BlogAuthor.cs" />
+    <Compile Include="Models\BlogCategory.cs" />
     <Compile Include="Models\BlogPostBase.cs" />
     <Compile Include="Models\BlogPostGroup.cs" />
     <Compile Include="Models\BlogTag.cs" />
