@@ -14,7 +14,6 @@ namespace Gibe.Umbraco.Blog
 		private readonly string _propertyName;
 		private readonly string _queryStringName;
 		
-
 		public BlogTags(IBlogSearch blogSearch, string propertyName = "settingsNewsTags", string querystringName = "tag")
 		{
 			_blogSearch = blogSearch;

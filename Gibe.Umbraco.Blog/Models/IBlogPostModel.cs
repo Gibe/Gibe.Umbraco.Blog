@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Umbraco.Core.Models.Membership;
 
 namespace Gibe.Umbraco.Blog.Models
 {
 	public interface IBlogPostModel
 	{
-		int Id { get; set; }
-		string Url { get; set; }
-		DateTime PostDate { get; set; }
-		IEnumerable<string> Tags { get; set; }
+		int Id { get; }
+		string Url { get; }
+		DateTime PostDate { get; }
+		IEnumerable<string> Tags { get; }
 		bool HasTags { get; }
-		IUser Author { get; set; }
-		bool HasAuthor { get; }
 	}
 }

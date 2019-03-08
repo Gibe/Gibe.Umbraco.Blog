@@ -93,7 +93,7 @@ namespace Gibe.Umbraco.Blog
 						var parentContent = sender.GetById(entity.ParentId);
 						if (parentContent.HasPublishedVersion)
 						{
-							//if the date hasnt been set, default it to today
+							//if the date hasn't been set, default it to today
 							var postDate = DateTime.Now.Date;
 							var postDateString = entity.GetValue<string>("postDate");
 							if (String.IsNullOrEmpty(postDateString))

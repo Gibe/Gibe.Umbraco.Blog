@@ -5,7 +5,7 @@ using Ninject.Modules;
 namespace Gibe.Umbraco.Blog.Ninject
 {
 	public class GibeUmbracoBlogModule<TBlogPostModel, TBlogSectionModel> : NinjectModule 
-		where TBlogPostModel : class, IBlogPostModel
+		where TBlogPostModel : BlogPostBase
 		where TBlogSectionModel : class, IBlogPostSection
 	{
 		public override void Load()

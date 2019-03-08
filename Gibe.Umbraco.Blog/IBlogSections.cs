@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Gibe.Umbraco.Blog.Models;
 
 namespace Gibe.Umbraco.Blog
 {
-	public interface IBlogSections<out T> where T : IBlogPostSection
+	public interface IBlogSections<out T> where T : class
 	{
 		IEnumerable<T> All();
 	}
 
-	public class FakeBlogSections<T> : IBlogSections<T> where T : IBlogPostSection
+	public class FakeBlogSections<T> : IBlogSections<T> where T : class, IBlogPostSection
 	{
 		private readonly IEnumerable<T> _sections;
 

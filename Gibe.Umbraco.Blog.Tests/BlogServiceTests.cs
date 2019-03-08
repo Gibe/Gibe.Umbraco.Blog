@@ -11,7 +11,6 @@ using NUnit.Framework;
 using Moq;
 using Our.Umbraco.Ditto;
 using Umbraco.Core.Models;
-using Umbraco.Core.Models.Membership;
 
 namespace Gibe.Umbraco.Blog.Tests
 {
@@ -28,7 +27,7 @@ namespace Gibe.Umbraco.Blog.Tests
 		public void GetRelatedPosts_Uses_Correct_Filters()
 		{
 			var blogSearch = new FakeBlogSearch(GetSearchResults());
-			var blogService = new BlogService<BlogModel>(new FakeModelConverter(GetBlogPosts()), PagerService(), blogSearch, UmbracoWrapper(Content(1), Content(2), Content(3)));
+			var blogService = new BlogService<BlogModel>(PagerService(), blogSearch, UmbracoWrapper(Content(1), Content(2), Content(3)));
 			var testPost = new BlogModel
 			{
 				Tags = new List<string>
@@ -127,12 +126,10 @@ namespace Gibe.Umbraco.Blog.Tests
 	public class BlogModel : IBlogPostModel
 	{
 		public int Id { get; set; }
-		public string Url { get; set; }
-		public DateTime PostDate { get; set; }
+		public string Url { get; }
+		public DateTime PostDate { get; }
 		public IEnumerable<string> Tags { get; set; }
 		public bool HasTags { get; set; }
-		public IUser Author { get; set; }
-		public bool HasAuthor { get; set; }
 	}
 
 	public class FakeModelConverter : IModelConverter
