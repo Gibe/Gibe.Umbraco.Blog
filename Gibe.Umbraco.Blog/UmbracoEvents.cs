@@ -15,7 +15,7 @@ using Umbraco.Core.Models;
 using Umbraco.Core.Services;
 using Umbraco.Core.Persistence;
 using Umbraco.Web;
-using UmbracoExamine;
+using Umbraco.Examine;
 
 namespace Gibe.Umbraco.Blog
 {
@@ -91,7 +91,7 @@ namespace Gibe.Umbraco.Blog
 					{
 						// TODO : Move code to somewhere better
 						var parentContent = sender.GetById(entity.ParentId);
-						if (parentContent.HasPublishedVersion)
+						if (parentContent.Published)
 						{
 							//if the date hasn't been set, default it to today
 							var postDate = DateTime.Now.Date;

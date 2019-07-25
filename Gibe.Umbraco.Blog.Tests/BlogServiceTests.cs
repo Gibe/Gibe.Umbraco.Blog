@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Examine;
-using Gibe.DittoServices.ModelConverters;
 using Gibe.Pager.Interfaces;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.UmbracoWrappers;
 using NUnit.Framework;
 using Moq;
-using Our.Umbraco.Ditto;
 using Umbraco.Core.Models;
+using Umbraco.Core.Models.PublishedContent;
 
 namespace Gibe.Umbraco.Blog.Tests
 {
@@ -101,7 +100,7 @@ namespace Gibe.Umbraco.Blog.Tests
 		public static IPublishedContent Content(int id, string docType = "blogPost", string name = null)
 		{
 			var content = new Mock<IPublishedContent>();
-			content.Setup(c => c.DocumentTypeAlias).Returns(docType);
+			content.Setup(c => c.ContentType.Alias).Returns(docType);
 			content.Setup(c => c.Name).Returns(name ?? docType);
 			content.Setup(c => c.Id).Returns(id);
 
@@ -130,35 +129,5 @@ namespace Gibe.Umbraco.Blog.Tests
 		public DateTime PostDate { get; }
 		public IEnumerable<string> Tags { get; set; }
 		public bool HasTags { get; set; }
-	}
-
-	public class FakeModelConverter : IModelConverter
-	{
-		private readonly IEnumerable<BlogModel> _blogPosts;
-
-		public FakeModelConverter(IEnumerable<BlogModel> blogPosts)
-		{
-			_blogPosts = blogPosts;
-		}
-
-		public T ToModel<T>(IPublishedContent content, IEnumerable<DittoProcessorContext> contexts) where T : class
-		{
-			return _blogPosts.First(p => p.Id == content.Id) as T;
-		}
-
-		public object ToModel(Type type, IPublishedContent content, IEnumerable<DittoProcessorContext> contexts)
-		{
-			return ToModel<BlogModel>(content, contexts);
-		}
-
-		public IEnumerable<T> ToModel<T>(IEnumerable<IPublishedContent> nodes, IEnumerable<DittoProcessorContext> contexts) where T : class
-		{
-			return _blogPosts.Where(p => nodes.Select(n => n.Id).Contains(p.Id)).Select(p => p as T);
-		}
-
-		public IEnumerable<object> ToModel(Type type, IEnumerable<IPublishedContent> content, IEnumerable<DittoProcessorContext> contexts)
-		{
-			return ToModel<BlogModel>(content, contexts);
-		}
 	}
 }

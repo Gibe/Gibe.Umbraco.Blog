@@ -4,7 +4,7 @@ using System.Linq;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Sort;
-using Umbraco.Core.Models;
+using Umbraco.Core.Models.PublishedContent;
 
 namespace Gibe.Umbraco.Blog
 {
@@ -22,12 +22,12 @@ namespace Gibe.Umbraco.Blog
 			
 			var mfi = new DateTimeFormatInfo();
 			var blogPosts = _blogSearch.Search(new SectionBlogPostFilter(blogRoot.Id), new DateSort());
-			var years = blogPosts.GroupBy(x => GetPostDate(x.Fields["postDate"]).Year, (key, g) => new BlogArchiveYear { Name = key.ToString("0000"), Count = g.Count(), Year = key, Url = $"{blogRoot.Url}?year={key.ToString("0000")}" }).ToList();
+			var years = blogPosts.GroupBy(x => GetPostDate(x.Values["postDate"]).Year, (key, g) => new BlogArchiveYear { Name = key.ToString("0000"), Count = g.Count(), Year = key, Url = $"{blogRoot.Url}?year={key.ToString("0000")}" }).ToList();
 			foreach (var year in years)
 			{
 				year.Months =
-					blogPosts.Where(x => GetPostDate(x.Fields["postDate"]).Year == year.Year)
-					.GroupBy(x => GetPostDate(x.Fields["postDate"]).Month,
+					blogPosts.Where(x => GetPostDate(x.Values["postDate"]).Year == year.Year)
+					.GroupBy(x => GetPostDate(x.Values["postDate"]).Month,
 						(key, g) => new BlogArchiveMonth { Name = mfi.GetMonthName(key), Month = key, Count = g.Count(), Url = $"{blogRoot.Url}?year={year.Year.ToString("0000")}&month={key.ToString("00")}" }).ToList();
 			}
 			return new BlogArchiveModel { Years = years };

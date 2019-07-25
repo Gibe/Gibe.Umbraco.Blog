@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Examine.SearchCriteria;
+using Examine.Search;
 
 namespace Gibe.Umbraco.Blog.Filters
 {

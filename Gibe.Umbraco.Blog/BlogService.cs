@@ -7,22 +7,22 @@ using Gibe.Pager.Models;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Sort;
-using Gibe.UmbracoWrappers;
-using Umbraco.Core.Models;
+using Umbraco.Core.Models.PublishedContent;
+using Umbraco.Web;
 
 namespace Gibe.Umbraco.Blog
 {
 	public class BlogService<T> : IBlogService<T> where T : class, IBlogPostModel
 	{
 		private readonly IPagerService _pagerService;
-		private readonly IUmbracoWrapper _umbracoWrapper;
 		private readonly IBlogSearch _blogSearch;
+		private readonly IUmbracoContextFactory _umbracoContextFactory;
 
-		public BlogService(IPagerService pagerService, IBlogSearch blogSearch, IUmbracoWrapper umbracoWrapper)
+		public BlogService(IPagerService pagerService, IBlogSearch blogSearch, IUmbracoContextFactory umbracoContextFactory)
 		{
 			_pagerService = pagerService;
 			_blogSearch = blogSearch;
-			_umbracoWrapper = umbracoWrapper;
+			_umbracoContextFactory = umbracoContextFactory;
 		}
 
 		public PageQueryResultModel<T> GetPosts(int itemsPerPage, int currentPage)
@@ -47,14 +47,14 @@ namespace Gibe.Umbraco.Blog
 			return PageQueryResultModel(itemsPerPage, currentPage, ToBlogPosts(posts), results.TotalItemCount);
 		}
 
-		private PageQueryResultModel<T> PageQueryResultModel(int itemsPerPage, int currentPage, IEnumerable<T> posts, int totalPostCount)
+		private PageQueryResultModel<T> PageQueryResultModel(int itemsPerPage, int currentPage, IEnumerable<T> posts, long totalPostCount)
 		{
-			return _pagerService.GetPageQueryResultModel(posts, itemsPerPage, currentPage, totalPostCount);
+			return _pagerService.GetPageQueryResultModel(posts, itemsPerPage, currentPage, (int)totalPostCount);
 		}
 
 		private T ToBlogPost(IPublishedContent content)
 		{
-			return Blog.Activator.Activate<T>(content);
+			return Activator.Activate<T>(content);
 		}
 
 		private IEnumerable<T> ToBlogPosts(IEnumerable<IPublishedContent> content)
@@ -62,23 +62,26 @@ namespace Gibe.Umbraco.Blog
 			return content.Select(ToBlogPost);
 		}
 
-		private IEnumerable<T> ToBlogPosts(IEnumerable<SearchResult> searchResults)
+		private IEnumerable<T> ToBlogPosts(IEnumerable<ISearchResult> searchResults)
 		{
-			return ToBlogPosts(searchResults.Select(r => _umbracoWrapper.TypedContent(r.Id)));
+			using (var context = _umbracoContextFactory.EnsureUmbracoContext())
+			{
+				return ToBlogPosts(searchResults.Select(r => GetContent(r.Id)));
+			}
 		}
 
 		public T GetNextPost(T current, IEnumerable<IBlogPostFilter> filters, ISort sort)
 		{
 			var results = _blogSearch.Search(filters, sort);
-			var post = results.TakeWhile(r => r.Id != current.Id).LastOrDefault();
-			return post != null ? ToBlogPost(_umbracoWrapper.TypedContent(post.Id)) : null;
+			var post = results.TakeWhile(r => r.Id != current.Id.ToString()).LastOrDefault();
+			return post != null ? ToBlogPost(GetContent(post.Id)) : null;
 		}
 
 		public T GetPreviousPost(T current, IEnumerable<IBlogPostFilter> filters, ISort sort)
 		{
 			var results = _blogSearch.Search(filters, sort);
-			var post = results.SkipWhile(r => r.Id != current.Id).Skip(1).FirstOrDefault();
-			return post != null ? ToBlogPost(_umbracoWrapper.TypedContent(post.Id)) : null;
+			var post = results.SkipWhile(r => r.Id != current.Id.ToString()).Skip(1).FirstOrDefault();
+			return post != null ? ToBlogPost(GetContent(post.Id)) : null;
 		}
 
 		public IEnumerable<T> GetRelatedPosts(T post, int count)
@@ -89,8 +92,18 @@ namespace Gibe.Umbraco.Blog
 		public IEnumerable<T> GetRelatedPosts(IEnumerable<string> tags, int postId, int count)
 		{
 			var filter = new AtLeastOneMatchingTagFilter(tags);
-			var results = _blogSearch.Search(filter, new RelevanceSort()).Where(r => r.Id != postId);
+			var results = _blogSearch.Search(filter, new RelevanceSort()).Where(r => r.Id != postId.ToString());
 			return ToBlogPosts(results.Take(count));
+		}
+
+		private IPublishedContent GetContent(string id)
+		{
+			var integerId = Convert.ToInt32(id);
+
+			using (var context = _umbracoContextFactory.EnsureUmbracoContext())
+			{
+				return context.UmbracoContext.Content.GetById(integerId);
+			}
 		}
 	}
 }

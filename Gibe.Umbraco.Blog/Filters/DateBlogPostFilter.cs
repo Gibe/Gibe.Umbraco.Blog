@@ -1,4 +1,4 @@
-﻿using Examine.SearchCriteria;
+﻿using Examine.Search;
 
 namespace Gibe.Umbraco.Blog.Filters
 {

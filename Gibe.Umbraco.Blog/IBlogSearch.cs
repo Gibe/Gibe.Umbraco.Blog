@@ -48,15 +48,16 @@ namespace Gibe.Umbraco.Blog
 			_results = results;
 		}
 
-		public IEnumerator<SearchResult> GetEnumerator()
+		public IEnumerator<ISearchResult> GetEnumerator()
 			=> _results.GetEnumerator();
 
 		IEnumerator IEnumerable.GetEnumerator()
 			=> _results.GetEnumerator();
 
-		public IEnumerable<SearchResult> Skip(int skip)
+		public IEnumerable<ISearchResult> Skip(int skip)
 			=> _results.Skip(skip);
 
-		public int TotalItemCount => _results.Count();
+		long ISearchResults.TotalItemCount =>
+			_results.Count();
 	}
 }

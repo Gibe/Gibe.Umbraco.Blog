@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Sort;
-using Umbraco.Core.Models;
+using Umbraco.Core.Models.PublishedContent;
 
 namespace Gibe.Umbraco.Blog
 {
@@ -25,7 +24,7 @@ namespace Gibe.Umbraco.Blog
 		{
 			var allTags = new Dictionary<string, BlogTag>();
 			var posts = _blogSearch.Search(new SectionBlogPostFilter(blogRoot.Id ), new DateSort());
-			foreach (var tag in posts.Where(post => post.Fields.ContainsKey($"{_propertyName}") && !String.IsNullOrEmpty(post.Fields[$"{_propertyName}"])).SelectMany(post => post.Fields[$"{_propertyName}"].Split(','))) // TODO not hard coded
+			foreach (var tag in posts.Where(post => post.Values.ContainsKey($"{_propertyName}") && !string.IsNullOrEmpty(post.Values[$"{_propertyName}"])).SelectMany(post => post.Values[$"{_propertyName}"].Split(','))) // TODO not hard coded
 			{
 				if (allTags.ContainsKey(tag))
 				{

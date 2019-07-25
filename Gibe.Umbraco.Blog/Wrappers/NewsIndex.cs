@@ -1,27 +1,42 @@
-﻿using System;
-using Examine;
-using Examine.LuceneEngine;
-using Examine.Providers;
-using Examine.SearchCriteria;
-using UmbracoExamine;
+﻿using Examine;
+using Examine.Search;
+using Gibe.Umbraco.Blog.Exceptions;
 
 namespace Gibe.Umbraco.Blog.Wrappers
 {
 	public class NewsIndex : ISearchIndex
 	{
-		public UmbracoContentIndexer GetIndexer()
+		private const string IndexName = "ExternalIndex";
+
+		private readonly IExamineManager _examineManager;
+
+		public NewsIndex(IExamineManager examineManager)
 		{
-			return (UmbracoContentIndexer)ExamineManager.Instance.IndexProviderCollection["BlogIndexer"];
+			_examineManager = examineManager;
 		}
 
-		public ISearchCriteria CreateSearchCriteria()
+		public IQuery CreateSearchQuery()
 		{
-			return ExamineManager.Instance.CreateSearchCriteria();
+			return GetIndex()
+				.GetSearcher()
+				.CreateQuery();
 		}
 
-		public ISearchResults Search(ISearchCriteria criteria)
+		public ISearchResults Search(IBooleanOperation operation)
 		{
-			return ExamineManager.Instance.SearchProviderCollection["BlogSearcher"].Search(criteria);
+			return operation.Execute();
+		}
+
+		public IIndex GetIndex()
+		{
+			IIndex index;
+
+			if (!_examineManager.TryGetIndex(IndexName, out index))
+			{
+				throw new IndexNotFoundException(IndexName);
+			}
+
+			return index;
 		}
 	}
 }
