@@ -339,6 +339,7 @@
     <Compile Include="Composing\BlogComposer.cs" />
     <Compile Include="Composing\IndexEvents.cs" />
     <Compile Include="Exceptions\IndexNotFoundException.cs" />
+    <Compile Include="Extensions\ValueSetExtensions.cs" />
     <Compile Include="Filters\AuthorBlogPostFilter.cs" />
     <Compile Include="Filters\DateBlogPostFilter.cs" />
     <Compile Include="Filters\IBlogPostFilter.cs" />
@@ -356,20 +357,19 @@
     <Compile Include="Models\BlogAuthor.cs" />
     <Compile Include="Models\BlogPostBase.cs" />
     <Compile Include="Models\BlogPostGroup.cs" />
+    <Compile Include="Models\BlogSectionsBase.cs" />
     <Compile Include="Models\BlogTag.cs" />
     <Compile Include="Models\IBlogPostModel.cs" />
     <Compile Include="Models\IBlogPostSection.cs" />
+    <Compile Include="Models\IBlogSections.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\BlogImportApiController.cs" />
     <Compile Include="Filters\StandardBlogPostFilter.cs" />
     <Compile Include="Filters\SectionBlogPostFilter.cs" />
     <Compile Include="Filters\TagBlogPostFilter.cs" />
     <Compile Include="Sort\DateSort.cs" />
     <Compile Include="Sort\ISort.cs" />
     <Compile Include="Sort\RelevanceSort.cs" />
-    <Compile Include="UmbracoEvents.cs" />
     <Compile Include="Utilities\ExactPhraseExamineValue.cs" />
-    <Compile Include="Utilities\Import.cs" />
     <Compile Include="Wrappers\ISearchIndex.cs" />
     <Compile Include="Wrappers\NewsIndex.cs" />
   </ItemGroup>
