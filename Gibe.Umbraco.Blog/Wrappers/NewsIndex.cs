@@ -1,18 +1,20 @@
 ﻿using Examine;
 using Examine.Search;
 using Gibe.Umbraco.Blog.Exceptions;
+using Gibe.Umbraco.Blog.Models;
 
 namespace Gibe.Umbraco.Blog.Wrappers
 {
 	public class NewsIndex : ISearchIndex
 	{
-		private const string IndexName = "ExternalIndex";
-
 		private readonly IExamineManager _examineManager;
+		private readonly IBlogSettings _blogSettings;
 
-		public NewsIndex(IExamineManager examineManager)
+		public NewsIndex(IExamineManager examineManager,
+			IBlogSettings blogSettings)
 		{
 			_examineManager = examineManager;
+			_blogSettings = blogSettings;
 		}
 
 		public IQuery CreateSearchQuery()
@@ -31,9 +33,9 @@ namespace Gibe.Umbraco.Blog.Wrappers
 		{
 			IIndex index;
 
-			if (!_examineManager.TryGetIndex(IndexName, out index))
+			if (!_examineManager.TryGetIndex(_blogSettings.IndexName, out index))
 			{
-				throw new IndexNotFoundException(IndexName);
+				throw new IndexNotFoundException(_blogSettings.IndexName);
 			}
 
 			return index;

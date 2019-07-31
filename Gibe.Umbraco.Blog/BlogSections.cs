@@ -22,7 +22,8 @@ namespace Gibe.Umbraco.Blog
 		public IEnumerable<T> All()
 		{
 			var results = SearchForBlogSections();
-			return results.Select(r => Activator.Activate<T>(_umbracoWrapper.TypedContent(r.Id)));
+			return Enumerable.Empty<T>();
+			//return results.Select(r => Activator.Activate<T>(_umbracoWrapper.TypedContent(r.Id)));
 		}
 		
 		private ISearchResults SearchForBlogSections()

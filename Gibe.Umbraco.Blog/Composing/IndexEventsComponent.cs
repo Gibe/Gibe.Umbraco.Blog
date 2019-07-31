@@ -8,30 +8,32 @@ using Umbraco.Core.Services.Implement;
 using Umbraco.Core.Events;
 using Gibe.Umbraco.Blog.Exceptions;
 using Gibe.Umbraco.Blog.Extensions;
+using Gibe.Umbraco.Blog.Models;
 
 namespace Gibe.Umbraco.Blog.Composing
 {
-	public class IndexEvents : IComponent
+	public class IndexEventsComponent : IComponent
 	{
 		private readonly IExamineManager _examineManager;
 		private readonly IUserService _userService;
+		private readonly IBlogSettings _blogSettings;
 
-		private const string IndexName = "ExternalIndex";
-
-		public IndexEvents(IExamineManager examineManager,
-			IUserService userService)
+		public IndexEventsComponent(IExamineManager examineManager,
+			IUserService userService,
+			IBlogSettings blogSettings)
 		{
 			_examineManager = examineManager;
 			_userService = userService;
+			_blogSettings = blogSettings;
 		}
 
 		public void Initialize()
 		{
-			_examineManager.TryGetIndex(IndexName, out var index);
+			_examineManager.TryGetIndex(_blogSettings.IndexName, out var index);
 
 			if (index == null)
 			{
-				throw new IndexNotFoundException(IndexName);
+				throw new IndexNotFoundException(_blogSettings.IndexName);
 			}
 
 			ContentService.Saving += ContentServiceSaving;
@@ -42,34 +44,38 @@ namespace Gibe.Umbraco.Blog.Composing
 		{
 			var document = e.ValueSet;
 
-			if (document.GetSingleValue<string>("nodeTypeAlias") != "blogPost")
+			if (document.ItemType != _blogSettings.BlogPostDocumentTypeAlias)
 			{
 				return;
 			}
 
-			var postDate = DateTime.ParseExact(document.GetSingleValue<string>("postDate").Substring(0, 8), "yyyyMMdd", CultureInfo.InvariantCulture);
+			var postDate = DateTime.ParseExact(document.GetSingleValue("postDate").Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
 			document.TryAdd("postDateYear", postDate.Year.ToString("0000"));
 			document.TryAdd("postDateMonth", postDate.Month.ToString("00"));
 			document.TryAdd("postDateDay", postDate.Day.ToString("00"));
 
-			var authorId = Convert.ToInt32(document.GetSingleValue<string>("postAuthor"));
-			document.TryAdd("postAuthorName", GetUserName(authorId).ToLower());
+			var authorId = document.GetSingleValue<int?>("postAuthor");
 
-			var tags = document.GetSingleValue<string>("settingsNewsTags");
+			if (authorId.HasValue)
+			{
+				document.TryAdd("postAuthorName", GetUserName(authorId.Value).ToLower());
+			}
+
+			var tags = document.GetSingleValue("settingsNewsTags");
 			if (tags != null)
 			{
 				foreach (var tag in tags.Split(','))
 				{
-					document.TryAdd("tag", tag.ToLower());
+					document.TryAddOrAppend("tag", tag.ToLower());
 				}
 			}
 
-			var path = document.GetSingleValue<string>("path");
+			var path = document.GetSingleValue("path");
 			if (path != null)
 			{
 				foreach (var id in path.Split(','))
 				{
-					document.TryAdd("path", id);
+					document.TryAddOrAppend("path", id);
 				}
 			}
 		}
@@ -80,7 +86,7 @@ namespace Gibe.Umbraco.Blog.Composing
 			{
 				try
 				{
-					if (entity.ContentType.Alias != "BlogPost" || entity.ParentId == -20)
+					if (entity.ContentType.Alias != _blogSettings.BlogPostDocumentTypeAlias || entity.ParentId == -20)
 					{
 						continue;
 					}
