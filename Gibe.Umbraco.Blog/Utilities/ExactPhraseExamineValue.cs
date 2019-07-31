@@ -7,7 +7,7 @@ namespace Gibe.Umbraco.Blog.Utilities
 		public ExactPhraseExamineValue(string phrase)
 		{
 			Examineness = Examineness.Escaped;
-			Value = $"\"{phrase}\"";
+			Value = $"{phrase}";
 			Level = 1;
 		}
 
