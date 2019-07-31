@@ -4,6 +4,8 @@ using Gibe.Umbraco.Blog.Wrappers;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Settings.Interfaces;
 using Gibe.Settings.Implementations;
+using Gibe.Pager.Interfaces;
+using Gibe.Pager.Services;
 
 namespace Gibe.Umbraco.Blog.Composing
 {
@@ -14,6 +16,7 @@ namespace Gibe.Umbraco.Blog.Composing
 			composition.Components().Append<BlogDocumentTypeComponent>();
 			composition.Components().Append<IndexEventsComponent>();
 
+			composition.Register<IPagerService, PagerService>();
 			composition.Register<ISettingsService, SettingsService>();
 
 			composition.RegisterUnique<IBlogSettings, BlogConfigSettings>();
