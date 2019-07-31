@@ -5,5 +5,9 @@
 		string IndexName { get; }
 
 		string BlogPostDocumentTypeAlias { get; }
+
+		string UserPickerPropertyEditorAlias { get; }
+
+		string UserPickerName { get; }
 	}
 }

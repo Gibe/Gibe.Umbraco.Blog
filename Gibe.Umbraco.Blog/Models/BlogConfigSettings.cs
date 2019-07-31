@@ -14,5 +14,9 @@ namespace Gibe.Umbraco.Blog.Models
 		public string IndexName => _settingsService.GetSetting("Gibe.Umbraco.Blog.IndexName", "ExternalIndex");
 
 		public string BlogPostDocumentTypeAlias => _settingsService.GetSetting("Gibe.Umbraco.Blog.BlogPostDocumentTypeAlias", "blogPost");
+
+		public string UserPickerPropertyEditorAlias => _settingsService.GetSetting("Gibe.Umbraco.Blog.UserPickerPropertyEditorAlias", "Umbraco.UserPicker");
+
+		public string UserPickerName => _settingsService.GetSetting("Gibe.Umbraco.Blog.UserPickerName", "User Picker - All Users");
 	}
 }

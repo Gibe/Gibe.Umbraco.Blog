@@ -340,7 +340,7 @@
     <Compile Include="BlogService.cs" />
     <Compile Include="BlogTags.cs" />
     <Compile Include="Composing\BlogComposer.cs" />
-    <Compile Include="Composing\BlogDocumentTypeComponent.cs" />
+    <Compile Include="Composing\BlogCompositionComponent.cs" />
     <Compile Include="Composing\IndexEventsComponent.cs" />
     <Compile Include="Exceptions\IndexNotFoundException.cs" />
     <Compile Include="Extensions\ValueSetExtensions.cs" />

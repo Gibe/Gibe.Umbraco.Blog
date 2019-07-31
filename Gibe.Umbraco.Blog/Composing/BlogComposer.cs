@@ -13,7 +13,7 @@ namespace Gibe.Umbraco.Blog.Composing
 	{
 		public void Compose(Composition composition)
 		{
-			composition.Components().Append<BlogDocumentTypeComponent>();
+			composition.Components().Append<BlogCompositionComponent>();
 			composition.Components().Append<IndexEventsComponent>();
 
 			composition.Register<IPagerService, PagerService>();
