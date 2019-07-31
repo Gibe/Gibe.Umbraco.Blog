@@ -9,6 +9,8 @@ using Umbraco.Core.Events;
 using Gibe.Umbraco.Blog.Exceptions;
 using Gibe.Umbraco.Blog.Extensions;
 using Gibe.Umbraco.Blog.Models;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Gibe.Umbraco.Blog.Composing
 {
@@ -61,10 +63,12 @@ namespace Gibe.Umbraco.Blog.Composing
 				document.TryAdd("postAuthorName", GetUserName(authorId.Value).ToLower());
 			}
 
-			var tags = document.GetSingleValue("settingsNewsTags");
-			if (tags != null)
+			var tagValue = document.GetSingleValue("settingsNewsTags");
+			if (tagValue != null)
 			{
-				foreach (var tag in tags.Split(','))
+				var tags = JsonConvert.DeserializeObject<IEnumerable<string>>(tagValue);
+
+				foreach (var tag in tags)
 				{
 					document.TryAddOrAppend("tag", tag.ToLower());
 				}
@@ -118,7 +122,7 @@ namespace Gibe.Umbraco.Blog.Composing
 
 		public void Terminate()
 		{
-			
+
 		}
 	}
 }
