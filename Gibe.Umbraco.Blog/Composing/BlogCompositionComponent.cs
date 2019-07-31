@@ -49,7 +49,7 @@ namespace Gibe.Umbraco.Blog.Composing
 			var blogComposition = new ContentType(-1)
 			{
 				Alias = _blogPostCompositionDocumentTypeAlias,
-				Name = "Blog Post Compositon"
+				Name = "Blog Post Composition"
 			};
 
 			blogComposition.AddPropertyGroup("Content");
