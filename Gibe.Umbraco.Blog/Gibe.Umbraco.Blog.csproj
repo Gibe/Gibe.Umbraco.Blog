@@ -351,6 +351,8 @@
     <Compile Include="Filters\AtLeastOneMatchingTagFilter.cs" />
     <Compile Include="IBlogArchive.cs" />
     <Compile Include="IBlogAuthors.cs" />
+    <Compile Include="Repositories\BlogContentRepository.cs" />
+    <Compile Include="Repositories\IBlogContentRepository.cs" />
     <Compile Include="IBlogSearch.cs" />
     <Compile Include="IBlogSections.cs" />
     <Compile Include="IBlogService.cs" />

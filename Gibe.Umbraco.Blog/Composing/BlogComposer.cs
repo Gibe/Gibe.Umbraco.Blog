@@ -6,6 +6,7 @@ using Gibe.Settings.Interfaces;
 using Gibe.Settings.Implementations;
 using Gibe.Pager.Interfaces;
 using Gibe.Pager.Services;
+using Gibe.Umbraco.Blog.Repositories;
 
 namespace Gibe.Umbraco.Blog.Composing
 {
@@ -18,13 +19,12 @@ namespace Gibe.Umbraco.Blog.Composing
 
 			composition.Register<IPagerService, PagerService>();
 			composition.Register<ISettingsService, SettingsService>();
-
 			composition.RegisterUnique<IBlogSettings, BlogConfigSettings>();
+
+			composition.RegisterUnique<IBlogContentRepository, BlogContentRepository>();
 			composition.RegisterUnique<IBlogArchive, BlogArchive>();
 			composition.RegisterUnique<IBlogAuthors, BlogAuthors>();
 			composition.RegisterUnique<IBlogSearch, BlogSearch>();
-			//composition.RegisterUnique<IBlogSections<BlogSectionsBase>, BlogSections<BlogSectionsBase>>();
-			//composition.RegisterUnique<IBlogService<BlogPostBase>, BlogService<BlogPostBase>>();
 			composition.RegisterUnique<IBlogTags, BlogTags>();
 			composition.RegisterUnique<ISearchIndex, NewsIndex>();
 		}

@@ -6,9 +6,9 @@ using Gibe.Pager.Interfaces;
 using Gibe.Pager.Models;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
+using Gibe.Umbraco.Blog.Repositories;
 using Gibe.Umbraco.Blog.Sort;
 using Umbraco.Core.Models.PublishedContent;
-using Umbraco.Web;
 
 namespace Gibe.Umbraco.Blog
 {
@@ -16,13 +16,13 @@ namespace Gibe.Umbraco.Blog
 	{
 		private readonly IPagerService _pagerService;
 		private readonly IBlogSearch _blogSearch;
-		private readonly IUmbracoContextFactory _umbracoContextFactory;
+		private readonly IBlogContentRepository _blogContentRepository;
 
-		public BlogService(IPagerService pagerService, IBlogSearch blogSearch, IUmbracoContextFactory umbracoContextFactory)
+		public BlogService(IPagerService pagerService, IBlogSearch blogSearch, IBlogContentRepository blogContentRepository)
 		{
 			_pagerService = pagerService;
 			_blogSearch = blogSearch;
-			_umbracoContextFactory = umbracoContextFactory;
+			_blogContentRepository = blogContentRepository;
 		}
 
 		public PageQueryResultModel<T> GetPosts(int itemsPerPage, int currentPage)
@@ -64,10 +64,7 @@ namespace Gibe.Umbraco.Blog
 
 		private IEnumerable<T> ToBlogPosts(IEnumerable<ISearchResult> searchResults)
 		{
-			using (var context = _umbracoContextFactory.EnsureUmbracoContext())
-			{
-				return ToBlogPosts(searchResults.Select(r => GetContent(r.Id)));
-			}
+			return ToBlogPosts(searchResults.Select(r => GetContent(r.Id)));
 		}
 
 		public T GetNextPost(T current, IEnumerable<IBlogPostFilter> filters, ISort sort)
@@ -100,10 +97,7 @@ namespace Gibe.Umbraco.Blog
 		{
 			var integerId = Convert.ToInt32(id);
 
-			using (var context = _umbracoContextFactory.EnsureUmbracoContext())
-			{
-				return context.UmbracoContext.Content.GetById(integerId);
-			}
+			return _blogContentRepository.BlogContent(integerId);
 		}
 	}
 }

@@ -95,7 +95,6 @@ namespace Gibe.Umbraco.Blog.Composing
 						continue;
 					}
 
-					// TODO : Move code to somewhere better
 					var parentContent = sender.GetById(entity.ParentId);
 					if (parentContent.Published)
 					{
