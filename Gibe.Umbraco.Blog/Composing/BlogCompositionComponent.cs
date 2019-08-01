@@ -18,7 +18,7 @@ namespace Gibe.Umbraco.Blog.Composing
 		private readonly IBlogSettings _blogSettings;
 		private readonly PropertyEditorCollection _propertyEditors;
 
-		private string _blogPostCompositionDocumentTypeAlias => $"{_blogSettings.BlogPostDocumentTypeAlias}Composition";
+		private string _blogPostCompositionDocumentTypeAlias => $"blogPostComposition";
 
 		public BlogCompositionComponent(IContentTypeService contentTypeService,
 			IDataTypeService dataTypeService,
