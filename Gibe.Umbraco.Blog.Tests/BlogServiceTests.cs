@@ -24,7 +24,8 @@ namespace Gibe.Umbraco.Blog.Tests
 			_pagerService = new Mock<IPagerService>();
 			_blogContentRepository = new Mock<IBlogContentRepository>();
 
-			_blogContentRepository.Setup(r => r.BlogContent(It.IsAny<int>())).Returns((int id) => Content(id, "blogPost"));
+			_blogContentRepository.Setup(r => r.BlogContent(It.IsAny<int>()))
+				.Returns((int id) => Content(id, "blogPost"));
 		}
 
 		[Test]
