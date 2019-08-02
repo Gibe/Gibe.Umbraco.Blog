@@ -1,7 +1,7 @@
 ﻿using Examine;
 using Examine.Providers;
 using System;
-using System.Globalization;
+using Gibe.Umbraco.Blog.Extensions;
 using Umbraco.Core.Composing;
 using Umbraco.Core.Services;
 using Umbraco.Core.Services.Implement;
@@ -51,8 +51,7 @@ namespace Gibe.Umbraco.Blog.Composing
 				return;
 			}
 
-			var postDate = DateTime.ParseExact(document.GetSingleValue(ExamineFields.PostDate)
-				.Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+			var postDate = document.GetSingleValue(ExamineFields.PostDate).ParseFromExamineField();
 
 			document.TryAdd(ExamineFields.PostDateYear, postDate.Year.ToString("0000"));
 			document.TryAdd(ExamineFields.PostDateMonth, postDate.Month.ToString("00"));

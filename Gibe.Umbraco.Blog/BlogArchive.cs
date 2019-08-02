@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using Gibe.Umbraco.Blog.Extensions;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Sort;
@@ -48,7 +49,7 @@ namespace Gibe.Umbraco.Blog
 
 		private DateTime GetPostDate(string value)
 		{
-			return DateTime.ParseExact(value.Substring(0, 8), "yyyyMMdd", CultureInfo.InvariantCulture);
+			return value.ParseFromExamineField();
 		}
 	}
 }
