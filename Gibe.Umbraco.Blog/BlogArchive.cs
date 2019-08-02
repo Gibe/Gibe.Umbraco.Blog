@@ -33,8 +33,7 @@ namespace Gibe.Umbraco.Blog
 
 			foreach (var year in years)
 			{
-				year.Months =
-					blogPosts.Where(x => GetPostDate(x.Values[ExamineFields.PostDate]).Year == year.Year)
+				year.Months = blogPosts.Where(x => GetPostDate(x.Values[ExamineFields.PostDate]).Year == year.Year)
 					.GroupBy(x => GetPostDate(x.Values[ExamineFields.PostDate]).Month,
 						(key, g) => new BlogArchiveMonth
 						{

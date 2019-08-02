@@ -7,7 +7,6 @@ using Umbraco.Core.Services;
 using Umbraco.Core.Services.Implement;
 using Umbraco.Core.Events;
 using Gibe.Umbraco.Blog.Exceptions;
-using Gibe.Umbraco.Blog.Extensions;
 using Gibe.Umbraco.Blog.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
