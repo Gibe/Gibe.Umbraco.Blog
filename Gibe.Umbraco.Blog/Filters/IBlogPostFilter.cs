@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Examine.Search;
+﻿using Examine.Search;
 
 namespace Gibe.Umbraco.Blog.Filters
 {

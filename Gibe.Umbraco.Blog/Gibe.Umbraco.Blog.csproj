@@ -342,6 +342,7 @@
     <Compile Include="Composing\BlogComposer.cs" />
     <Compile Include="Composing\BlogCompositionComponent.cs" />
     <Compile Include="Composing\IndexEventsComponent.cs" />
+    <Compile Include="ExamineFields.cs" />
     <Compile Include="Exceptions\IndexNotFoundException.cs" />
     <Compile Include="Extensions\ValueSetExtensions.cs" />
     <Compile Include="Filters\AuthorBlogPostFilter.cs" />

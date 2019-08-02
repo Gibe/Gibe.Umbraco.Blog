@@ -12,10 +12,10 @@ namespace Gibe.Umbraco.Blog.Filters
 		{
 			_tags = tags;
 		}
-		
+
 		public IBooleanOperation GetCriteria(IQuery query)
 		{
-			return query.GroupedOr(new []{"tag"}, _tags.ToArray());
+			return query.GroupedOr(new[] { ExamineFields.Tag }, _tags.ToArray());
 		}
 
 		public IEnumerable<string> Tags => _tags;

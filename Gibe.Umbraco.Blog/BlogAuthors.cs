@@ -23,7 +23,7 @@ namespace Gibe.Umbraco.Blog
 		public IEnumerable<BlogAuthor> All(string rootPath)
 		{
 			var posts = _blogSearch.Search(Enumerable.Empty<IBlogPostFilter>(), new DateSort());
-			var allUserIds = posts.Select(p => Convert.ToInt32(p.Values["postAuthor"])).Distinct();
+			var allUserIds = posts.Select(p => Convert.ToInt32(p.Values[ExamineFields.PostAuthor])).Distinct();
 			return allUserIds
 				.Select(id => _userService.GetUserById(id))
 				.Select(user => new BlogAuthor {User = user, Url = $"{rootPath}?author={user.Name}"});

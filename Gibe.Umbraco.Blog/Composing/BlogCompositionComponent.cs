@@ -1,9 +1,5 @@
 ﻿using Gibe.Umbraco.Blog.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Umbraco.Core.Composing;
 using Umbraco.Core.Models;
 using Umbraco.Core.PropertyEditors;
@@ -18,7 +14,7 @@ namespace Gibe.Umbraco.Blog.Composing
 		private readonly IBlogSettings _blogSettings;
 		private readonly PropertyEditorCollection _propertyEditors;
 
-		private string _blogPostCompositionDocumentTypeAlias => $"blogPostComposition";
+		private string _blogPostCompositionDocumentTypeAlias => "blogPostComposition";
 
 		public BlogCompositionComponent(IContentTypeService contentTypeService,
 			IDataTypeService dataTypeService,

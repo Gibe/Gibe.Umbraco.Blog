@@ -14,7 +14,7 @@ namespace Gibe.Umbraco.Blog.Filters
 
 		public IBooleanOperation GetCriteria(IQuery query)
 		{
-			return query.Field("postAuthorName", new ExactPhraseExamineValue(_author.ToLower()));
+			return query.Field(ExamineFields.PostAuthorName, new ExactPhraseExamineValue(_author.ToLower()));
 		}
 	}
 }

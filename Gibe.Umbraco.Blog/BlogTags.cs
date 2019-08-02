@@ -13,18 +13,22 @@ namespace Gibe.Umbraco.Blog
 		private readonly string _propertyName;
 		private readonly string _queryStringName;
 		
-		public BlogTags(IBlogSearch blogSearch, string propertyName = "settingsNewsTags", string querystringName = "tag")
+		public BlogTags(IBlogSearch blogSearch, string propertyName = null, string querystringName = null)
 		{
 			_blogSearch = blogSearch;
-			_propertyName = propertyName;
-			_queryStringName = querystringName;
+			_propertyName = propertyName ?? ExamineFields.NewsTags;
+			_queryStringName = querystringName ?? ExamineFields.Tag;
 		}
 
 		public IEnumerable<BlogTag> All(IPublishedContent blogRoot)
 		{
 			var allTags = new Dictionary<string, BlogTag>();
 			var posts = _blogSearch.Search(new SectionBlogPostFilter(blogRoot.Id ), new DateSort());
-			foreach (var tag in posts.Where(post => post.Values.ContainsKey($"{_propertyName}") && !string.IsNullOrEmpty(post.Values[$"{_propertyName}"])).SelectMany(post => post.Values[$"{_propertyName}"].Split(','))) // TODO not hard coded
+
+			var applicablePosts = posts.Where(post => post.Values.ContainsKey($"{_propertyName}") && !string.IsNullOrEmpty(post.Values[$"{_propertyName}"]))
+				.SelectMany(post => post.Values[$"{_propertyName}"].Split(','));
+
+			foreach (var tag in applicablePosts) // TODO not hard coded
 			{
 				if (allTags.ContainsKey(tag))
 				{

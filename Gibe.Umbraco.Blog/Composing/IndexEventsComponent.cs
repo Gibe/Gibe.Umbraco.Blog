@@ -51,35 +51,37 @@ namespace Gibe.Umbraco.Blog.Composing
 				return;
 			}
 
-			var postDate = DateTime.ParseExact(document.GetSingleValue("postDate").Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
-			document.TryAdd("postDateYear", postDate.Year.ToString("0000"));
-			document.TryAdd("postDateMonth", postDate.Month.ToString("00"));
-			document.TryAdd("postDateDay", postDate.Day.ToString("00"));
+			var postDate = DateTime.ParseExact(document.GetSingleValue(ExamineFields.PostDate)
+				.Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
 
-			var authorId = document.GetSingleValue<int?>("postAuthor");
+			document.TryAdd(ExamineFields.PostDateYear, postDate.Year.ToString("0000"));
+			document.TryAdd(ExamineFields.PostDateMonth, postDate.Month.ToString("00"));
+			document.TryAdd(ExamineFields.PostDateDay, postDate.Day.ToString("00"));
+
+			var authorId = document.GetSingleValue<int?>(ExamineFields.PostAuthor);
 
 			if (authorId.HasValue)
 			{
-				document.TryAdd("postAuthorName", GetUserName(authorId.Value).ToLower());
+				document.TryAdd(ExamineFields.PostAuthorName, GetUserName(authorId.Value).ToLower());
 			}
 
-			var tagValue = document.GetSingleValue("settingsNewsTags");
+			var tagValue = document.GetSingleValue(ExamineFields.NewsTags);
 			if (tagValue != null)
 			{
 				var tags = JsonConvert.DeserializeObject<IEnumerable<string>>(tagValue);
 
 				foreach (var tag in tags)
 				{
-					document.TryAddOrAppend("tag", tag.ToLower());
+					document.TryAddOrAppend(ExamineFields.Tag, tag.ToLower());
 				}
 			}
 
-			var path = document.GetSingleValue("path");
+			var path = document.GetSingleValue(ExamineFields.Path);
 			if (path != null)
 			{
 				foreach (var id in path.Split(','))
 				{
-					document.TryAddOrAppend("path", id);
+					document.TryAddOrAppend(ExamineFields.Path, id);
 				}
 			}
 		}
@@ -99,11 +101,10 @@ namespace Gibe.Umbraco.Blog.Composing
 					if (parentContent.Published)
 					{
 						//if the date hasn't been set, default it to today
-						var postDate = DateTime.Now.Date;
-						var postDateString = entity.GetValue<string>("postDate");
+						var postDateString = entity.GetValue<string>(ExamineFields.PostDate);
 						if (string.IsNullOrEmpty(postDateString))
 						{
-							entity.SetValue("postDate", postDate);
+							entity.SetValue(ExamineFields.PostDate, DateTime.Now.Date);
 						}
 					}
 				}

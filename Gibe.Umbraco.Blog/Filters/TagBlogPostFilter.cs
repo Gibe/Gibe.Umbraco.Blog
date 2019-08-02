@@ -14,7 +14,7 @@ namespace Gibe.Umbraco.Blog.Filters
 		
 		public IBooleanOperation GetCriteria(IQuery query)
 		{
-			return query.Field("tag", new ExactPhraseExamineValue(_tag.ToLower()));
+			return query.Field(ExamineFields.Tag, new ExactPhraseExamineValue(_tag.ToLower()));
 		}
 
 		
