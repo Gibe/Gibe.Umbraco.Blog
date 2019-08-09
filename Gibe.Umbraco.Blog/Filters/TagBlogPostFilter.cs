@@ -11,12 +11,10 @@ namespace Gibe.Umbraco.Blog.Filters
 		{
 			_tag = tag;
 		}
-		
+
 		public IBooleanOperation GetCriteria(IQuery query)
 		{
 			return query.Field(ExamineFields.Tag, new ExactPhraseExamineValue(_tag.ToLower()));
-		}
-
-		
+		}		
 	}
 }

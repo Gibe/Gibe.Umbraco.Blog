@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Umbraco.Core.Models.PublishedContent;
 
 namespace Gibe.Umbraco.Blog.Models
 {
@@ -9,6 +10,7 @@ namespace Gibe.Umbraco.Blog.Models
 		string Url { get; }
 		DateTime PostDate { get; }
 		IEnumerable<string> Tags { get; }
+		IPublishedContent Category { get; }
 		bool HasTags { get; }
 	}
 }

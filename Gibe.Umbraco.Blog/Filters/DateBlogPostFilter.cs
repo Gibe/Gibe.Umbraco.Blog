@@ -8,7 +8,7 @@ namespace Gibe.Umbraco.Blog.Filters
 		private readonly int? _month;
 		private readonly int? _day;
 
-		public DateBlogPostFilter(int year, int? month, int? day)
+		public DateBlogPostFilter(int year, int? month = null, int? day = null)
 		{
 			_year = year;
 			_month = month;

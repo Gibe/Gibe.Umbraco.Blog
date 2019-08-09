@@ -15,6 +15,8 @@ namespace Gibe.Umbraco.Blog.Models
 
 		public IEnumerable<string> Tags => this.Value<IEnumerable<string>>("settingsNewsTags");
 
+		public IPublishedContent Category => this.Value<IPublishedContent>("category");
+
 		public bool HasTags => Tags != null && Tags.Any();
 	}
 }

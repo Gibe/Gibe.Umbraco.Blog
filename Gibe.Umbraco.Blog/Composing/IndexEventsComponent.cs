@@ -10,6 +10,8 @@ using Gibe.Umbraco.Blog.Exceptions;
 using Gibe.Umbraco.Blog.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using Umbraco.Web;
+using Umbraco.Core;
 
 namespace Gibe.Umbraco.Blog.Composing
 {
@@ -18,14 +20,17 @@ namespace Gibe.Umbraco.Blog.Composing
 		private readonly IExamineManager _examineManager;
 		private readonly IUserService _userService;
 		private readonly IBlogSettings _blogSettings;
+		private readonly IUmbracoContextFactory _umbracoContextFactory;
 
 		public IndexEventsComponent(IExamineManager examineManager,
 			IUserService userService,
-			IBlogSettings blogSettings)
+			IBlogSettings blogSettings,
+			IUmbracoContextFactory umbracoContextFactory)
 		{
 			_examineManager = examineManager;
 			_userService = userService;
 			_blogSettings = blogSettings;
+			_umbracoContextFactory = umbracoContextFactory;
 		}
 
 		public void Initialize()
@@ -50,20 +55,35 @@ namespace Gibe.Umbraco.Blog.Composing
 				return;
 			}
 
+			AddPostDateFields(document);
+			AddAuthorFields(document);
+			AddTagFields(document);
+			AddPathFields(document);
+			AddCategoryFields(document);
+		}
+
+		private void AddPostDateFields(ValueSet document)
+		{
 			var postDate = document.GetSingleValue(ExamineFields.PostDate).ParseFromExamineField();
 
 			document.TryAdd(ExamineFields.PostDateYear, postDate.Year.ToString("0000"));
 			document.TryAdd(ExamineFields.PostDateMonth, postDate.Month.ToString("00"));
 			document.TryAdd(ExamineFields.PostDateDay, postDate.Day.ToString("00"));
+		}
 
+		private void AddAuthorFields(ValueSet document)
+		{
 			var authorId = document.GetSingleValue<int?>(ExamineFields.PostAuthor);
 
 			if (authorId.HasValue)
 			{
 				document.TryAdd(ExamineFields.PostAuthorName, GetUserName(authorId.Value).ToLower());
 			}
+		}
 
-			var tagValue = document.GetSingleValue(ExamineFields.NewsTags);
+		private void AddTagFields(ValueSet document)
+		{
+			var tagValue = document.GetSingleValue(ExamineFields.Tags);
 			if (tagValue != null)
 			{
 				var tags = JsonConvert.DeserializeObject<IEnumerable<string>>(tagValue);
@@ -73,7 +93,10 @@ namespace Gibe.Umbraco.Blog.Composing
 					document.TryAddOrAppend(ExamineFields.Tag, tag.ToLower());
 				}
 			}
+		}
 
+		private void AddPathFields(ValueSet document)
+		{
 			var path = document.GetSingleValue(ExamineFields.Path);
 			if (path != null)
 			{
@@ -81,6 +104,22 @@ namespace Gibe.Umbraco.Blog.Composing
 				{
 					document.TryAddOrAppend(ExamineFields.Path, id);
 				}
+			}
+		}
+
+		private void AddCategoryFields(ValueSet document)
+		{
+			using (var context = _umbracoContextFactory.EnsureUmbracoContext())
+			{
+				var categoryId = document.GetSingleValue(ExamineFields.Category);
+
+				if (string.IsNullOrEmpty(categoryId))
+				{
+					return;
+				}
+
+				var category = context.UmbracoContext.Content.GetById(Udi.Parse(categoryId));
+				document.TryAddOrAppend(ExamineFields.CategoryName, category?.Name);
 			}
 		}
 

@@ -18,7 +18,11 @@
 
 		public static string Path => "path";
 
-		public static string NewsTags => "settingsNewsTags";
+		public static string Tags => "tags";
+
+		public static string Category => "category";
+
+		public static string CategoryName => "categoryName";
 
 		public static string BodyText => "bodyText";
 	}

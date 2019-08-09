@@ -3,6 +3,7 @@ using System.Linq;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Sort;
+using Newtonsoft.Json;
 using Umbraco.Core.Models.PublishedContent;
 
 namespace Gibe.Umbraco.Blog
@@ -11,13 +12,11 @@ namespace Gibe.Umbraco.Blog
 	{
 		private readonly IBlogSearch _blogSearch;
 		private readonly string _propertyName;
-		private readonly string _queryStringName;
 		
-		public BlogTags(IBlogSearch blogSearch, string propertyName = null, string querystringName = null)
+		public BlogTags(IBlogSearch blogSearch)
 		{
 			_blogSearch = blogSearch;
-			_propertyName = propertyName ?? ExamineFields.NewsTags;
-			_queryStringName = querystringName ?? ExamineFields.Tag;
+			_propertyName = ExamineFields.Tags;
 		}
 
 		public IEnumerable<BlogTag> All(IPublishedContent blogRoot)
@@ -26,7 +25,7 @@ namespace Gibe.Umbraco.Blog
 			var posts = _blogSearch.Search(new SectionBlogPostFilter(blogRoot.Id ), new DateSort());
 
 			var applicablePosts = posts.Where(post => post.Values.ContainsKey($"{_propertyName}") && !string.IsNullOrEmpty(post.Values[$"{_propertyName}"]))
-				.SelectMany(post => post.Values[$"{_propertyName}"].Split(','));
+				.SelectMany(post => JsonConvert.DeserializeObject<IEnumerable<string>>(post.Values[$"{_propertyName}"]));
 
 			foreach (var tag in applicablePosts) // TODO not hard coded
 			{
@@ -36,7 +35,7 @@ namespace Gibe.Umbraco.Blog
 				}
 				else
 				{
-					allTags.Add(tag, new BlogTag { Count = 1, Tag = tag, Url = $"{blogRoot.Url}?{_queryStringName}={tag}"});
+					allTags.Add(tag, new BlogTag { Count = 1, Tag = tag, Url = $"{blogRoot.Url}?{ExamineFields.Tag}={tag}"});
 				}
 			}
 			return allTags.Values;

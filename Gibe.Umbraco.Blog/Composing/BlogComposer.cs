@@ -26,6 +26,7 @@ namespace Gibe.Umbraco.Blog.Composing
 			composition.RegisterUnique<IBlogAuthors, BlogAuthors>();
 			composition.RegisterUnique<IBlogSearch, BlogSearch>();
 			composition.RegisterUnique<IBlogTags, BlogTags>();
+			composition.RegisterUnique<IBlogCategories, BlogCategories>();
 			composition.RegisterUnique<ISearchIndex, NewsIndex>();
 		}
 	}

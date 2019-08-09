@@ -347,12 +347,16 @@
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\ValueSetExtensions.cs" />
     <Compile Include="Filters\AuthorBlogPostFilter.cs" />
+    <Compile Include="Filters\CategoryBlogPostFilter.cs" />
     <Compile Include="Filters\DateBlogPostFilter.cs" />
     <Compile Include="Filters\IBlogPostFilter.cs" />
     <Compile Include="Filters\SearchTermBlogPostFilter.cs" />
     <Compile Include="Filters\AtLeastOneMatchingTagFilter.cs" />
     <Compile Include="IBlogArchive.cs" />
     <Compile Include="IBlogAuthors.cs" />
+    <Compile Include="IBlogCategories.cs" />
+    <Compile Include="BlogCategories.cs" />
+    <Compile Include="Models\BlogCategory.cs" />
     <Compile Include="Repositories\BlogContentRepository.cs" />
     <Compile Include="Repositories\IBlogContentRepository.cs" />
     <Compile Include="IBlogSearch.cs" />

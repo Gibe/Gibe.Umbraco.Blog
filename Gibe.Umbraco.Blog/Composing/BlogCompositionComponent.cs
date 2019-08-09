@@ -52,6 +52,7 @@ namespace Gibe.Umbraco.Blog.Composing
 			blogComposition.AddPropertyType(PostDate, "Content");
 			blogComposition.AddPropertyType(PostAuthor, "Content");
 			blogComposition.AddPropertyType(Tags, "Content");
+			blogComposition.AddPropertyType(Category, "Content");
 
 			return blogComposition;
 		}
@@ -69,18 +70,21 @@ namespace Gibe.Umbraco.Blog.Composing
 			{
 				Name = _blogSettings.UserPickerName
 			};
-			
+
 			return userPicker;
 		}
 
-		private PropertyType PostDate => 
-			new PropertyType(_dataTypeService.GetDataType("Date picker with time"), "postDate") { Name = "Post Date" };
+		private PropertyType PostDate =>
+			new PropertyType(_dataTypeService.GetDataType("Date picker with time"), "postDate") { Name = "Post Date", Mandatory = true };
 
-		private PropertyType PostAuthor => 
-			new PropertyType(_dataTypeService.GetDataType(_blogSettings.UserPickerName), "postAuthor") { Name = "Post Author" };
+		private PropertyType PostAuthor =>
+			new PropertyType(_dataTypeService.GetDataType(_blogSettings.UserPickerName), "postAuthor") { Name = "Post Author", Mandatory = true };
 
-		private PropertyType Tags =>  
-			new PropertyType(_dataTypeService.GetDataType("Tags"), "settingsNewsTags") { Name = "Tags" };
+		private PropertyType Tags =>
+			new PropertyType(_dataTypeService.GetDataType("Tags"), "tags") { Name = "Tags" };
+
+		private PropertyType Category =>
+			new PropertyType(_dataTypeService.GetDataType("Content Picker"), "category") { Name = "Category", Mandatory = true };
 
 		public void Terminate()
 		{

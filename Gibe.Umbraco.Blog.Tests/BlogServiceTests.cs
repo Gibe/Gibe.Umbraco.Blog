@@ -90,6 +90,7 @@ namespace Gibe.Umbraco.Blog.Tests
 		public string Url { get; }
 		public DateTime PostDate { get; }
 		public IEnumerable<string> Tags { get; set; }
+		public IPublishedContent Category { get; set; }
 		public bool HasTags { get; set; }
 	}
 }
