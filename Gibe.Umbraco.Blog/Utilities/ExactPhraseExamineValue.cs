@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Examine.SearchCriteria;
+﻿using Examine.Search;
 
 namespace Gibe.Umbraco.Blog.Utilities
 {
@@ -12,7 +7,7 @@ namespace Gibe.Umbraco.Blog.Utilities
 		public ExactPhraseExamineValue(string phrase)
 		{
 			Examineness = Examineness.Escaped;
-			Value = $"\"{phrase}\"";
+			Value = $"{phrase}";
 			Level = 1;
 		}
 

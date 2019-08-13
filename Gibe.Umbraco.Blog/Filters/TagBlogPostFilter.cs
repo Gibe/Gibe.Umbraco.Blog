@@ -1,5 +1,4 @@
-﻿using Examine.SearchCriteria;
-using Gibe.Umbraco.Blog.Models;
+﻿using Examine.Search;
 using Gibe.Umbraco.Blog.Utilities;
 
 namespace Gibe.Umbraco.Blog.Filters
@@ -12,12 +11,10 @@ namespace Gibe.Umbraco.Blog.Filters
 		{
 			_tag = tag;
 		}
-		
+
 		public IBooleanOperation GetCriteria(IQuery query)
 		{
-			return query.Field("tag", new ExactPhraseExamineValue(_tag.ToLower()));
-		}
-
-		
+			return query.Field(ExamineFields.Tag, new ExactPhraseExamineValue(_tag.ToLower()));
+		}		
 	}
 }

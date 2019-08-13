@@ -1,4 +1,4 @@
-﻿using Examine.SearchCriteria;
+﻿using Examine.Search;
 
 namespace Gibe.Umbraco.Blog.Filters
 {
@@ -13,7 +13,7 @@ namespace Gibe.Umbraco.Blog.Filters
 
 		public IBooleanOperation GetCriteria(IQuery query)
 		{
-			return query.Field("bodyText", _searchTerm);
+			return query.Field(ExamineFields.BodyText, _searchTerm);
 		}
 	}
 }

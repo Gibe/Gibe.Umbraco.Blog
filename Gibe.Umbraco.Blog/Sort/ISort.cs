@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Examine.SearchCriteria;
+﻿using Examine.Search;
 
 namespace Gibe.Umbraco.Blog.Sort
 {
 	public interface ISort
 	{
-		IBooleanOperation GetCriteria(IBooleanOperation query);
+		IOrdering GetCriteria(IBooleanOperation query);
 	}
 }

@@ -1,42 +1,47 @@
-﻿using System;
-using Examine;
-using Examine.SearchCriteria;
-using Examine.LuceneEngine;
-using UmbracoExamine;
+﻿using Examine;
+using Examine.Search;
+using System.Linq;
 
 namespace Gibe.Umbraco.Blog.Wrappers
 {
 	public interface ISearchIndex
 	{
-		ISearchCriteria CreateSearchCriteria();
-		ISearchResults Search(ISearchCriteria criteria);
+		IQuery CreateSearchQuery();
 
-		UmbracoContentIndexer GetIndexer();
+		ISearchResults Search(IBooleanOperation operation);
 
+		IIndex GetIndex();
 	}
 
 	public class FakeSearchIndex : ISearchIndex
 	{
 		private readonly ISearchResults _searchResults;
+		private readonly IExamineManager _examineManager;
 
-		public FakeSearchIndex(ISearchResults searchResults)
+		public FakeSearchIndex(ISearchResults searchResults,
+			IExamineManager examineManager)
 		{
 			_searchResults = searchResults;
+			_examineManager = examineManager;
 		}
 
-		public ISearchCriteria CreateSearchCriteria()
+		public IQuery CreateSearchQuery()
 		{
-			return ExamineManager.Instance.CreateSearchCriteria();
+			return GetIndex()
+				.GetSearcher()
+				.CreateQuery();
 		}
 
-		public ISearchResults Search(ISearchCriteria criteria)
+		public ISearchResults Search(IBooleanOperation operation)
 		{
 			return _searchResults;
 		}
 
-		public UmbracoContentIndexer GetIndexer()
+		public IIndex GetIndex()
 		{
-			return null;
+			return _examineManager
+				.Indexes
+				.First();
 		}
 	}
 }

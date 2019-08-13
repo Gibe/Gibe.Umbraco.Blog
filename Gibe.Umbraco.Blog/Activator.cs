@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Umbraco.Core.Models;
+using Umbraco.Core.Models.PublishedContent;
 
 namespace Gibe.Umbraco.Blog
 {
@@ -12,7 +12,6 @@ namespace Gibe.Umbraco.Blog
 		private delegate T ObjectActivator<out T>(params object[] args);
 
 		private static readonly Dictionary<Type, object> Cached = new Dictionary<Type, object>();
-
 
 		public static T Activate<T>(IPublishedContent model)
 		{

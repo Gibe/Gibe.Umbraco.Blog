@@ -2,32 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using Examine;
-using Gibe.DittoServices.ModelConverters;
 using Gibe.Pager.Interfaces;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
-using Gibe.UmbracoWrappers;
 using NUnit.Framework;
 using Moq;
-using Our.Umbraco.Ditto;
-using Umbraco.Core.Models;
+using Umbraco.Core.Models.PublishedContent;
+using Gibe.Umbraco.Blog.Repositories;
 
 namespace Gibe.Umbraco.Blog.Tests
 {
 	[TestFixture]
 	public class BlogServiceTests
 	{
-		private IPagerService PagerService()
+		private Mock<IPagerService> _pagerService;
+		private Mock<IBlogContentRepository> _blogContentRepository;
+
+		[SetUp]
+		public void SetUp()
 		{
-			var pagerService = new Mock<IPagerService>();
-			return pagerService.Object;
+			_pagerService = new Mock<IPagerService>();
+			_blogContentRepository = new Mock<IBlogContentRepository>();
+
+			_blogContentRepository.Setup(r => r.BlogContent(It.IsAny<int>()))
+				.Returns((int id) => Content(id, "blogPost"));
 		}
 
 		[Test]
 		public void GetRelatedPosts_Uses_Correct_Filters()
 		{
 			var blogSearch = new FakeBlogSearch(GetSearchResults());
-			var blogService = new BlogService<BlogModel>(PagerService(), blogSearch, UmbracoWrapper(Content(1), Content(2), Content(3)));
+			var blogService = new BlogService<BlogModel>(_pagerService.Object, blogSearch, _blogContentRepository.Object);
 			var testPost = new BlogModel
 			{
 				Tags = new List<string>
@@ -54,72 +59,28 @@ namespace Gibe.Umbraco.Blog.Tests
 		{
 			return new FakeSearchResults(new List<SearchResult>
 			{
-				SearchResult(1),
-				SearchResult(2),
-				SearchResult(3)
+				SearchResult("1"),
+				SearchResult("2"),
+				SearchResult("3")
 			});
 		}
 
-		private SearchResult SearchResult(int id)
+		private SearchResult SearchResult(string id)
 		{
-			return new SearchResult
-			{
-				Id = id
-			};
-		}
+			var fields = new Dictionary<string, List<string>>();
 
-		private IEnumerable<BlogModel> GetBlogPosts()
-		{
-			return new List<BlogModel>
-			{
-				CreatePost(1, new []
-				{
-					"test"
-				}),
-				CreatePost(2, new []
-				{
-					"test",
-					"post"
-				}),
-				CreatePost(3, new []
-				{
-					"Test"
-				})
-			};
-		}
-
-		private BlogModel CreatePost(int id, string[] tags)
-		{
-			return new BlogModel
-			{
-				Id = id,
-				HasTags = true,
-				Tags = tags
-			};
+			return new SearchResult(id, 1.0f, () => fields);
 		}
 
 		public static IPublishedContent Content(int id, string docType = "blogPost", string name = null)
 		{
 			var content = new Mock<IPublishedContent>();
-			content.Setup(c => c.DocumentTypeAlias).Returns(docType);
+
+			content.Setup(c => c.ContentType.Alias).Returns(docType);
 			content.Setup(c => c.Name).Returns(name ?? docType);
 			content.Setup(c => c.Id).Returns(id);
 
 			return content.Object;
-		}
-
-
-		public static IUmbracoWrapper UmbracoWrapper(params IPublishedContent[] content)
-		{
-			var umbraco = new Mock<IUmbracoWrapper>();
-			umbraco.Setup(u => u.TypedContentAtRoot()).Returns(content);
-
-			foreach (var c in content)
-			{
-				umbraco.Setup(u => u.TypedContent(c.Id)).Returns(c);
-			}
-
-			return umbraco.Object;
 		}
 	}
 
@@ -129,36 +90,7 @@ namespace Gibe.Umbraco.Blog.Tests
 		public string Url { get; }
 		public DateTime PostDate { get; }
 		public IEnumerable<string> Tags { get; set; }
+		public IPublishedContent Category { get; set; }
 		public bool HasTags { get; set; }
-	}
-
-	public class FakeModelConverter : IModelConverter
-	{
-		private readonly IEnumerable<BlogModel> _blogPosts;
-
-		public FakeModelConverter(IEnumerable<BlogModel> blogPosts)
-		{
-			_blogPosts = blogPosts;
-		}
-
-		public T ToModel<T>(IPublishedContent content, IEnumerable<DittoProcessorContext> contexts) where T : class
-		{
-			return _blogPosts.First(p => p.Id == content.Id) as T;
-		}
-
-		public object ToModel(Type type, IPublishedContent content, IEnumerable<DittoProcessorContext> contexts)
-		{
-			return ToModel<BlogModel>(content, contexts);
-		}
-
-		public IEnumerable<T> ToModel<T>(IEnumerable<IPublishedContent> nodes, IEnumerable<DittoProcessorContext> contexts) where T : class
-		{
-			return _blogPosts.Where(p => nodes.Select(n => n.Id).Contains(p.Id)).Select(p => p as T);
-		}
-
-		public IEnumerable<object> ToModel(Type type, IEnumerable<IPublishedContent> content, IEnumerable<DittoProcessorContext> contexts)
-		{
-			return ToModel<BlogModel>(content, contexts);
-		}
 	}
 }

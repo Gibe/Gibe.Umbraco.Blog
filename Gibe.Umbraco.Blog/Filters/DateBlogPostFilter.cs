@@ -1,4 +1,4 @@
-﻿using Examine.SearchCriteria;
+﻿using Examine.Search;
 
 namespace Gibe.Umbraco.Blog.Filters
 {
@@ -8,7 +8,7 @@ namespace Gibe.Umbraco.Blog.Filters
 		private readonly int? _month;
 		private readonly int? _day;
 
-		public DateBlogPostFilter(int year, int? month, int? day)
+		public DateBlogPostFilter(int year, int? month = null, int? day = null)
 		{
 			_year = year;
 			_month = month;
@@ -17,15 +17,15 @@ namespace Gibe.Umbraco.Blog.Filters
 		
 		public IBooleanOperation GetCriteria(IQuery query)
 		{
-			var output = query.Field("postDateYear", _year.ToString("00"));
+			var output = query.Field(ExamineFields.PostDateYear, _year.ToString("00"));
 
 			if (_month.HasValue)
 			{
-				output = output.And().Field("postDateMonth", _month.Value.ToString("00"));
+				output = output.And().Field(ExamineFields.PostDateMonth, _month.Value.ToString("00"));
 			}
 			if (_day.HasValue)
 			{
-				output = output.And().Field("postDateDay", _day.Value.ToString("00"));
+				output = output.And().Field(ExamineFields.PostDateDay, _day.Value.ToString("00"));
 			}
 			return output;
 		}

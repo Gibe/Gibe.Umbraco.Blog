@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Examine.SearchCriteria;
+﻿using Examine.Search;
 
 namespace Gibe.Umbraco.Blog.Sort
 {
@@ -16,13 +11,13 @@ namespace Gibe.Umbraco.Blog.Sort
 			_descending = descending;
 		}
 
-		public IBooleanOperation GetCriteria(IBooleanOperation query)
+		public IOrdering GetCriteria(IBooleanOperation query)
 		{
 			if (_descending)
 			{
-				return query.And().OrderByDescending("postDate");
+				return query.And().All().OrderByDescending(new SortableField(ExamineFields.PostDate));
 			}
-			return query.And().OrderBy("postDate");
+			return query.And().All().OrderBy(new SortableField(ExamineFields.PostDate));
 		}
 	}
 }

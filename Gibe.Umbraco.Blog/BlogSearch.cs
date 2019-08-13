@@ -1,23 +1,24 @@
 ﻿using System.Collections.Generic;
 using Examine;
-using Examine.LuceneEngine.SearchCriteria;
-using Examine.SearchCriteria;
+using Examine.Search;
 using Gibe.Umbraco.Blog.Filters;
+using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Sort;
 using Gibe.Umbraco.Blog.Wrappers;
-using Lucene.Net.Search;
+using Umbraco.Examine;
 
 namespace Gibe.Umbraco.Blog
 {
 	public class BlogSearch : IBlogSearch
 	{
-		private const string BlogPostDoctype = "blogPost";
-
 		private readonly ISearchIndex _newsIndex;
+		private readonly IBlogSettings _blogSettings;
 
-		public BlogSearch(ISearchIndex newsIndex)
+		public BlogSearch(ISearchIndex newsIndex,
+			IBlogSettings blogSettings)
 		{
 			_newsIndex = newsIndex;
+			_blogSettings = blogSettings;
 		}
 		
 		public ISearchResults Search(IBlogPostFilter filter, ISort sort)
@@ -30,15 +31,14 @@ namespace Gibe.Umbraco.Blog
 			return SearchForBlogPosts(GetSearchQuery(filters, sort));
 		}
 		
-		private ISearchCriteria GetSearchQuery(IEnumerable<IBlogPostFilter> filters, ISort sort)
-		{
-			
-			return sort.GetCriteria(GetQuery(filters)).Compile();
+		private IOrdering GetSearchQuery(IEnumerable<IBlogPostFilter> filters, ISort sort)
+		{		
+			return sort.GetCriteria(GetQuery(filters));
 		}
 
 		private IBooleanOperation GetQuery(IEnumerable<IBlogPostFilter> filters)
 		{
-			var query = _newsIndex.CreateSearchCriteria().NodeTypeAlias(BlogPostDoctype);
+			var query = _newsIndex.CreateSearchQuery().NodeTypeAlias(_blogSettings.BlogPostDocumentTypeAlias);
 			foreach (var filter in filters)
 			{
 				query = filter.GetCriteria(query.And());
@@ -46,9 +46,9 @@ namespace Gibe.Umbraco.Blog
 			return query;
 		}
 
-		private ISearchResults SearchForBlogPosts(ISearchCriteria query)
+		private ISearchResults SearchForBlogPosts(IOrdering operation)
 		{
-			return _newsIndex.Search(query);
+			return operation.Execute();
 		}
 	}
 	

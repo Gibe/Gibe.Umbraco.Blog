@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Gibe.Umbraco.Blog.Models;
-using Umbraco.Core.Models;
+﻿using Gibe.Umbraco.Blog.Models;
+using Umbraco.Core.Models.PublishedContent;
 
 namespace Gibe.Umbraco.Blog
 {
