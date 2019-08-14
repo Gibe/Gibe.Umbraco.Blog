@@ -23,8 +23,6 @@ namespace Gibe.Umbraco.Blog.Composing
 		private readonly IBlogSettings _blogSettings;
 		private readonly IUmbracoContextFactory _umbracoContextFactory;
 
-		public string Sortable { get; private set; }
-
 		public IndexEventsComponent(IExamineManager examineManager,
 			IUserService userService,
 			IBlogSettings blogSettings,
