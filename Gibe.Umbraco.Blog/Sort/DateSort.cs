@@ -15,9 +15,9 @@ namespace Gibe.Umbraco.Blog.Sort
 		{
 			if (_descending)
 			{
-				return query.And().All().OrderByDescending(new SortableField(ExamineFields.PostDateTicks, SortType.Long));
+				return query.And().All().OrderByDescending(new SortableField(ExamineFields.PostDate));
 			}
-			return query.And().All().OrderBy(new SortableField(ExamineFields.PostDateTicks, SortType.Long));
+			return query.And().All().OrderBy(new SortableField(ExamineFields.PostDate));
 		}
 	}
 }
