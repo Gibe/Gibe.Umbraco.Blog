@@ -6,6 +6,8 @@
 
 		public static string PostDate => "postDate";
 
+		public static string PostDateTicks => "postDateTicks";
+
 		public static string PostDateYear => "postDateYear";
 
 		public static string PostDateMonth => "postDateMonth";

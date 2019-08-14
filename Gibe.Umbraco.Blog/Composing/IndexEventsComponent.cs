@@ -66,6 +66,7 @@ namespace Gibe.Umbraco.Blog.Composing
 		{
 			var postDate = document.GetSingleValue(ExamineFields.PostDate).ParseFromExamineField();
 
+			document.TryAdd(ExamineFields.PostDateTicks, postDate.Ticks.ToString());
 			document.TryAdd(ExamineFields.PostDateYear, postDate.Year.ToString("0000"));
 			document.TryAdd(ExamineFields.PostDateMonth, postDate.Month.ToString("00"));
 			document.TryAdd(ExamineFields.PostDateDay, postDate.Day.ToString("00"));
