@@ -48,7 +48,9 @@ namespace Gibe.Umbraco.Blog
 
 		private DateTime GetPostDate(string value)
 		{
-			return value.ParseFromExamineField();
+			var ticks = Convert.ToInt64(value);
+
+			return new DateTime(ticks);
 		}
 	}
 }

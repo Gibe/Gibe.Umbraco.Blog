@@ -344,7 +344,6 @@
     <Compile Include="Composing\IndexEventsComponent.cs" />
     <Compile Include="ExamineFields.cs" />
     <Compile Include="Exceptions\IndexNotFoundException.cs" />
-    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\ValueSetExtensions.cs" />
     <Compile Include="Filters\AuthorBlogPostFilter.cs" />
     <Compile Include="Filters\CategoryBlogPostFilter.cs" />

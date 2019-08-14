@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using Umbraco.Web;
 using Umbraco.Core;
+using Examine.LuceneEngine.Providers;
 
 namespace Gibe.Umbraco.Blog.Composing
 {
@@ -42,6 +43,8 @@ namespace Gibe.Umbraco.Blog.Composing
 				throw new IndexNotFoundException(_blogSettings.IndexName);
 			}
 
+			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDate, "date"));
+
 			ContentService.Saving += ContentServiceSaving;
 			((BaseIndexProvider)index).TransformingIndexValues += ExternalIndexTransformingIndexValues;
 		}
@@ -64,8 +67,8 @@ namespace Gibe.Umbraco.Blog.Composing
 
 		private void AddPostDateFields(ValueSet document)
 		{
-			var postDate = document.GetSingleValue(ExamineFields.PostDate).ParseFromExamineField();
-
+			var postDate = document.GetSingleValue<DateTime>(ExamineFields.PostDate);
+			
 			document.TryAdd(ExamineFields.PostDateYear, postDate.Year.ToString("0000"));
 			document.TryAdd(ExamineFields.PostDateMonth, postDate.Month.ToString("00"));
 			document.TryAdd(ExamineFields.PostDateDay, postDate.Day.ToString("00"));
