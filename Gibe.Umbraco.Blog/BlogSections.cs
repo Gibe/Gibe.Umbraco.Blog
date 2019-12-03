@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Examine;
 using Gibe.DittoServices.ModelConverters;
@@ -11,7 +10,7 @@ namespace Gibe.Umbraco.Blog
 {
 	public class BlogSections<T> : IBlogSections<T> where T : class,IBlogPostSection
 	{
-		private const string BlogSectionDocType = ""; // TODO
+		private const string BlogSectionDocType = "blogSection";
 		private readonly IUmbracoWrapper _umbracoWrapper;
 		private readonly IModelConverter _modelConverter;
 		private readonly ISearchIndex _searchIndex;
