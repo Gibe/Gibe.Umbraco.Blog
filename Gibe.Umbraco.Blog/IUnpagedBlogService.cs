@@ -7,6 +7,6 @@ namespace Gibe.Umbraco.Blog
 {
 	public interface IUnpagedBlogService<T> where T : class, IBlogPostModel
 	{
-		UnpagedBlogSearchResults<T> GetPosts(int startPost, int endPost, ISort sort = null, IEnumerable<IBlogPostFilter> filters = null);
+		UnpagedBlogSearchResults<T> GetPosts(int startPost, int postCount, ISort sort = null, IEnumerable<IBlogPostFilter> filters = null);
 	}
 }
