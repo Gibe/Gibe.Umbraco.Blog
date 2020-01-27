@@ -17,7 +17,7 @@ namespace Gibe.Umbraco.Blog
 			_blogPostMapper = blogPostMapper;
 		}
 
-		public UnpageBlogSearchResults GetPosts(int startPost, int endPost, ISort sort = null,
+		public UnpagedBlogSearchResults<T> GetPosts(int startPost, int endPost, ISort sort = null,
 			IEnumerable<IBlogPostFilter> filters = null)
 		{
 			if (sort == null) sort = new DateSort();
@@ -25,7 +25,7 @@ namespace Gibe.Umbraco.Blog
 
 			var results = _blogSearch.Search(filters, sort);
 
-			return new UnpageBlogSearchResults
+			return new UnpagedBlogSearchResults<T>
 			{
 				BlogPosts = _blogPostMapper.ToBlogPosts(results.Skip(startPost != 0 ? startPost - 1 : 0).Take(endPost)),
 				TotalItemsCount = results.Count()
@@ -33,9 +33,9 @@ namespace Gibe.Umbraco.Blog
 		}
 	}
 
-	public class UnpageBlogSearchResults
+	public class UnpagedBlogSearchResults<T> where T : class, IBlogPostModel
 	{
-		public IEnumerable<IBlogPostModel> BlogPosts { get; set; }
+		public IEnumerable<T> BlogPosts { get; set; }
 		public int TotalItemsCount { get; set; }
 	}
 }

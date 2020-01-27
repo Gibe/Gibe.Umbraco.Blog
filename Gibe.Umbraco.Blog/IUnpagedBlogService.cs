@@ -5,8 +5,8 @@ using Gibe.Umbraco.Blog.Sort;
 
 namespace Gibe.Umbraco.Blog
 {
-	public interface IUnpagedBlogService<T> where T : IBlogPostModel
+	public interface IUnpagedBlogService<T> where T : class, IBlogPostModel
 	{
-		UnpageBlogSearchResults GetPosts(int startPost, int endPost, ISort sort = null, IEnumerable<IBlogPostFilter> filters = null);
+		UnpagedBlogSearchResults<T> GetPosts(int startPost, int endPost, ISort sort = null, IEnumerable<IBlogPostFilter> filters = null);
 	}
 }
