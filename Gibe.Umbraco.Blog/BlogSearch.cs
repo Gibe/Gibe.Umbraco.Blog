@@ -32,7 +32,6 @@ namespace Gibe.Umbraco.Blog
 		
 		private ISearchCriteria GetSearchQuery(IEnumerable<IBlogPostFilter> filters, ISort sort)
 		{
-			
 			return sort.GetCriteria(GetQuery(filters)).Compile();
 		}
 

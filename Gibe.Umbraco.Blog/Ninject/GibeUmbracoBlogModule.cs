@@ -15,6 +15,8 @@ namespace Gibe.Umbraco.Blog.Ninject
 			Bind<IBlogSearch>().To<BlogSearch>();
 			Bind<IBlogSections<TBlogSectionModel>>().To<BlogSections<TBlogSectionModel>>();
 			Bind<IBlogService<TBlogPostModel>>().To<BlogService<TBlogPostModel>>();
+			Bind<IUnpagedBlogService<TBlogPostModel>>().To<UnpagedBlogService<TBlogPostModel>>();
+			Bind<IBlogPostMapper<TBlogPostModel>>().To<BlogPostMapper<TBlogPostModel>>();
 			Bind<IBlogTags>().To<BlogTags>();
 			Bind<ISearchIndex>().To<NewsIndex>();
 		}

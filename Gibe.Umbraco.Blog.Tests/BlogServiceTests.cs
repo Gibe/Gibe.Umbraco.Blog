@@ -24,11 +24,31 @@ namespace Gibe.Umbraco.Blog.Tests
 			return pagerService.Object;
 		}
 
+		private IBlogPostMapper<BlogModel> BlogPostMapper(int searchResultsCount)
+		{
+			var blogPostMapper = new Mock<IBlogPostMapper<BlogModel>>();
+			blogPostMapper.Setup(m => m.ToBlogPosts(It.IsAny<IEnumerable<SearchResult>>()))
+				.Returns(MappedSearchResults(searchResultsCount));
+
+			return blogPostMapper.Object;
+		}
+
+		private IEnumerable<BlogModel> MappedSearchResults(int searchResultsCount)
+		{
+			var mappedSearchResults = new List<BlogModel>();
+			for(var i=0 ; i<searchResultsCount ; i++)
+			{
+				mappedSearchResults.Add(new BlogModel());
+			}
+			return mappedSearchResults;
+		}
+
 		[Test]
 		public void GetRelatedPosts_Uses_Correct_Filters()
 		{
-			var blogSearch = new FakeBlogSearch(GetSearchResults());
-			var blogService = new BlogService<BlogModel>(new FakeModelConverter(GetBlogPosts()), PagerService(), blogSearch, UmbracoWrapper(Content(1), Content(2), Content(3)));
+			var searchResults = GetSearchResults();
+			var blogSearch = new FakeBlogSearch(searchResults);
+			var blogService = new BlogService<BlogModel>(PagerService(), blogSearch, BlogPostMapper(searchResults.Count()));
 			var testPost = new BlogModel
 			{
 				Tags = new List<string>
