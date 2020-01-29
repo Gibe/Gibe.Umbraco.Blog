@@ -38,7 +38,6 @@ Add this to ExamineIndex.config
 	<IndexUserFields>
 		<add Name="postDate" Type="DateTime" EnableSorting="true" />
 		<add Name="settingsNewsTags" />
-		<add Name="postAuthor" />
 		<!-- Optionally, your fields here -->
 	</IndexUserFields>
 	<IncludeNodeTypes>
@@ -54,8 +53,6 @@ Add a new DocType with an alias blogPost with the following properties along wit
 settingsNewsTags - Tag Picker
 
 postDate - Date Picker
-
-postAuthor - User Picker
 
 # Usage
 

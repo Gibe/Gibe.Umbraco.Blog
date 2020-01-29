@@ -151,8 +151,6 @@ namespace Gibe.Umbraco.Blog.Tests
 		public DateTime PostDate { get; set; }
 		public IEnumerable<string> Tags { get; set; }
 		public bool HasTags { get; set; }
-		public IUser Author { get; set; }
-		public bool HasAuthor { get; set; }
 	}
 
 	public class FakeModelConverter : IModelConverter

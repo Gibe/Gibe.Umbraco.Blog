@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Examine;
 using Examine.LuceneEngine;
 using Gibe.Umbraco.Blog.Wrappers;
 using Lucene.Net.Documents;
@@ -13,9 +8,6 @@ using Umbraco.Core;
 using Umbraco.Core.Events;
 using Umbraco.Core.Models;
 using Umbraco.Core.Services;
-using Umbraco.Core.Persistence;
-using Umbraco.Web;
-using UmbracoExamine;
 
 namespace Gibe.Umbraco.Blog
 {
@@ -49,13 +41,10 @@ namespace Gibe.Umbraco.Blog
 			var document = documentWritingEventArgs.Document;
 			if (document.Get("nodeTypeAlias") == "blogPost")
 			{
-				var postDate = DateTime.ParseExact(document.Get("postDate").Substring(0,8), "yyyyMMdd", CultureInfo.InvariantCulture);
+				var postDate = DateTime.ParseExact(document.Get("postDate").Substring(0, 8), "yyyyMMdd", CultureInfo.InvariantCulture);
 				document.Add(new Field("postDateYear", postDate.Year.ToString("0000"), Field.Store.YES, Field.Index.NOT_ANALYZED));
 				document.Add(new Field("postDateMonth", postDate.Month.ToString("00"), Field.Store.YES, Field.Index.NOT_ANALYZED));
 				document.Add(new Field("postDateDay", postDate.Day.ToString("00"), Field.Store.YES, Field.Index.NOT_ANALYZED));
-				
-				var authorId = Convert.ToInt32(document.Get("postAuthor"));
-				document.Add(new Field("postAuthorName", GetUserName(authorId).ToLower(), Field.Store.YES, Field.Index.NOT_ANALYZED));
 
 				var tags = document.Get("settingsNewsTags");
 				if (tags != null)
@@ -76,7 +65,6 @@ namespace Gibe.Umbraco.Blog
 				}
 			}
 		}
-
 
 		/// <summary>
 		/// Update the URL alias for blog posts when they are saved
