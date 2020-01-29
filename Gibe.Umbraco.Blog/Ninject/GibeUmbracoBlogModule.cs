@@ -11,7 +11,6 @@ namespace Gibe.Umbraco.Blog.Ninject
 		public override void Load()
 		{
 			Bind<IBlogArchive>().To<BlogArchive>();
-			Bind<IBlogAuthors>().To<BlogAuthors>();
 			Bind<IBlogSearch>().To<BlogSearch>();
 			Bind<IBlogSections<TBlogSectionModel>>().To<BlogSections<TBlogSectionModel>>();
 			Bind<IBlogService<TBlogPostModel>>().To<BlogService<TBlogPostModel>>();

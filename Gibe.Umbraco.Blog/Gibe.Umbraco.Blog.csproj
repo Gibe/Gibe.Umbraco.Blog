@@ -320,19 +320,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlogArchive.cs" />
-    <Compile Include="BlogAuthors.cs" />
     <Compile Include="BlogPostMapper.cs" />
     <Compile Include="BlogSearch.cs" />
     <Compile Include="BlogSections.cs" />
     <Compile Include="BlogService.cs" />
     <Compile Include="BlogTags.cs" />
-    <Compile Include="Filters\AuthorBlogPostFilter.cs" />
     <Compile Include="Filters\DateBlogPostFilter.cs" />
     <Compile Include="Filters\IBlogPostFilter.cs" />
     <Compile Include="Filters\SearchTermBlogPostFilter.cs" />
     <Compile Include="Filters\AtLeastOneMatchingTagFilter.cs" />
     <Compile Include="IBlogArchive.cs" />
-    <Compile Include="IBlogAuthors.cs" />
     <Compile Include="IBlogPostMapper.cs" />
     <Compile Include="IBlogSearch.cs" />
     <Compile Include="IBlogSections.cs" />
@@ -342,7 +339,6 @@
     <Compile Include="Models\BlogArchiveModel.cs" />
     <Compile Include="Models\BlogArchiveMonth.cs" />
     <Compile Include="Models\BlogArchiveYear.cs" />
-    <Compile Include="Models\BlogAuthor.cs" />
     <Compile Include="Models\BlogPostBase.cs" />
     <Compile Include="Models\BlogPostGroup.cs" />
     <Compile Include="Models\BlogTag.cs" />

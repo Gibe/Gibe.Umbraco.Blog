@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Umbraco.Core.Models.Membership;
 
 namespace Gibe.Umbraco.Blog.Models
 {
@@ -11,7 +10,5 @@ namespace Gibe.Umbraco.Blog.Models
 		DateTime PostDate { get; set; }
 		IEnumerable<string> Tags { get; set; }
 		bool HasTags { get; }
-		IUser Author { get; set; }
-		bool HasAuthor { get; }
 	}
 }
