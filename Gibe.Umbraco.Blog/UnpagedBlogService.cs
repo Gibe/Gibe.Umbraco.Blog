@@ -27,7 +27,7 @@ namespace Gibe.Umbraco.Blog
 
 			return new UnpagedBlogSearchResults<T>
 			{
-				BlogPosts = _blogPostMapper.ToBlogPosts(results.Skip(startPost != 0 ? startPost - 1 : 0).Take(postCount)),
+				BlogPosts = _blogPostMapper.ToBlogPosts(results.Skip(startPost - 1).Take(postCount)),
 				TotalItemsCount = results.Count()
 			};
 		}
