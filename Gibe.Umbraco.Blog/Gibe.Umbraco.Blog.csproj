@@ -321,6 +321,7 @@
   <ItemGroup>
     <Compile Include="BlogArchive.cs" />
     <Compile Include="BlogAuthors.cs" />
+    <Compile Include="BlogPostMapper.cs" />
     <Compile Include="BlogSearch.cs" />
     <Compile Include="BlogSections.cs" />
     <Compile Include="BlogService.cs" />
@@ -332,10 +333,12 @@
     <Compile Include="Filters\AtLeastOneMatchingTagFilter.cs" />
     <Compile Include="IBlogArchive.cs" />
     <Compile Include="IBlogAuthors.cs" />
+    <Compile Include="IBlogPostMapper.cs" />
     <Compile Include="IBlogSearch.cs" />
     <Compile Include="IBlogSections.cs" />
     <Compile Include="IBlogService.cs" />
     <Compile Include="IBlogTags.cs" />
+    <Compile Include="IUnpagedBlogService.cs" />
     <Compile Include="Models\BlogArchiveModel.cs" />
     <Compile Include="Models\BlogArchiveMonth.cs" />
     <Compile Include="Models\BlogArchiveYear.cs" />
@@ -355,6 +358,7 @@
     <Compile Include="Sort\ISort.cs" />
     <Compile Include="Sort\RelevanceSort.cs" />
     <Compile Include="UmbracoEvents.cs" />
+    <Compile Include="UnpagedBlogService.cs" />
     <Compile Include="Utilities\ExactPhraseExamineValue.cs" />
     <Compile Include="Utilities\Import.cs" />
     <Compile Include="Wrappers\ISearchIndex.cs" />
