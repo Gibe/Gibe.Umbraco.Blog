@@ -1,4 +1,5 @@
 ﻿using Gibe.Umbraco.Blog.Models;
+using Gibe.Umbraco.Blog.Settings;
 using Gibe.Umbraco.Blog.Wrappers;
 using Ninject.Modules;
 
@@ -18,6 +19,7 @@ namespace Gibe.Umbraco.Blog.Ninject
 			Bind<IBlogPostMapper<TBlogPostModel>>().To<BlogPostMapper<TBlogPostModel>>();
 			Bind<IBlogTags>().To<BlogTags>();
 			Bind<ISearchIndex>().To<NewsIndex>();
+			Bind<IBlogSettings>().To<DefaultBlogSettings>();
 		}
 	}
 }

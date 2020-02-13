@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using Examine.LuceneEngine;
+using Gibe.Umbraco.Blog.Settings;
 using Gibe.Umbraco.Blog.Wrappers;
 using Lucene.Net.Documents;
 using Umbraco.Core;
@@ -13,6 +14,13 @@ namespace Gibe.Umbraco.Blog
 {
 	public class UmbracoEvents : IApplicationEventHandler
 	{
+		private readonly IBlogSettings _blogSettings;
+
+		public UmbracoEvents(IBlogSettings blogSettings)
+		{
+			_blogSettings = blogSettings;
+		}
+
 		public void OnApplicationInitialized(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
 		{
 		}
@@ -39,7 +47,7 @@ namespace Gibe.Umbraco.Blog
 		private void IndexerOnDocumentWriting(object sender, DocumentWritingEventArgs documentWritingEventArgs)
 		{
 			var document = documentWritingEventArgs.Document;
-			if (document.Get("nodeTypeAlias") == "blogPost")
+			if (document.Get("nodeTypeAlias") == _blogSettings.BlogPostDoctype)
 			{
 				var postDate = DateTime.ParseExact(document.Get("postDate").Substring(0, 8), "yyyyMMdd", CultureInfo.InvariantCulture);
 				document.Add(new Field("postDateYear", postDate.Year.ToString("0000"), Field.Store.YES, Field.Index.NOT_ANALYZED));
@@ -75,7 +83,7 @@ namespace Gibe.Umbraco.Blog
 			{
 				try
 				{
-					if (entity.ContentType.Alias == "BlogPost" && entity.ParentId != -20)
+					if (entity.ContentType.Alias.ToLower() == _blogSettings.BlogPostDoctype.ToLower() && entity.ParentId != -20)
 					{
 						// TODO : Move code to somewhere better
 						var parentContent = sender.GetById(entity.ParentId);

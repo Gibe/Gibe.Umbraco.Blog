@@ -3,6 +3,7 @@ using Examine;
 using Examine.LuceneEngine.SearchCriteria;
 using Examine.SearchCriteria;
 using Gibe.Umbraco.Blog.Filters;
+using Gibe.Umbraco.Blog.Settings;
 using Gibe.Umbraco.Blog.Sort;
 using Gibe.Umbraco.Blog.Wrappers;
 using Lucene.Net.Search;
@@ -11,13 +12,13 @@ namespace Gibe.Umbraco.Blog
 {
 	public class BlogSearch : IBlogSearch
 	{
-		private const string BlogPostDoctype = "blogPost";
-
 		private readonly ISearchIndex _newsIndex;
+		private readonly IBlogSettings _blogSettings;
 
-		public BlogSearch(ISearchIndex newsIndex)
+		public BlogSearch(ISearchIndex newsIndex, IBlogSettings blogSettings)
 		{
 			_newsIndex = newsIndex;
+			_blogSettings = blogSettings;
 		}
 		
 		public ISearchResults Search(IBlogPostFilter filter, ISort sort)
@@ -37,7 +38,7 @@ namespace Gibe.Umbraco.Blog
 
 		private IBooleanOperation GetQuery(IEnumerable<IBlogPostFilter> filters)
 		{
-			var query = _newsIndex.CreateSearchCriteria().NodeTypeAlias(BlogPostDoctype);
+			var query = _newsIndex.CreateSearchCriteria().NodeTypeAlias(_blogSettings.BlogPostDoctype);
 			foreach (var filter in filters)
 			{
 				query = filter.GetCriteria(query.And());
