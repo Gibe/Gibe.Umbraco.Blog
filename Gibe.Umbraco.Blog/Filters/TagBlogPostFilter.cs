@@ -17,7 +17,5 @@ namespace Gibe.Umbraco.Blog.Filters
 		{
 			return query.Field("tag", new ExactPhraseExamineValue(_tag.ToLower()));
 		}
-
-		
 	}
 }

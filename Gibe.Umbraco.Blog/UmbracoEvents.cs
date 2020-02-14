@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using System.Linq;
+using System.Web.Mvc;
 using Examine.LuceneEngine;
 using Gibe.Umbraco.Blog.Settings;
 using Gibe.Umbraco.Blog.Wrappers;
@@ -14,12 +14,7 @@ namespace Gibe.Umbraco.Blog
 {
 	public class UmbracoEvents : IApplicationEventHandler
 	{
-		private readonly IBlogSettings _blogSettings;
-
-		public UmbracoEvents(IBlogSettings blogSettings)
-		{
-			_blogSettings = blogSettings;
-		}
+		private readonly IBlogSettings _blogSettings = DependencyResolver.Current.GetService<IBlogSettings>();
 
 		public void OnApplicationInitialized(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
 		{
