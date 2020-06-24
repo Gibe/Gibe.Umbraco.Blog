@@ -19,9 +19,9 @@ namespace Gibe.Umbraco.Blog
 
 		T GetPreviousPost(T blogPost, IEnumerable<IBlogPostFilter> filters, ISort sort);
 
-		IEnumerable<T> GetRelatedPosts(T blogPost, int count);
+		IEnumerable<T> GetRelatedPosts(T blogPost, int count, ISort sort = null);
 
-		IEnumerable<T> GetRelatedPosts(IEnumerable<string> tags, int id, int count);
+		IEnumerable<T> GetRelatedPosts(IEnumerable<string> tags, int id, int count, ISort sort = null);
 	}
 
 	public class FakeBlogService<T> : IBlogService<T> where T : IBlogPostModel
@@ -69,12 +69,12 @@ namespace Gibe.Umbraco.Blog
 			throw new NotImplementedException();
 		}
 
-		public IEnumerable<T> GetRelatedPosts(T blogPost, int count)
+		public IEnumerable<T> GetRelatedPosts(T blogPost, int count, ISort sort)
 		{
 			return _results;
 		}
 
-		public IEnumerable<T> GetRelatedPosts(IEnumerable<string> tags, int id, int count)
+		public IEnumerable<T> GetRelatedPosts(IEnumerable<string> tags, int id, int count, ISort sort)
 		{
 			return _results;
 		}

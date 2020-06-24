@@ -84,15 +84,17 @@ namespace Gibe.Umbraco.Blog
 			return post != null ? ToBlogPost(_umbracoWrapper.TypedContent(post.Id)) : null;
 		}
 
-		public IEnumerable<T> GetRelatedPosts(T post, int count)
+		public IEnumerable<T> GetRelatedPosts(T post, int count, ISort sort = null)
 		{
-			return GetRelatedPosts(post.Tags, post.Id, count);
+			return GetRelatedPosts(post.Tags, post.Id, count, sort);
 		}
 
-		public IEnumerable<T> GetRelatedPosts(IEnumerable<string> tags, int postId, int count)
+		public IEnumerable<T> GetRelatedPosts(IEnumerable<string> tags, int postId, int count, ISort sort = null)
 		{
+			var resultsSort = sort ?? new RelevanceSort();
+
 			var filter = new AtLeastOneMatchingTagFilter(tags);
-			var results = _blogSearch.Search(filter, new RelevanceSort()).Where(r => r.Id != postId);
+			var results = _blogSearch.Search(filter, resultsSort).Where(r => r.Id != postId);
 			return ToBlogPosts(results.Take(count));
 		}
 	}
