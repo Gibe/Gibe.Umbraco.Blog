@@ -11,7 +11,7 @@ namespace Gibe.Umbraco.Blog.Models
 			_settingsService = settingsService;
 		}
 
-		public string IndexName => _settingsService.GetSetting("Gibe.Umbraco.Blog.IndexName", "ExternalIndex");
+		public string IndexName => "ExternalIndex";
 
 		public string BlogPostDocumentTypeAlias => _settingsService.GetSetting("Gibe.Umbraco.Blog.BlogPostDocumentTypeAlias", "blogPost");
 

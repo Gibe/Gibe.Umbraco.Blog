@@ -43,7 +43,12 @@ namespace Gibe.Umbraco.Blog.Composing
 				throw new IndexNotFoundException(_blogSettings.IndexName);
 			}
 
-			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDate, "date"));
+			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDate, FieldDefinitionTypes.DateTime));
+			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateSort, FieldDefinitionTypes.Long));
+			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateYear, FieldDefinitionTypes.DateYear));
+			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateMonth, FieldDefinitionTypes.DateMonth));
+			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateDay, FieldDefinitionTypes.DateDay));
+			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.Tag, FieldDefinitionTypes.Raw));
 
 			ContentService.Saving += ContentServiceSaving;
 			((BaseIndexProvider)index).TransformingIndexValues += ExternalIndexTransformingIndexValues;
@@ -72,6 +77,7 @@ namespace Gibe.Umbraco.Blog.Composing
 			document.TryAdd(ExamineFields.PostDateYear, postDate.Year.ToString("0000"));
 			document.TryAdd(ExamineFields.PostDateMonth, postDate.Month.ToString("00"));
 			document.TryAdd(ExamineFields.PostDateDay, postDate.Day.ToString("00"));
+			document.TryAdd(ExamineFields.PostDateSort, postDate.Ticks);
 		}
 
 		private void AddAuthorFields(ValueSet document)

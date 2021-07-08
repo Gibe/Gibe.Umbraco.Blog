@@ -80,8 +80,8 @@
       <HintPath>..\packages\Gibe.Pager.1.1.0\lib\Gibe.Pager.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Gibe.Settings, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Gibe.Settings.1.0.358\lib\Gibe.Settings.dll</HintPath>
+    <Reference Include="Gibe.Settings">
+      <HintPath>..\packages\Gibe.Settings.1.0.365\lib\Gibe.Settings.dll</HintPath>
     </Reference>
     <Reference Include="Gibe.Tools, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Gibe.Tools.1.0.193\lib\Gibe.Tools.dll</HintPath>
