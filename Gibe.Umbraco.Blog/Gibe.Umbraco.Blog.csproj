@@ -382,7 +382,6 @@
     <Compile Include="Sort\DateSort.cs" />
     <Compile Include="Sort\ISort.cs" />
     <Compile Include="Sort\RelevanceSort.cs" />
-    <Compile Include="Utilities\ExactPhraseExamineValue.cs" />
     <Compile Include="Wrappers\ISearchIndex.cs" />
     <Compile Include="Wrappers\NewsIndex.cs" />
   </ItemGroup>

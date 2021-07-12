@@ -1,5 +1,4 @@
 ﻿using Examine.Search;
-using Gibe.Umbraco.Blog.Utilities;
 
 namespace Gibe.Umbraco.Blog.Filters
 {
@@ -7,14 +6,14 @@ namespace Gibe.Umbraco.Blog.Filters
 	{
 		private readonly string _categoryName;
 
-		public CategoryBlogPostFilter(string categroyName)
+		public CategoryBlogPostFilter(string categoryName)
 		{
-			_categoryName = categroyName;
+			_categoryName = categoryName;
 		}
 
 		public IBooleanOperation GetCriteria(IQuery query)
 		{
-			return query.Field(ExamineFields.CategoryName, new ExactPhraseExamineValue(_categoryName.ToLower()));
+			return query.ManagedQuery(_categoryName.ToLower(), new[] { ExamineFields.CategoryName });
 		}
 	}
 }

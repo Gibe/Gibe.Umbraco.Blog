@@ -10,9 +10,12 @@ using Gibe.Umbraco.Blog.Exceptions;
 using Gibe.Umbraco.Blog.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using Examine.LuceneEngine.Indexing;
 using Umbraco.Web;
 using Umbraco.Core;
 using Examine.LuceneEngine.Providers;
+using Examine.Search;
+using Lucene.Net.Analysis;
 
 namespace Gibe.Umbraco.Blog.Composing
 {
@@ -48,8 +51,15 @@ namespace Gibe.Umbraco.Blog.Composing
 			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateYear, FieldDefinitionTypes.DateYear));
 			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateMonth, FieldDefinitionTypes.DateMonth));
 			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateDay, FieldDefinitionTypes.DateDay));
-			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.Tag, FieldDefinitionTypes.Raw));
-
+			((LuceneIndex)index).FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.Tag,
+				name => new RawStringType(ExamineFields.Tag, true));
+			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.Tag, ExamineFields.Tag));
+			((LuceneIndex)index).FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.CategoryName,
+				name => new RawStringType(ExamineFields.CategoryName, true));
+			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.CategoryName, ExamineFields.CategoryName));
+			((LuceneIndex)index).FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.PostAuthorName,
+				name => new RawStringType(ExamineFields.PostAuthorName, true));
+			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostAuthorName, ExamineFields.PostAuthorName));
 			ContentService.Saving += ContentServiceSaving;
 			((BaseIndexProvider)index).TransformingIndexValues += ExternalIndexTransformingIndexValues;
 		}
@@ -74,9 +84,9 @@ namespace Gibe.Umbraco.Blog.Composing
 		{
 			var postDate = document.GetSingleValue<DateTime>(ExamineFields.PostDate);
 			
-			document.TryAdd(ExamineFields.PostDateYear, postDate.Year.ToString("0000"));
-			document.TryAdd(ExamineFields.PostDateMonth, postDate.Month.ToString("00"));
-			document.TryAdd(ExamineFields.PostDateDay, postDate.Day.ToString("00"));
+			document.TryAdd(ExamineFields.PostDateYear, postDate);
+			document.TryAdd(ExamineFields.PostDateMonth, postDate);
+			document.TryAdd(ExamineFields.PostDateDay, postDate);
 			document.TryAdd(ExamineFields.PostDateSort, postDate.Ticks);
 		}
 
@@ -95,11 +105,19 @@ namespace Gibe.Umbraco.Blog.Composing
 			var tagValue = document.GetSingleValue(ExamineFields.Tags);
 			if (tagValue != null)
 			{
-				var tags = JsonConvert.DeserializeObject<IEnumerable<string>>(tagValue);
-
-				foreach (var tag in tags)
+				try
 				{
-					document.TryAddOrAppend(ExamineFields.Tag, tag.ToLower());
+					var tags =
+						JsonConvert.DeserializeObject<IEnumerable<string>>(tagValue);
+
+					foreach (var tag in tags)
+					{
+						document.TryAddOrAppend(ExamineFields.Tag, tag.ToLower());
+					}
+				}
+				catch (JsonReaderException)
+				{
+					// Tags are invalid
 				}
 			}
 		}
@@ -128,7 +146,10 @@ namespace Gibe.Umbraco.Blog.Composing
 				}
 
 				var category = context.UmbracoContext.Content.GetById(Udi.Parse(categoryId));
-				document.TryAddOrAppend(ExamineFields.CategoryName, category?.Name);
+				if (category != null)
+				{
+					document.TryAddOrAppend(ExamineFields.CategoryName, category.Name);
+				}
 			}
 		}
 
