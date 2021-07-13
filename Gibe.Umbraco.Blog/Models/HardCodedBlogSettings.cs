@@ -1,12 +1,15 @@
-﻿using Gibe.Settings.Interfaces;
+﻿using Gibe.Umbraco.Blog.Models;
+
+#if NET472
+using Gibe.Settings.Interfaces;
 
 namespace Gibe.Umbraco.Blog.Models
 {
-	public class BlogConfigSettings : IBlogSettings
+	public class HardCodedBlogSettings : IBlogSettings
 	{
 		private readonly ISettingsService _settingsService;
 
-		public BlogConfigSettings(ISettingsService settingsService)
+		public HardCodedBlogSettings(ISettingsService settingsService)
 		{
 			_settingsService = settingsService;
 		}
@@ -20,3 +23,15 @@ namespace Gibe.Umbraco.Blog.Models
 		public string UserPickerName => _settingsService.GetSetting("Gibe.Umbraco.Blog.UserPickerName", "User Picker - All Users");
 	}
 }
+#elif NET5_0
+public class HardCodedBlogSettings : IBlogSettings
+{
+	public string IndexName => "ExternalIndex";
+
+	public string BlogPostDocumentTypeAlias => "blogPost";
+
+	public string UserPickerPropertyEditorAlias => "Umbraco.UserPicker";
+
+	public string UserPickerName => "User Picker - All Users";
+}
+#endif

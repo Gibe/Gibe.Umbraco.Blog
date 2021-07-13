@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.UI;
+﻿#if NET5
+using Umbraco.Cms.Core.Models.Membership;
+#elif NET472
 using Umbraco.Core.Models.Membership;
+#endif
 
 namespace Gibe.Umbraco.Blog.Models
 {

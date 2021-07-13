@@ -2,20 +2,22 @@
 using System.Linq;
 using Examine;
 using Gibe.Umbraco.Blog.Wrappers;
-using Gibe.UmbracoWrappers;
+#if NET472
 using Umbraco.Examine;
+#endif
+#if NET5_0
+using Umbraco.Extensions;
+#endif
 
 namespace Gibe.Umbraco.Blog
 {
 	public class BlogSections<T> : IBlogSections<T> where T : class
 	{
 		private const string BlogSectionDocType = ""; // TODO
-		private readonly IUmbracoWrapper _umbracoWrapper;
 		private readonly ISearchIndex _searchIndex;
 
-		public BlogSections(IUmbracoWrapper umbracoWrapper, ISearchIndex searchIndex)
+		public BlogSections(ISearchIndex searchIndex)
 		{
-			_umbracoWrapper = umbracoWrapper;
 			_searchIndex = searchIndex;
 		}
 

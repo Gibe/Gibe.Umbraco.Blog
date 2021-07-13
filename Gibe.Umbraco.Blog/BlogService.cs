@@ -8,7 +8,11 @@ using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Repositories;
 using Gibe.Umbraco.Blog.Sort;
+#if NET5_0
+using Umbraco.Cms.Core.Models.PublishedContent;
+#elif NET472
 using Umbraco.Core.Models.PublishedContent;
+#endif
 
 namespace Gibe.Umbraco.Blog
 {
@@ -44,7 +48,7 @@ namespace Gibe.Umbraco.Blog
 		{
 			var results = _blogSearch.Search(filters, sort);
 			var posts = results.Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage);
-			return PageQueryResultModel(itemsPerPage, currentPage, ToBlogPosts(posts), results.TotalItemCount);
+			return PageQueryResultModel(itemsPerPage, currentPage, ToBlogPosts(posts, new NoopPublishedValueFallback()), results.TotalItemCount);
 		}
 
 		private PageQueryResultModel<T> PageQueryResultModel(int itemsPerPage, int currentPage, IEnumerable<T> posts, long totalPostCount)
@@ -52,33 +56,33 @@ namespace Gibe.Umbraco.Blog
 			return _pagerService.GetPageQueryResultModel(posts, itemsPerPage, currentPage, (int)totalPostCount);
 		}
 
-		private T ToBlogPost(IPublishedContent content)
+		private T ToBlogPost(IPublishedContent content, IPublishedValueFallback fallback)
 		{
-			return Activator.Activate<T>(content);
+			return Activator.Activate<T>(content, fallback);
 		}
 
-		private IEnumerable<T> ToBlogPosts(IEnumerable<IPublishedContent> content)
+		private IEnumerable<T> ToBlogPosts(IEnumerable<IPublishedContent> content, IPublishedValueFallback fallback)
 		{
-			return content.Select(ToBlogPost);
+			return content.Select(b => ToBlogPost(b, fallback));
 		}
 
-		private IEnumerable<T> ToBlogPosts(IEnumerable<ISearchResult> searchResults)
+		private IEnumerable<T> ToBlogPosts(IEnumerable<ISearchResult> searchResults, IPublishedValueFallback fallback)
 		{
-			return ToBlogPosts(searchResults.Select(r => GetContent(r.Id)));
+			return ToBlogPosts(searchResults.Select(r => GetContent(r.Id)), fallback);
 		}
 
 		public T GetNextPost(T current, IEnumerable<IBlogPostFilter> filters, ISort sort)
 		{
 			var results = _blogSearch.Search(filters, sort);
 			var post = results.TakeWhile(r => r.Id != current.Id.ToString()).LastOrDefault();
-			return post != null ? ToBlogPost(GetContent(post.Id)) : null;
+			return post != null ? ToBlogPost(GetContent(post.Id), new NoopPublishedValueFallback()) : null;
 		}
 
 		public T GetPreviousPost(T current, IEnumerable<IBlogPostFilter> filters, ISort sort)
 		{
 			var results = _blogSearch.Search(filters, sort);
 			var post = results.SkipWhile(r => r.Id != current.Id.ToString()).Skip(1).FirstOrDefault();
-			return post != null ? ToBlogPost(GetContent(post.Id)) : null;
+			return post != null ? ToBlogPost(GetContent(post.Id), new NoopPublishedValueFallback()) : null;
 		}
 
 		public IEnumerable<T> GetRelatedPosts(T post, int count)
@@ -90,7 +94,7 @@ namespace Gibe.Umbraco.Blog
 		{
 			var filter = new AtLeastOneMatchingTagFilter(tags);
 			var results = _blogSearch.Search(filter, new RelevanceSort()).Where(r => r.Id != postId.ToString());
-			return ToBlogPosts(results.Take(count));
+			return ToBlogPosts(results.Take(count), new NoopPublishedValueFallback());
 		}
 
 		private IPublishedContent GetContent(string id)

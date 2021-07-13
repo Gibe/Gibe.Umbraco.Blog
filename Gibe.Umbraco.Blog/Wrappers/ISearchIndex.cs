@@ -44,4 +44,14 @@ namespace Gibe.Umbraco.Blog.Wrappers
 				.First();
 		}
 	}
+
+#if NET5_0
+	public static class IndexExtensions
+	{
+		public  static ISearcher GetSearcher(this IIndex index)
+		{
+			return index.Searcher;
+		}
+	}
+#endif
 }

@@ -3,7 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Umbraco.Cms.Core.Models.PublishedContent;
+
+#if NET5_0
+using Umbraco.Cms.Core.Models.PublishedContent;
+#elif NET472
 using Umbraco.Core.Models.PublishedContent;
+#endif
 
 namespace Gibe.Umbraco.Blog
 {
@@ -13,7 +19,7 @@ namespace Gibe.Umbraco.Blog
 
 		private static readonly Dictionary<Type, object> Cached = new Dictionary<Type, object>();
 
-		public static T Activate<T>(IPublishedContent model)
+		public static T Activate<T>(IPublishedContent model, IPublishedValueFallback fallback)
 		{
 			if (!Cached.ContainsKey(typeof(T)))
 			{
@@ -23,7 +29,7 @@ namespace Gibe.Umbraco.Blog
 				Cached.Add(typeof(T), createdActivator);
 			}
 
-			return ((ObjectActivator<T>)Cached[typeof(T)])(model);
+			return ((ObjectActivator<T>)Cached[typeof(T)])(model, fallback);
 		}
 
 		private static ObjectActivator<T> GetActivator<T>(ConstructorInfo ctor)

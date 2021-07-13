@@ -1,12 +1,17 @@
-﻿using Umbraco.Core;
-using Umbraco.Core.Composing;
+﻿#if NET472
+using Umbraco.Core;
 using Gibe.Umbraco.Blog.Wrappers;
 using Gibe.Umbraco.Blog.Models;
-using Gibe.Settings.Interfaces;
-using Gibe.Settings.Implementations;
+
 using Gibe.Pager.Interfaces;
 using Gibe.Pager.Services;
 using Gibe.Umbraco.Blog.Repositories;
+
+using Umbraco.Core.Composing;
+using Gibe.Settings.Interfaces;
+using Gibe.Settings.Implementations;
+
+
 
 namespace Gibe.Umbraco.Blog.Composing
 {
@@ -19,7 +24,7 @@ namespace Gibe.Umbraco.Blog.Composing
 
 			composition.Register<IPagerService, PagerService>();
 			composition.Register<ISettingsService, SettingsService>();
-			composition.RegisterUnique<IBlogSettings, BlogConfigSettings>();
+			composition.RegisterUnique<IBlogSettings, HardCodedBlogSettings>();
 
 			composition.RegisterUnique<IBlogContentRepository, BlogContentRepository>();
 			composition.RegisterUnique<IBlogArchive, BlogArchive>();
@@ -31,3 +36,4 @@ namespace Gibe.Umbraco.Blog.Composing
 		}
 	}
 }
+#endif

@@ -1,24 +1,68 @@
 ﻿using Examine;
-using Examine.Providers;
 using System;
 using Gibe.Umbraco.Blog.Extensions;
-using Umbraco.Core.Composing;
-using Umbraco.Core.Services;
-using Umbraco.Core.Services.Implement;
-using Umbraco.Core.Events;
 using Gibe.Umbraco.Blog.Exceptions;
 using Gibe.Umbraco.Blog.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+
+#if NET5_0
+using Examine.Lucene;
+using Umbraco.Cms.Core.Composing;
+using Umbraco.Cms.Core;
+using Umbraco.Cms.Core.Services;
+using Umbraco.Cms.Core.Web;
+using Microsoft.Extensions.Options;
+#elif NET472
+using Examine.Providers;
+using Umbraco.Core.Composing;
+using Umbraco.Core.Services;
+using Umbraco.Core.Services.Implement;
+using Umbraco.Core.Events;
+
 using Examine.LuceneEngine.Indexing;
 using Umbraco.Web;
 using Umbraco.Core;
 using Examine.LuceneEngine.Providers;
-using Examine.Search;
-using Lucene.Net.Analysis;
+#endif
 
 namespace Gibe.Umbraco.Blog.Composing
 {
+
+#if NET5_0
+	public class AddFieldsToExternalIndex : IConfigureNamedOptions<LuceneDirectoryIndexOptions>
+	{
+		public void Configure(LuceneDirectoryIndexOptions options)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Configure(string name, LuceneDirectoryIndexOptions options)
+		{
+			switch (name)
+			{
+				case Constants.UmbracoIndexes.ExternalIndexName:
+					options.FieldDefinitions.AddOrUpdate(new FieldDefinition(ExamineFields.PostDate, FieldDefinitionTypes.DateTime));
+					options.FieldDefinitions.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateSort, FieldDefinitionTypes.Long));
+					options.FieldDefinitions.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateYear, FieldDefinitionTypes.DateYear));
+					options.FieldDefinitions.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateMonth, FieldDefinitionTypes.DateMonth));
+					options.FieldDefinitions.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateDay, FieldDefinitionTypes.DateDay));
+					/*((LuceneIndex)index).FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.Tag,
+						name => new RawStringType(ExamineFields.Tag, true));*/
+					options.FieldDefinitions.AddOrUpdate(new FieldDefinition(ExamineFields.Tag, ExamineFields.Tag));
+					/*((LuceneIndex)index).FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.CategoryName,
+						name => new RawStringType(ExamineFields.CategoryName, true));*/
+					options.FieldDefinitions.AddOrUpdate(new FieldDefinition(ExamineFields.CategoryName, ExamineFields.CategoryName));
+					/*((LuceneIndex)index).FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.PostAuthorName,
+						name => new RawStringType(ExamineFields.PostAuthorName, true));*/
+					options.FieldDefinitions.AddOrUpdate(new FieldDefinition(ExamineFields.PostAuthorName, ExamineFields.PostAuthorName));
+					//ContentService.Saving += ContentServiceSaving;
+					break;
+			}
+		}
+	}
+#endif
+
 	public class IndexEventsComponent : IComponent
 	{
 		private readonly IExamineManager _examineManager;
@@ -46,21 +90,24 @@ namespace Gibe.Umbraco.Blog.Composing
 				throw new IndexNotFoundException(_blogSettings.IndexName);
 			}
 
-			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDate, FieldDefinitionTypes.DateTime));
-			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateSort, FieldDefinitionTypes.Long));
-			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateYear, FieldDefinitionTypes.DateYear));
-			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateMonth, FieldDefinitionTypes.DateMonth));
-			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateDay, FieldDefinitionTypes.DateDay));
-			((LuceneIndex)index).FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.Tag,
+#if NET472
+			LuceneIndex luceneIndex = (LuceneIndex) index;
+			luceneIndex.FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDate, FieldDefinitionTypes.DateTime));
+			luceneIndex.FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateSort, FieldDefinitionTypes.Long));
+			luceneIndex.FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateYear, FieldDefinitionTypes.DateYear));
+			luceneIndex.FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateMonth, FieldDefinitionTypes.DateMonth));
+			luceneIndex.FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateDay, FieldDefinitionTypes.DateDay));
+			luceneIndex.FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.Tag,
 				name => new RawStringType(ExamineFields.Tag, true));
-			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.Tag, ExamineFields.Tag));
-			((LuceneIndex)index).FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.CategoryName,
+			luceneIndex.FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.Tag, ExamineFields.Tag));
+			luceneIndex.FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.CategoryName,
 				name => new RawStringType(ExamineFields.CategoryName, true));
-			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.CategoryName, ExamineFields.CategoryName));
-			((LuceneIndex)index).FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.PostAuthorName,
+			luceneIndex.FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.CategoryName, ExamineFields.CategoryName));
+			luceneIndex.FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.PostAuthorName,
 				name => new RawStringType(ExamineFields.PostAuthorName, true));
-			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostAuthorName, ExamineFields.PostAuthorName));
+			luceneIndex.FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostAuthorName, ExamineFields.PostAuthorName));
 			ContentService.Saving += ContentServiceSaving;
+#endif
 			((BaseIndexProvider)index).TransformingIndexValues += ExternalIndexTransformingIndexValues;
 		}
 
@@ -145,14 +192,19 @@ namespace Gibe.Umbraco.Blog.Composing
 					return;
 				}
 
-				var category = context.UmbracoContext.Content.GetById(Udi.Parse(categoryId));
+#if NET5_0
+				var udi = UdiParser.Parse(categoryId);
+#elif NET472
+				var udi = Udi.Parse(categoryId);
+#endif
+				var category = context.UmbracoContext.Content.GetById(udi);
 				if (category != null)
 				{
 					document.TryAddOrAppend(ExamineFields.CategoryName, category.Name);
 				}
 			}
 		}
-
+#if NET472
 		private void ContentServiceSaving(IContentService sender, ContentSavingEventArgs e)
 		{
 			foreach (var entity in e.SavedEntities)
@@ -181,6 +233,7 @@ namespace Gibe.Umbraco.Blog.Composing
 				}
 			}
 		}
+#endif
 
 		private string GetUserName(int userId)
 		{

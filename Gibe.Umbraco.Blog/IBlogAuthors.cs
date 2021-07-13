@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Gibe.Umbraco.Blog.Models;
-using Umbraco.Core.Models.Membership;
 
 namespace Gibe.Umbraco.Blog
 {

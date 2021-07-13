@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using Gibe.Umbraco.Blog.Extensions;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Sort;
+#if NET5_0
+using Umbraco.Extensions;
+using Umbraco.Cms.Core.Models.PublishedContent;
+#elif NET472
 using Umbraco.Core.Models.PublishedContent;
+using Umbraco.Web;
+#endif
 
 namespace Gibe.Umbraco.Blog
 {
@@ -28,7 +33,7 @@ namespace Gibe.Umbraco.Blog
 					Name = key.ToString("0000"),
 					Count = g.Count(),
 					Year = key,
-					Url = $"{blogRoot.Url}?year={key.ToString("0000")}"
+					Url = $"{blogRoot.Url()}?year={key.ToString("0000")}"
 				}).ToList();
 
 			foreach (var year in years)
@@ -39,7 +44,7 @@ namespace Gibe.Umbraco.Blog
 						{
 							Name = mfi.GetMonthName(key),
 							Month = key, Count = g.Count(),
-							Url = $"{blogRoot.Url}?year={year.Year.ToString("0000")}&month={key.ToString("00")}"
+							Url = $"{blogRoot.Url()}?year={year.Year.ToString("0000")}&month={key.ToString("00")}"
 						}).ToList();
 			}
 

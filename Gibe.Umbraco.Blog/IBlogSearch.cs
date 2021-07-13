@@ -4,7 +4,6 @@ using System.Linq;
 using Examine;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Sort;
-using Lucene.Net.Search;
 
 namespace Gibe.Umbraco.Blog
 {

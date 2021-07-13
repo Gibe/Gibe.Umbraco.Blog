@@ -1,4 +1,5 @@
-﻿using Gibe.Umbraco.Blog.Models;
+﻿#if NET472
+using Gibe.Umbraco.Blog.Models;
 using System;
 using Umbraco.Core.Composing;
 using Umbraco.Core.Models;
@@ -92,3 +93,4 @@ namespace Gibe.Umbraco.Blog.Composing
 		}
 	}
 }
+#endif
