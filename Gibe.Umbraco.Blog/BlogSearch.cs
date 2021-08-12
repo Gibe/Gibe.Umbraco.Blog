@@ -5,6 +5,7 @@ using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Sort;
 using Gibe.Umbraco.Blog.Wrappers;
+using StackExchange.Profiling;
 #if NET472
 using Umbraco.Examine;
 #elif NET5_0
@@ -34,7 +35,17 @@ namespace Gibe.Umbraco.Blog
 		{
 			return SearchForBlogPosts(GetSearchQuery(filters, sort));
 		}
-		
+
+		public ISearchResults Search(IBlogPostFilter filter, ISort sort, int skip, int take)
+		{
+			return Search(new List<IBlogPostFilter> { filter }, sort, skip, take);
+		}
+
+		public ISearchResults Search(IEnumerable<IBlogPostFilter> filters, ISort sort, int skip, int take)
+		{
+			return SearchForBlogPosts(GetSearchQuery(filters, sort), skip, take);
+		}
+
 		private IOrdering GetSearchQuery(IEnumerable<IBlogPostFilter> filters, ISort sort)
 		{		
 			return sort.GetCriteria(GetQuery(filters));
@@ -50,9 +61,17 @@ namespace Gibe.Umbraco.Blog
 			return query;
 		}
 
-		private ISearchResults SearchForBlogPosts(IOrdering operation)
+		private ISearchResults SearchForBlogPosts(IOrdering operation, int? skip = null, int? take = null)
 		{
-			return operation.Execute();
+			using (MiniProfiler.Current.Step("Search"))
+			{
+				if (skip.HasValue)
+				{
+					var options = new QueryOptions(skip.Value, take);
+					return operation.Execute(options);
+				}
+				return operation.Execute();
+			}
 		}
 	}
 	

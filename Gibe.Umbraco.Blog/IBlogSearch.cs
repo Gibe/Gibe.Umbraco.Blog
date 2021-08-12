@@ -11,6 +11,9 @@ namespace Gibe.Umbraco.Blog
 	{
 		ISearchResults Search(IBlogPostFilter filter, ISort sort);
 		ISearchResults Search(IEnumerable<IBlogPostFilter> filters, ISort sort);
+		ISearchResults Search(IBlogPostFilter filter, ISort sort, int skip, int take);
+		ISearchResults Search(IEnumerable<IBlogPostFilter> filters, ISort sort, int skip, int take);
+
 	}
 
 	public class FakeBlogSearch : IBlogSearch
@@ -30,6 +33,18 @@ namespace Gibe.Umbraco.Blog
 		}
 
 		public ISearchResults Search(IEnumerable<IBlogPostFilter> filters, ISort sort)
+		{
+			_filters = filters;
+			return _searchResults;
+		}
+
+		public ISearchResults Search(IBlogPostFilter filter, ISort sort, int skip, int take)
+		{
+			_filters = new[] { filter };
+			return _searchResults;
+		}
+
+		public ISearchResults Search(IEnumerable<IBlogPostFilter> filters, ISort sort, int skip, int take)
 		{
 			_filters = filters;
 			return _searchResults;

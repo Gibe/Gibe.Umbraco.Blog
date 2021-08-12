@@ -46,9 +46,8 @@ namespace Gibe.Umbraco.Blog
 
 		public PageQueryResultModel<T> GetPosts(IEnumerable<IBlogPostFilter> filters, int itemsPerPage, int currentPage, ISort sort)
 		{
-			var results = _blogSearch.Search(filters, sort);
-			var posts = results.Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage);
-			return PageQueryResultModel(itemsPerPage, currentPage, ToBlogPosts(posts, new NoopPublishedValueFallback()), results.TotalItemCount);
+			var posts = _blogSearch.Search(filters, sort, (currentPage - 1) * itemsPerPage, itemsPerPage);
+			return PageQueryResultModel(itemsPerPage, currentPage, ToBlogPosts(posts, new NoopPublishedValueFallback()), posts.TotalItemCount);
 		}
 
 		private PageQueryResultModel<T> PageQueryResultModel(int itemsPerPage, int currentPage, IEnumerable<T> posts, long totalPostCount)

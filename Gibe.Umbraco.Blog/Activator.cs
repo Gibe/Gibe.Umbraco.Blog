@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using StackExchange.Profiling;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
 #if NET5_0
@@ -23,13 +24,19 @@ namespace Gibe.Umbraco.Blog
 		{
 			if (!Cached.ContainsKey(typeof(T)))
 			{
-				var ctor = typeof(T).GetConstructors().First();
-				var createdActivator = GetActivator<T>(ctor);
+				using (MiniProfiler.Current.Step($"Activator Setup {typeof(T).FullName}"))
+				{
+					var ctor = typeof(T).GetConstructors().First();
+					var createdActivator = GetActivator<T>(ctor);
 
-				Cached.Add(typeof(T), createdActivator);
+					Cached.Add(typeof(T), createdActivator);
+				}
 			}
 
-			return ((ObjectActivator<T>)Cached[typeof(T)])(model, fallback);
+			using (MiniProfiler.Current.Step("Activator Blog Model"))
+			{
+				return ((ObjectActivator<T>) Cached[typeof(T)])(model, fallback);
+			}
 		}
 
 		private static ObjectActivator<T> GetActivator<T>(ConstructorInfo ctor)
