@@ -5,22 +5,32 @@ using Gibe.Umbraco.Blog.Exceptions;
 using Gibe.Umbraco.Blog.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using Examine.Lucene.Indexing;
 using Examine.Lucene;
+using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Microsoft.Extensions.Options;
+using Umbraco.Cms.Core.DependencyInjection;
+
 
 namespace Gibe.Umbraco.Blog.Composing
 {
 
 	public class AddFieldsToExternalIndex : IConfigureNamedOptions<LuceneDirectoryIndexOptions>
 	{
-		public void Configure(LuceneDirectoryIndexOptions options)
+		private readonly ILoggerFactory _logger;
+
+		public AddFieldsToExternalIndex(ILoggerFactory logger)
 		{
-			throw new NotImplementedException();
+			_logger = logger;
 		}
+
+		public void Configure(LuceneDirectoryIndexOptions options)
+			=> throw new NotImplementedException("This is never called and is just part of the interface");
+
 
 		public void Configure(string name, LuceneDirectoryIndexOptions options)
 		{
@@ -28,22 +38,33 @@ namespace Gibe.Umbraco.Blog.Composing
 			{
 				case Constants.UmbracoIndexes.ExternalIndexName:
 					options.FieldDefinitions.AddOrUpdate(new FieldDefinition(ExamineFields.PostDate, FieldDefinitionTypes.DateTime));
-					options.FieldDefinitions.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateSort, FieldDefinitionTypes.Long));
 					options.FieldDefinitions.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateYear, FieldDefinitionTypes.DateYear));
 					options.FieldDefinitions.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateMonth, FieldDefinitionTypes.DateMonth));
 					options.FieldDefinitions.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateDay, FieldDefinitionTypes.DateDay));
-					/*((LuceneIndex)index).FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.Tag,
-						name => new RawStringType(ExamineFields.Tag, true));*/
 					options.FieldDefinitions.AddOrUpdate(new FieldDefinition(ExamineFields.Tag, ExamineFields.Tag));
-					/*((LuceneIndex)index).FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.CategoryName,
-						name => new RawStringType(ExamineFields.CategoryName, true));*/
 					options.FieldDefinitions.AddOrUpdate(new FieldDefinition(ExamineFields.CategoryName, ExamineFields.CategoryName));
-					/*((LuceneIndex)index).FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.PostAuthorName,
-						name => new RawStringType(ExamineFields.PostAuthorName, true));*/
 					options.FieldDefinitions.AddOrUpdate(new FieldDefinition(ExamineFields.PostAuthorName, ExamineFields.PostAuthorName));
-					//ContentService.Saving += ContentServiceSaving;
+
+					options.IndexValueTypesFactory = new Dictionary<string, IFieldValueTypeFactory>
+					{
+						[ExamineFields.Tag] = new DelegateFieldValueTypeFactory(n =>
+							new RawStringType(n, _logger, true)),
+						[ExamineFields.CategoryName] = new DelegateFieldValueTypeFactory(n =>
+							new RawStringType(n, _logger, true)),
+						[ExamineFields.PostAuthorName] = new DelegateFieldValueTypeFactory(n =>
+							new RawStringType(n, _logger, true)),
+
+					};
 					break;
 			}
+		}
+	}
+
+	public class IndexEventsComposer : IComposer
+	{
+		public void Compose(IUmbracoBuilder builder)
+		{
+			builder.Components().Append<IndexEventsComponent>();
 		}
 	}
 
@@ -96,11 +117,10 @@ namespace Gibe.Umbraco.Blog.Composing
 		private void AddPostDateFields(ValueSet document)
 		{
 			var postDate = document.GetSingleValue<DateTime>(ExamineFields.PostDate);
-			
+
 			document.TryAdd(ExamineFields.PostDateYear, postDate);
 			document.TryAdd(ExamineFields.PostDateMonth, postDate);
 			document.TryAdd(ExamineFields.PostDateDay, postDate);
-			document.TryAdd(ExamineFields.PostDateSort, postDate.Ticks);
 		}
 
 		private void AddAuthorFields(ValueSet document)
@@ -131,6 +151,11 @@ namespace Gibe.Umbraco.Blog.Composing
 				catch (JsonReaderException)
 				{
 					// Tags are invalid
+					var tags = tagValue.Split(",");
+					foreach (var tag in tags)
+					{
+						document.TryAddOrAppend(ExamineFields.Tag, tag.ToLower());
+					}
 				}
 			}
 		}
