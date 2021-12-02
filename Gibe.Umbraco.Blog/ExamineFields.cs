@@ -5,7 +5,6 @@
 		public static string Tag => "tag";
 
 		public static string PostDate => "postDate";
-		public static string PostDateSort => "postDateSort";
 
 		public static string PostDateYear => "postDateYear";
 

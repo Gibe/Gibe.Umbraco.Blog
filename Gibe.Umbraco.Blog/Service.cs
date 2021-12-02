@@ -1,12 +1,15 @@
-﻿using Gibe.Pager.Extensions;
+﻿using Examine.Lucene;
+using Gibe.Pager.Extensions;
 using Gibe.Pager.Interfaces;
 using Gibe.Pager.Services;
+using Gibe.Umbraco.Blog.Composing;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Repositories;
 using Gibe.Umbraco.Blog.Wrappers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Extensions;
@@ -30,7 +33,7 @@ namespace Gibe.Umbraco.Blog
 			services.AddUnique<IBlogCategories, BlogCategories>();
 			services.AddUnique<ISearchIndex, NewsIndex>();
 
-			//services.AddUnique<IConfigureOptions<LuceneDirectoryIndexOptions>, AddFieldsToExternalIndex>();
+			services.AddSingleton<IConfigureOptions<LuceneDirectoryIndexOptions>, AddFieldsToExternalIndex>();
 		}
 
 		public class uSyncCoreComposer : IComposer
