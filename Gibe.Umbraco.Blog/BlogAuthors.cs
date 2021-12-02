@@ -4,11 +4,7 @@ using System.Linq;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Sort;
-#if NET5_0
 using Umbraco.Cms.Core.Services;
-#elif NET472
-using Umbraco.Core.Services;
-#endif
 
 namespace Gibe.Umbraco.Blog
 {

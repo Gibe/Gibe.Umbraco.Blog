@@ -5,31 +5,16 @@ using Gibe.Umbraco.Blog.Exceptions;
 using Gibe.Umbraco.Blog.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-
-#if NET5_0
 using Examine.Lucene;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Microsoft.Extensions.Options;
-#elif NET472
-using Examine.Providers;
-using Umbraco.Core.Composing;
-using Umbraco.Core.Services;
-using Umbraco.Core.Services.Implement;
-using Umbraco.Core.Events;
-
-using Examine.LuceneEngine.Indexing;
-using Umbraco.Web;
-using Umbraco.Core;
-using Examine.LuceneEngine.Providers;
-#endif
 
 namespace Gibe.Umbraco.Blog.Composing
 {
 
-#if NET5_0
 	public class AddFieldsToExternalIndex : IConfigureNamedOptions<LuceneDirectoryIndexOptions>
 	{
 		public void Configure(LuceneDirectoryIndexOptions options)
@@ -61,7 +46,6 @@ namespace Gibe.Umbraco.Blog.Composing
 			}
 		}
 	}
-#endif
 
 	public class IndexEventsComponent : IComponent
 	{
@@ -90,24 +74,6 @@ namespace Gibe.Umbraco.Blog.Composing
 				throw new IndexNotFoundException(_blogSettings.IndexName);
 			}
 
-#if NET472
-			LuceneIndex luceneIndex = (LuceneIndex) index;
-			luceneIndex.FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDate, FieldDefinitionTypes.DateTime));
-			luceneIndex.FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateSort, FieldDefinitionTypes.Long));
-			luceneIndex.FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateYear, FieldDefinitionTypes.DateYear));
-			luceneIndex.FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateMonth, FieldDefinitionTypes.DateMonth));
-			luceneIndex.FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateDay, FieldDefinitionTypes.DateDay));
-			luceneIndex.FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.Tag,
-				name => new RawStringType(ExamineFields.Tag, true));
-			luceneIndex.FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.Tag, ExamineFields.Tag));
-			luceneIndex.FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.CategoryName,
-				name => new RawStringType(ExamineFields.CategoryName, true));
-			luceneIndex.FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.CategoryName, ExamineFields.CategoryName));
-			luceneIndex.FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.PostAuthorName,
-				name => new RawStringType(ExamineFields.PostAuthorName, true));
-			luceneIndex.FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostAuthorName, ExamineFields.PostAuthorName));
-			ContentService.Saving += ContentServiceSaving;
-#endif
 			((BaseIndexProvider)index).TransformingIndexValues += ExternalIndexTransformingIndexValues;
 		}
 
@@ -192,11 +158,7 @@ namespace Gibe.Umbraco.Blog.Composing
 					return;
 				}
 
-#if NET5_0
 				var udi = UdiParser.Parse(categoryId);
-#elif NET472
-				var udi = Udi.Parse(categoryId);
-#endif
 				var category = context.UmbracoContext.Content.GetById(udi);
 				if (category != null)
 				{
@@ -204,36 +166,6 @@ namespace Gibe.Umbraco.Blog.Composing
 				}
 			}
 		}
-#if NET472
-		private void ContentServiceSaving(IContentService sender, ContentSavingEventArgs e)
-		{
-			foreach (var entity in e.SavedEntities)
-			{
-				try
-				{
-					if (entity.ContentType.Alias != _blogSettings.BlogPostDocumentTypeAlias || entity.ParentId == -20)
-					{
-						continue;
-					}
-
-					var parentContent = sender.GetById(entity.ParentId);
-					if (parentContent.Published)
-					{
-						//if the date hasn't been set, default it to today
-						var postDateString = entity.GetValue<string>(ExamineFields.PostDate);
-						if (string.IsNullOrEmpty(postDateString))
-						{
-							entity.SetValue(ExamineFields.PostDate, DateTime.Now.Date);
-						}
-					}
-				}
-				catch (InvalidOperationException)
-				{
-					// This happens if you try to get ParentId during install of a package with content
-				}
-			}
-		}
-#endif
 
 		private string GetUserName(int userId)
 		{

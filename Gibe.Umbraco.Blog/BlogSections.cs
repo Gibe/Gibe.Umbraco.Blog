@@ -2,12 +2,7 @@
 using System.Linq;
 using Examine;
 using Gibe.Umbraco.Blog.Wrappers;
-#if NET472
-using Umbraco.Examine;
-#endif
-#if NET5_0
 using Umbraco.Extensions;
-#endif
 
 namespace Gibe.Umbraco.Blog
 {

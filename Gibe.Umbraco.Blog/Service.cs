@@ -1,9 +1,6 @@
-﻿#if NET5_0
-using Examine.Lucene;
-using Gibe.Pager.Extensions;
+﻿using Gibe.Pager.Extensions;
 using Gibe.Pager.Interfaces;
 using Gibe.Pager.Services;
-using Gibe.Umbraco.Blog.Composing;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Repositories;
 using Gibe.Umbraco.Blog.Wrappers;
@@ -60,4 +57,3 @@ namespace Gibe.Umbraco.Blog
 		}
 	}
 }
-#endif

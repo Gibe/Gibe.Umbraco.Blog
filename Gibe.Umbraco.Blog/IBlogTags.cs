@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Gibe.Umbraco.Blog.Models;
-#if NET5_0
 using Umbraco.Cms.Core.Models.PublishedContent;
-#elif NET472
-using Umbraco.Core.Models.PublishedContent;
-#endif
 
 namespace Gibe.Umbraco.Blog
 {

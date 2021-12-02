@@ -8,11 +8,7 @@ using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Repositories;
 using Gibe.Umbraco.Blog.Sort;
-#if NET5_0
 using Umbraco.Cms.Core.Models.PublishedContent;
-#elif NET472
-using Umbraco.Core.Models.PublishedContent;
-#endif
 
 namespace Gibe.Umbraco.Blog
 {

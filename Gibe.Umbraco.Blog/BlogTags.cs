@@ -4,13 +4,8 @@ using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Sort;
 using Newtonsoft.Json;
-#if NET5_0
 using Umbraco.Extensions;
 using Umbraco.Cms.Core.Models.PublishedContent;
-#elif NET472
-using Umbraco.Core.Models.PublishedContent;
-using Umbraco.Web;
-#endif
 
 namespace Gibe.Umbraco.Blog
 {

@@ -7,8 +7,8 @@ using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using NUnit.Framework;
 using Moq;
-using Umbraco.Core.Models.PublishedContent;
 using Gibe.Umbraco.Blog.Repositories;
+using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace Gibe.Umbraco.Blog.Tests
 {
