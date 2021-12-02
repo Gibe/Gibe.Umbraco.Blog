@@ -34,12 +34,10 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-		<PackageReference Include="Umbraco.Cms.Web.Website" Version="9.0.0-rc001" />
+		<PackageReference Include="Umbraco.Cms.Web.Website" Version="9.1.1" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Reference Include="Gibe.Pager">
-	    <HintPath>..\..\Gibe.Pager\Gibe.Pager\bin\Debug\netstandard2.1\Gibe.Pager.dll</HintPath>
-	  </Reference>
+		<PackageReference Include="Gibe.Pager" Version="2.0.0" />
 	</ItemGroup>
 </Project>

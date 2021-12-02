@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Examine;
+using Gibe.Pager.Interfaces;
+using Gibe.Pager.Models;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Repositories;
