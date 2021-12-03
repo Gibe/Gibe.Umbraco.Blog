@@ -8,7 +8,7 @@ Install using Nuget
 
 ## Composition
 
-The types used to represent blog posts are controlled from the calling site, thus you are responseible for composing the blog service (`IBlogService<T>`). Type T must implement `IBlogPostModel`. 
+The types used to represent blog posts are controlled from the calling site, thus you are responsible for composing the blog service (`IBlogService<T>`). Type T must implement `IBlogPostModel`. 
 
 ## Config
 
