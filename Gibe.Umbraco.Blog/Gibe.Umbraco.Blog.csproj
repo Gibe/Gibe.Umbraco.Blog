@@ -4,7 +4,7 @@
 		<TargetFramework>net5.0</TargetFramework>
 	</PropertyGroup>
 	<PropertyGroup>
-		<PackageId>Gibe.Umbraco.Blog.V9</PackageId>
+		<PackageId>Gibe.Umbraco.V9.Blog</PackageId>
 		<PackageVersion>9.0.0</PackageVersion>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageTags>Gibe Umbraco Blog</PackageTags>
