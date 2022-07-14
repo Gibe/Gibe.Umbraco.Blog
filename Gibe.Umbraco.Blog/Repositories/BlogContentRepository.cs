@@ -1,4 +1,4 @@
-﻿#if NET5_0
+﻿#if NET6
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 #elif NET472

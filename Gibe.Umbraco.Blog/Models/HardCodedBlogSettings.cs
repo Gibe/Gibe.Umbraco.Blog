@@ -23,7 +23,7 @@ namespace Gibe.Umbraco.Blog.Models
 		public string UserPickerName => _settingsService.GetSetting("Gibe.Umbraco.Blog.UserPickerName", "User Picker - All Users");
 	}
 }
-#elif NET5_0
+#elif NET6
 public class HardCodedBlogSettings : IBlogSettings
 {
 	public string IndexName => "ExternalIndex";

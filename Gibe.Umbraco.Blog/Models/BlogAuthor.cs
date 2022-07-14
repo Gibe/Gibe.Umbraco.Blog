@@ -1,4 +1,4 @@
-﻿#if NET5
+﻿#if NET6
 using Umbraco.Cms.Core.Models.Membership;
 #elif NET472
 using Umbraco.Core.Models.Membership;

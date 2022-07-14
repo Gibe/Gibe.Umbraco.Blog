@@ -9,13 +9,13 @@ namespace Gibe.Umbraco.Blog.Extensions
 	{
 		public static string GetSingleValue(this ValueSet valueSet, string key) 
 		{
-			List<object> values;
+			IReadOnlyList<object> values;
 			if (!valueSet.Values.TryGetValue(key, out values))
 			{
 				return null;
 			}
 
-			return values.FirstOrDefault().ToString();
+			return values.FirstOrDefault()?.ToString();
 		}
 
 		public static T GetSingleValue<T>(this ValueSet valueSet, string key)
@@ -31,16 +31,6 @@ namespace Gibe.Umbraco.Blog.Extensions
 			return (T)converter.ConvertFrom(value);
 		}
 
-		public static void TryAddOrAppend(this ValueSet valueSet, string key, object value)
-		{
-			var added = valueSet.TryAdd(key, value);
-
-			if (added)
-			{
-				return;
-			}
-
-			valueSet.Values[key].Add(value);
-		}
+		
 	}
 }

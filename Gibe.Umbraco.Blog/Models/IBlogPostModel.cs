@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-#if NET5_0
+#if NET6
 using Umbraco.Cms.Core.Models.PublishedContent;
 #elif NET472
 using Umbraco.Core.Models.PublishedContent;

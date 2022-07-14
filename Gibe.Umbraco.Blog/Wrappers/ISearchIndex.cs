@@ -45,7 +45,7 @@ namespace Gibe.Umbraco.Blog.Wrappers
 		}
 	}
 
-#if NET5_0
+#if NET6
 	public static class IndexExtensions
 	{
 		public  static ISearcher GetSearcher(this IIndex index)

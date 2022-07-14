@@ -5,6 +5,7 @@ using Gibe.Umbraco.Blog.Exceptions;
 using Gibe.Umbraco.Blog.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using Examine.Lucene.Indexing;
 using Examine.Lucene;
 using Microsoft.Extensions.Logging;
@@ -14,6 +15,7 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.DependencyInjection;
+using Umbraco.Extensions;
 
 
 namespace Gibe.Umbraco.Blog.Composing
@@ -107,89 +109,97 @@ namespace Gibe.Umbraco.Blog.Composing
 				return;
 			}
 
-			AddPostDateFields(document);
-			AddAuthorFields(document);
-			AddTagFields(document);
-			AddPathFields(document);
-			AddCategoryFields(document);
+			IDictionary<string, IEnumerable<object>>
+				values = e.ValueSet.Values.ToDictionary(x => x.Key, x => x.Value.ToList().AsEnumerable());
+			
+			values.MergeLeft(AddPostDateFields(e));
+			values.MergeLeft(AddAuthorFields(e));
+			values.MergeLeft(AddTagFields(e));
+			values.MergeLeft(AddPathFields(e));
+			values.MergeLeft(AddCategoryFields(e));
+			e.SetValues(values);
 		}
 
-		private void AddPostDateFields(ValueSet document)
+		private IDictionary<string, IEnumerable<object>> AddPostDateFields(IndexingItemEventArgs e)
 		{
-			var postDate = document.GetSingleValue<DateTime>(ExamineFields.PostDate);
-
-			document.TryAdd(ExamineFields.PostDateYear, postDate);
-			document.TryAdd(ExamineFields.PostDateMonth, postDate);
-			document.TryAdd(ExamineFields.PostDateDay, postDate);
+			var postDate = e.ValueSet.GetSingleValue<DateTime>(ExamineFields.PostDate);
+			Dictionary<string, IEnumerable<object>> values = new Dictionary<string, IEnumerable<object>>();
+			
+			values.Add(ExamineFields.PostDateYear, new [] { postDate.Year.ToString()});
+			values.Add(ExamineFields.PostDateMonth, new[] { postDate.Month.ToString() });
+			values.Add(ExamineFields.PostDateDay, new[] { postDate.Day.ToString() });
+			return values;
 		}
 
-		private void AddAuthorFields(ValueSet document)
+		private Dictionary<string, IEnumerable<object>> AddAuthorFields(IndexingItemEventArgs e)
 		{
-			var authorId = document.GetSingleValue<int?>(ExamineFields.PostAuthor);
+			var authorId = e.ValueSet.GetSingleValue<int?>(ExamineFields.PostAuthor);
+			Dictionary<string, IEnumerable<object>> values = new Dictionary<string, IEnumerable<object>>();
 
 			if (authorId.HasValue)
 			{
-				document.TryAdd(ExamineFields.PostAuthorName, GetUserName(authorId.Value).ToLower());
+				values.Add(ExamineFields.PostAuthorName, new[] { GetUserName(authorId.Value).ToLower()});
 			}
+
+			return values;
 		}
 
-		private void AddTagFields(ValueSet document)
+		private Dictionary<string, IEnumerable<object>> AddTagFields(IndexingItemEventArgs e)
 		{
-			var tagValue = document.GetSingleValue(ExamineFields.Tags);
+			Dictionary<string, IEnumerable<object>> values = new Dictionary<string, IEnumerable<object>>();
+			var tagValue = e.ValueSet.GetSingleValue(ExamineFields.Tags);
 			if (tagValue != null)
 			{
 				try
 				{
 					var tags =
 						JsonConvert.DeserializeObject<IEnumerable<string>>(tagValue);
-
-					foreach (var tag in tags)
+					if (tags != null)
 					{
-						document.TryAddOrAppend(ExamineFields.Tag, tag.ToLower());
+						values.Add(ExamineFields.Tag, tags.Select(t => t.ToLower()));
 					}
 				}
 				catch (JsonReaderException)
 				{
 					// Tags are invalid
 					var tags = tagValue.Split(",");
-					foreach (var tag in tags)
-					{
-						document.TryAddOrAppend(ExamineFields.Tag, tag.ToLower());
-					}
+					values.Add(ExamineFields.Tag, tags.Select(t => t.ToLower()));
 				}
 			}
+			return values;
 		}
 
-		private void AddPathFields(ValueSet document)
+		private Dictionary<string, IEnumerable<object>> AddPathFields(IndexingItemEventArgs e)
 		{
-			var path = document.GetSingleValue(ExamineFields.Path);
+			Dictionary<string, IEnumerable<object>> values = new Dictionary<string, IEnumerable<object>>();
+			var path = e.ValueSet.GetSingleValue(ExamineFields.Path);
 			if (path != null)
 			{
-				foreach (var id in path.Split(','))
-				{
-					document.TryAddOrAppend(ExamineFields.Path, id);
-				}
+				values.Add(ExamineFields.Path, path.Split(','));
 			}
+			return values;
 		}
 
-		private void AddCategoryFields(ValueSet document)
+		private Dictionary<string, IEnumerable<object>> AddCategoryFields(IndexingItemEventArgs e)
 		{
+			Dictionary<string, IEnumerable<object>> values = new Dictionary<string, IEnumerable<object>>();
 			using (var context = _umbracoContextFactory.EnsureUmbracoContext())
 			{
-				var categoryId = document.GetSingleValue(ExamineFields.Category);
+				var categoryId = e.ValueSet.GetSingleValue(ExamineFields.Category);
 
 				if (string.IsNullOrEmpty(categoryId))
 				{
-					return;
+					return values;
 				}
 
 				var udi = UdiParser.Parse(categoryId);
 				var category = context.UmbracoContext.Content.GetById(udi);
 				if (category != null)
 				{
-					document.TryAddOrAppend(ExamineFields.CategoryName, category.Name);
+					values.Add(ExamineFields.CategoryName, new[] { category.Name });
 				}
 			}
+			return values;
 		}
 
 		private string GetUserName(int userId)

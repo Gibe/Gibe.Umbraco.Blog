@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET5_0
+#if NET6
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 #elif NET472
@@ -14,7 +14,7 @@ namespace Gibe.Umbraco.Blog.Models
 {
 	public abstract class BlogPostBase : PublishedContentModel, IBlogPostModel
 	{
-#if NET5_0
+#if NET6
 		protected BlogPostBase(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback) { }
 #elif NET472
