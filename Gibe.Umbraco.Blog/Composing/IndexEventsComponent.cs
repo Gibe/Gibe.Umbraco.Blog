@@ -115,7 +115,7 @@ namespace Gibe.Umbraco.Blog.Composing
 			values.MergeLeft(AddPostDateFields(e));
 			values.MergeLeft(AddAuthorFields(e));
 			values.MergeLeft(AddTagFields(e));
-			values.MergeLeft(AddPathFields(e));
+			values.MergeLeft(AddPathFields(e), overwrite: true);
 			values.MergeLeft(AddCategoryFields(e));
 			e.SetValues(values);
 		}
@@ -133,12 +133,20 @@ namespace Gibe.Umbraco.Blog.Composing
 
 		private Dictionary<string, IEnumerable<object>> AddAuthorFields(IndexingItemEventArgs e)
 		{
-			var authorId = e.ValueSet.GetSingleValue<int?>(ExamineFields.PostAuthor);
+			var authorIdString = e.ValueSet.GetSingleValue(ExamineFields.PostAuthor);
+			var authorName = string.Empty;
+			if(int.TryParse(authorIdString, out var authorId))
+			{
+				authorName = GetUserName(authorId);
+			}
+			else if(UdiParser.TryParse(authorIdString, out var authorUid)){
+				authorName = GetAuthorName(authorUid);
+			}
 			Dictionary<string, IEnumerable<object>> values = new Dictionary<string, IEnumerable<object>>();
 
-			if (authorId.HasValue)
+			if (!string.IsNullOrEmpty(authorName))
 			{
-				values.Add(ExamineFields.PostAuthorName, new[] { GetUserName(authorId.Value).ToLower()});
+				values.Add(ExamineFields.PostAuthorName, new[] { authorName.ToLower()});
 			}
 
 			return values;
@@ -204,7 +212,15 @@ namespace Gibe.Umbraco.Blog.Composing
 
 		private string GetUserName(int userId)
 		{
-			return _userService.GetUserById(userId).Name;
+			return _userService.GetUserById(userId)?.Name ?? string.Empty;
+		}
+
+		private string GetAuthorName(Udi authorUid)
+		{
+			using (var context = _umbracoContextFactory.EnsureUmbracoContext())
+			{
+				return context.UmbracoContext.Content.GetById(authorUid)?.Name ?? string.Empty;
+			}
 		}
 
 		public void Terminate()
