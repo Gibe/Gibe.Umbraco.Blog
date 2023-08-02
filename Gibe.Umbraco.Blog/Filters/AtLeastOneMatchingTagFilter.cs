@@ -8,7 +8,7 @@ namespace Gibe.Umbraco.Blog.Filters
 	{
 		public AtLeastOneMatchingTagFilter(IEnumerable<string> tags)
 		{
-			Tags = tags;
+			Tags = tags?.Select(t => t.ToLower()).ToList(); ;
 		}
 
 		public IBooleanOperation GetCriteria(IQuery query)

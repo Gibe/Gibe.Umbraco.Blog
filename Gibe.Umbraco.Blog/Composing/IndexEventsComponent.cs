@@ -139,7 +139,8 @@ namespace Gibe.Umbraco.Blog.Composing
 			{
 				authorName = GetUserName(authorId);
 			}
-			else if(UdiParser.TryParse(authorIdString, out var authorUid)){
+			else if (UdiParser.TryParse(authorIdString, out var authorUid))
+			{
 				authorName = GetAuthorName(authorUid);
 			}
 			Dictionary<string, IEnumerable<object>> values = new Dictionary<string, IEnumerable<object>>();
@@ -154,27 +155,45 @@ namespace Gibe.Umbraco.Blog.Composing
 
 		private Dictionary<string, IEnumerable<object>> AddTagFields(IndexingItemEventArgs e)
 		{
-			Dictionary<string, IEnumerable<object>> values = new Dictionary<string, IEnumerable<object>>();
-			var tagValue = e.ValueSet.GetSingleValue(ExamineFields.Tags);
-			if (tagValue != null)
+			var values = new Dictionary<string, IEnumerable<object>>();
+
+			var tagMultipleValues = e.ValueSet.GetValues(ExamineFields.Tags);
+			if (tagMultipleValues?.Any() == true)
 			{
-				try
+				AddTagsToIndex(tagMultipleValues);
+			}
+			else
+			{
+				var tagSingleValue = e.ValueSet.GetSingleValue(ExamineFields.Tags);
+				if (tagSingleValue != null)
 				{
-					var tags =
-						JsonConvert.DeserializeObject<IEnumerable<string>>(tagValue);
-					if (tags != null)
+					try
 					{
-						values.Add(ExamineFields.Tag, tags.Select(t => t.ToLower()));
+						var tags = JsonConvert.DeserializeObject<IEnumerable<string>>(tagSingleValue);
+						if (tags != null)
+						{
+							AddTagsToIndex(tags);
+						}
+					}
+					catch (JsonReaderException)
+					{
+						// Tags are likely csv rather than JSON
+						AddTagsToIndex(tagSingleValue.Split(","));
 					}
 				}
-				catch (JsonReaderException)
+			}
+
+			return values;
+
+			void AddTagsToIndex(IEnumerable<object> tagObjects)
+			{
+				var tagStrings = tagObjects.Select(t => t?.ToString()?.ToLower()).Where(t => t != null).ToList();
+
+				if (tagStrings.Any())
 				{
-					// Tags are invalid
-					var tags = tagValue.Split(",");
-					values.Add(ExamineFields.Tag, tags.Select(t => t.ToLower()));
+					values.Add(ExamineFields.Tag, tagStrings);
 				}
 			}
-			return values;
 		}
 
 		private Dictionary<string, IEnumerable<object>> AddPathFields(IndexingItemEventArgs e)
