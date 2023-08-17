@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Examine;
+﻿using Examine;
 using Gibe.Pager.Interfaces;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
-using NUnit.Framework;
 using Moq;
-using Gibe.Umbraco.Blog.Repositories;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace Gibe.Umbraco.Blog.Tests
@@ -16,23 +15,20 @@ namespace Gibe.Umbraco.Blog.Tests
 	public class BlogServiceTests
 	{
 		private Mock<IPagerService> _pagerService;
-		private Mock<IBlogContentRepository> _blogContentRepository;
+		private Mock<IBlogPostMapper<BlogModel>> _blogPostMapper;
 
 		[SetUp]
 		public void SetUp()
 		{
 			_pagerService = new Mock<IPagerService>();
-			_blogContentRepository = new Mock<IBlogContentRepository>();
-
-			_blogContentRepository.Setup(r => r.BlogContent(It.IsAny<int>()))
-				.Returns((int id) => Content(id, "blogPost"));
+			_blogPostMapper = new Mock<IBlogPostMapper<BlogModel>>();
 		}
 
 		[Test]
 		public void GetRelatedPosts_Uses_Correct_Filters()
 		{
 			var blogSearch = new FakeBlogSearch(GetSearchResults());
-			var blogService = new BlogService<BlogModel>(_pagerService.Object, blogSearch, _blogContentRepository.Object);
+			var blogService = new BlogService<BlogModel>(_pagerService.Object, blogSearch, _blogPostMapper.Object);
 			var testPost = new BlogModel
 			{
 				Tags = new List<string>
