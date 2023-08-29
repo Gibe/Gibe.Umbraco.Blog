@@ -49,9 +49,9 @@ namespace Gibe.Umbraco.Blog
 
 		public class CurrentUrlService : ICurrentUrlService
 		{
-			private readonly HttpContextAccessor _httpContextAccessor;
+			private readonly IHttpContextAccessor _httpContextAccessor;
 
-			public CurrentUrlService(HttpContextAccessor httpContextAccessor)
+			public CurrentUrlService(IHttpContextAccessor httpContextAccessor)
 			{
 				_httpContextAccessor = httpContextAccessor;
 			}
