@@ -22,6 +22,8 @@ namespace Gibe.Umbraco.Blog.Tests
 		{
 			_pagerService = new Mock<IPagerService>();
 			_blogPostMapper = new Mock<IBlogPostMapper<BlogModel>>();
+			_blogPostMapper.Setup(x => x.ToBlogPosts(It.IsAny<IEnumerable<ISearchResult>>(), It.IsAny<IPublishedValueFallback>()))
+				.Returns((IEnumerable<ISearchResult> results, IPublishedValueFallback fb) => results.Select(x => new BlogModel()));
 		}
 
 		[Test]
