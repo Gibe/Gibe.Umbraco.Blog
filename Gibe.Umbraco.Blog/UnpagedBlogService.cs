@@ -1,8 +1,8 @@
-﻿using Gibe.Umbraco.Blog.Filters;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Sort;
-using System.Collections.Generic;
-using System.Linq;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace Gibe.Umbraco.Blog
@@ -28,10 +28,16 @@ namespace Gibe.Umbraco.Blog
 
 			var results = _blogSearch.Search(filters, sort);
 
+			var skippedPosts = startPost - 1;
+			var blogPosts = results.Skip(skippedPosts).Take(postCount).ToList();
+
+			var totalItemCount = (int)results.TotalItemCount;
+
 			return new UnpagedBlogSearchResults<T>
 			{
-				BlogPosts = _blogPostMapper.ToBlogPosts(results.Skip(startPost - 1).Take(postCount), new NoopPublishedValueFallback()),
-				TotalItemsCount = results.Count()
+				BlogPosts = _blogPostMapper.ToBlogPosts(blogPosts, new NoopPublishedValueFallback()),
+				TotalItemsCount = totalItemCount,
+				IsLastPage = (skippedPosts + blogPosts.Count) >= totalItemCount
 			};
 		}
 	}
@@ -40,5 +46,6 @@ namespace Gibe.Umbraco.Blog
 	{
 		public IEnumerable<T> BlogPosts { get; set; }
 		public int TotalItemsCount { get; set; }
+		public bool IsLastPage { get; set; }
 	}
 }
