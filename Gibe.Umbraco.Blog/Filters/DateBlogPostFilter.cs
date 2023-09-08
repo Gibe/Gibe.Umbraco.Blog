@@ -4,28 +4,30 @@ namespace Gibe.Umbraco.Blog.Filters
 {
 	public class DateBlogPostFilter : IBlogPostFilter
 	{
-		private readonly int _year;
-		private readonly int? _month;
-		private readonly int? _day;
+		public int Year { get; set; }
+		public int? Month { get; set; }
+		public int? Day { get; set; }
+
+		public DateBlogPostFilter() { }
 
 		public DateBlogPostFilter(int year, int? month = null, int? day = null)
 		{
-			_year = year;
-			_month = month;
-			_day = day;
+			Year = year;
+			Month = month;
+			Day = day;
 		}
-		
+
 		public IBooleanOperation GetCriteria(IQuery query)
 		{
-			var output = query.Field(ExamineFields.PostDateYear, _year.ToString("00"));
+			var output = query.Field(ExamineFields.PostDateYear, Year.ToString("00"));
 
-			if (_month.HasValue)
+			if (Month.HasValue)
 			{
-				output = output.And().Field(ExamineFields.PostDateMonth, _month.Value.ToString("00"));
+				output = output.And().Field(ExamineFields.PostDateMonth, Month.Value.ToString("00"));
 			}
-			if (_day.HasValue)
+			if (Day.HasValue)
 			{
-				output = output.And().Field(ExamineFields.PostDateDay, _day.Value.ToString("00"));
+				output = output.And().Field(ExamineFields.PostDateDay, Day.Value.ToString("00"));
 			}
 			return output;
 		}

@@ -4,16 +4,18 @@ namespace Gibe.Umbraco.Blog.Filters
 {
 	public class SearchTermBlogPostFilter : IBlogPostFilter
 	{
-		private readonly string _searchTerm;
+		public string SearchTerm { get; set; }
+
+		public SearchTermBlogPostFilter() { }
 
 		public SearchTermBlogPostFilter(string searchTerm)
 		{
-			_searchTerm = searchTerm;
+			SearchTerm = searchTerm;
 		}
 
 		public IBooleanOperation GetCriteria(IQuery query)
 		{
-			return query.Field(ExamineFields.BodyText, _searchTerm);
+			return query.Field(ExamineFields.BodyText, SearchTerm);
 		}
 	}
 }

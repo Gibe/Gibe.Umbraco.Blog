@@ -6,6 +6,10 @@ namespace Gibe.Umbraco.Blog.Filters
 {
 	public class AtLeastOneMatchingTagFilter : IBlogPostFilter
 	{
+		public IEnumerable<string> Tags { get; }
+
+		public AtLeastOneMatchingTagFilter() { }
+
 		public AtLeastOneMatchingTagFilter(IEnumerable<string> tags)
 		{
 			Tags = tags?.Select(t => t.ToLower()).ToList(); ;
@@ -15,7 +19,5 @@ namespace Gibe.Umbraco.Blog.Filters
 		{
 			return query.GroupedOr(new[] { ExamineFields.Tag }, Tags.ToArray());
 		}
-
-		public IEnumerable<string> Tags { get; }
 	}
 }

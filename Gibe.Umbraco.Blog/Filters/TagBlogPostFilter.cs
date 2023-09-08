@@ -4,16 +4,18 @@ namespace Gibe.Umbraco.Blog.Filters
 {
 	public class TagBlogPostFilter : IBlogPostFilter
 	{
-		private readonly string _tag;
+		public string Tag { get; set; }
+
+		public TagBlogPostFilter() { }
 
 		public TagBlogPostFilter(string tag)
 		{
-			_tag = tag;
+			Tag = tag;
 		}
 
 		public IBooleanOperation GetCriteria(IQuery query)
 		{
-			return query.ManagedQuery(_tag.ToLower(), new[] {ExamineFields.Tag});
-		}		
+			return query.ManagedQuery(Tag.ToLower(), new[] { ExamineFields.Tag });
+		}
 	}
 }

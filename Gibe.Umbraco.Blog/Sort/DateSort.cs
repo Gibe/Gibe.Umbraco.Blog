@@ -4,16 +4,18 @@ namespace Gibe.Umbraco.Blog.Sort
 {
 	public class DateSort : ISort
 	{
-		private readonly bool _descending;
+		public bool Descending { get; set; }
+
+		public DateSort() { }
 
 		public DateSort(bool descending = true)
 		{
-			_descending = descending;
+			Descending = descending;
 		}
 
 		public IOrdering GetCriteria(IBooleanOperation query)
 		{
-			if (_descending)
+			if (Descending)
 			{
 				return query.And().All().OrderByDescending(new SortableField(ExamineFields.PostDate, SortType.Long));
 			}

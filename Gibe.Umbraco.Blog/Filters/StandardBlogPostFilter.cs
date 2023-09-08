@@ -4,18 +4,20 @@ namespace Gibe.Umbraco.Blog.Filters
 {
 	public class StandardBlogPostFilter : IBlogPostFilter
 	{
-		private readonly string _propertyName;
-		private readonly string _propertyValue;
+		public string PropertyName { get; set; }
+		public string PropertyValue { get; set; }
+
+		public StandardBlogPostFilter() { }
 
 		public StandardBlogPostFilter(string propertyName, string value)
 		{
-			_propertyName = propertyName;
-			_propertyValue = value;
+			PropertyName = propertyName;
+			PropertyValue = value;
 		}
-		
+
 		public IBooleanOperation GetCriteria(IQuery query)
 		{
-			return query.Field(_propertyName, _propertyValue);
+			return query.Field(PropertyName, PropertyValue);
 		}
 	}
 }
