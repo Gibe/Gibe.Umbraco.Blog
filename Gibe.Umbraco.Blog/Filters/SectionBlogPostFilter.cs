@@ -6,8 +6,6 @@ namespace Gibe.Umbraco.Blog.Filters
 	{
 		public int SectionNodeId { get; set; }
 
-		public SectionBlogPostFilter() { }
-
 		public SectionBlogPostFilter(int sectionNodeId)
 		{
 			SectionNodeId = sectionNodeId;

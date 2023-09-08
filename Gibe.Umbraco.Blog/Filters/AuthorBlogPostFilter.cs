@@ -6,8 +6,6 @@ namespace Gibe.Umbraco.Blog.Filters
 	{
 		public string Author { get; set; }
 
-		public AuthorBlogPostFilter() { }
-
 		public AuthorBlogPostFilter(string author)
 		{
 			Author = author;

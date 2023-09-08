@@ -6,8 +6,6 @@ namespace Gibe.Umbraco.Blog.Filters
 	{
 		public string Tag { get; set; }
 
-		public TagBlogPostFilter() { }
-
 		public TagBlogPostFilter(string tag)
 		{
 			Tag = tag;

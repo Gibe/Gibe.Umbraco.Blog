@@ -6,8 +6,6 @@ namespace Gibe.Umbraco.Blog.Filters
 	{
 		public string SearchTerm { get; set; }
 
-		public SearchTermBlogPostFilter() { }
-
 		public SearchTermBlogPostFilter(string searchTerm)
 		{
 			SearchTerm = searchTerm;

@@ -8,8 +8,6 @@ namespace Gibe.Umbraco.Blog.Filters
 	{
 		public IEnumerable<string> Tags { get; }
 
-		public AtLeastOneMatchingTagFilter() { }
-
 		public AtLeastOneMatchingTagFilter(IEnumerable<string> tags)
 		{
 			Tags = tags?.Select(t => t.ToLower()).ToList(); ;

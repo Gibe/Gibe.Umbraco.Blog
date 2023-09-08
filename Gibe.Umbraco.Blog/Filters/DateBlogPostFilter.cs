@@ -8,8 +8,6 @@ namespace Gibe.Umbraco.Blog.Filters
 		public int? Month { get; set; }
 		public int? Day { get; set; }
 
-		public DateBlogPostFilter() { }
-
 		public DateBlogPostFilter(int year, int? month = null, int? day = null)
 		{
 			Year = year;
