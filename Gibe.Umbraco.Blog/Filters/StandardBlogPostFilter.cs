@@ -4,8 +4,8 @@ namespace Gibe.Umbraco.Blog.Filters
 {
 	public class StandardBlogPostFilter : IBlogPostFilter
 	{
-		public string PropertyName { get; set; }
-		public string PropertyValue { get; set; }
+		public string PropertyName { get; }
+		public string PropertyValue { get; }
 
 		public StandardBlogPostFilter(string propertyName, string value)
 		{

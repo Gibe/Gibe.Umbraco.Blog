@@ -4,7 +4,7 @@ namespace Gibe.Umbraco.Blog.Sort
 {
 	public class DateSort : ISort
 	{
-		public bool Descending { get; set; }
+		public bool Descending { get; }
 
 		public DateSort(bool descending = true)
 		{

@@ -4,9 +4,9 @@ namespace Gibe.Umbraco.Blog.Filters
 {
 	public class DateBlogPostFilter : IBlogPostFilter
 	{
-		public int Year { get; set; }
-		public int? Month { get; set; }
-		public int? Day { get; set; }
+		public int Year { get; }
+		public int? Month { get; }
+		public int? Day { get; }
 
 		public DateBlogPostFilter(int year, int? month = null, int? day = null)
 		{

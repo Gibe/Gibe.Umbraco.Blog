@@ -4,7 +4,7 @@ namespace Gibe.Umbraco.Blog.Filters
 {
 	public class AuthorBlogPostFilter : IBlogPostFilter
 	{
-		public string Author { get; set; }
+		public string Author { get; }
 
 		public AuthorBlogPostFilter(string author)
 		{
