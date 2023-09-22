@@ -17,6 +17,7 @@ namespace Gibe.Umbraco.Blog.Models
 		public string IndexName => "ExternalIndex";
 
 		public string BlogPostDocumentTypeAlias => _settingsService.GetSetting("Gibe.Umbraco.Blog.BlogPostDocumentTypeAlias", "blogPost");
+		public string BlogSectionDocumentTypeAlias => _settingsService.GetSetting("Gibe.Umbraco.Blog.BlogSectionDocumentTypeAlias", "blogSection");
 
 		public string UserPickerPropertyEditorAlias => _settingsService.GetSetting("Gibe.Umbraco.Blog.UserPickerPropertyEditorAlias", "Umbraco.UserPicker");
 
@@ -29,6 +30,7 @@ public class HardCodedBlogSettings : IBlogSettings
 	public string IndexName => "ExternalIndex";
 
 	public string BlogPostDocumentTypeAlias => "blogPost";
+	public string BlogSectionDocumentTypeAlias => "blogSection";
 
 	public string UserPickerPropertyEditorAlias => "Umbraco.UserPicker";
 

@@ -63,8 +63,7 @@ namespace Gibe.Umbraco.Blog
 			{
 				if (skip.HasValue)
 				{
-					var options = new QueryOptions(skip.Value, take);
-					return operation.Execute(options);
+					return operation.Execute(QueryOptions.SkipTake(skip.Value, take));
 				}
 				return operation.Execute();
 			}

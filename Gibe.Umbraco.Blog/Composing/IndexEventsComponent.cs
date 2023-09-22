@@ -115,7 +115,7 @@ namespace Gibe.Umbraco.Blog.Composing
 			values.MergeLeft(AddPostDateFields(e));
 			values.MergeLeft(AddAuthorFields(e));
 			values.MergeLeft(AddTagFields(e));
-			values.MergeLeft(AddPathFields(e));
+			values.MergeLeft(AddPathFields(e), overwrite: true);
 			values.MergeLeft(AddCategoryFields(e));
 			e.SetValues(values);
 		}
@@ -133,12 +133,21 @@ namespace Gibe.Umbraco.Blog.Composing
 
 		private Dictionary<string, IEnumerable<object>> AddAuthorFields(IndexingItemEventArgs e)
 		{
-			var authorId = e.ValueSet.GetSingleValue<int?>(ExamineFields.PostAuthor);
+			var authorIdString = e.ValueSet.GetSingleValue(ExamineFields.PostAuthor);
+			var authorName = string.Empty;
+			if(int.TryParse(authorIdString, out var authorId))
+			{
+				authorName = GetUserName(authorId);
+			}
+			else if (UdiParser.TryParse(authorIdString, out var authorUid))
+			{
+				authorName = GetAuthorName(authorUid);
+			}
 			Dictionary<string, IEnumerable<object>> values = new Dictionary<string, IEnumerable<object>>();
 
-			if (authorId.HasValue)
+			if (!string.IsNullOrEmpty(authorName))
 			{
-				values.Add(ExamineFields.PostAuthorName, new[] { GetUserName(authorId.Value).ToLower()});
+				values.Add(ExamineFields.PostAuthorName, new[] { authorName.ToLower()});
 			}
 
 			return values;
@@ -146,27 +155,45 @@ namespace Gibe.Umbraco.Blog.Composing
 
 		private Dictionary<string, IEnumerable<object>> AddTagFields(IndexingItemEventArgs e)
 		{
-			Dictionary<string, IEnumerable<object>> values = new Dictionary<string, IEnumerable<object>>();
-			var tagValue = e.ValueSet.GetSingleValue(ExamineFields.Tags);
-			if (tagValue != null)
+			var values = new Dictionary<string, IEnumerable<object>>();
+
+			var tagMultipleValues = e.ValueSet.GetValues(ExamineFields.Tags);
+			if (tagMultipleValues?.Any() == true)
 			{
-				try
+				AddTagsToIndex(tagMultipleValues);
+			}
+			else
+			{
+				var tagSingleValue = e.ValueSet.GetSingleValue(ExamineFields.Tags);
+				if (tagSingleValue != null)
 				{
-					var tags =
-						JsonConvert.DeserializeObject<IEnumerable<string>>(tagValue);
-					if (tags != null)
+					try
 					{
-						values.Add(ExamineFields.Tag, tags.Select(t => t.ToLower()));
+						var tags = JsonConvert.DeserializeObject<IEnumerable<string>>(tagSingleValue);
+						if (tags != null)
+						{
+							AddTagsToIndex(tags);
+						}
+					}
+					catch (JsonReaderException)
+					{
+						// Tags are likely csv rather than JSON
+						AddTagsToIndex(tagSingleValue.Split(","));
 					}
 				}
-				catch (JsonReaderException)
+			}
+
+			return values;
+
+			void AddTagsToIndex(IEnumerable<object> tagObjects)
+			{
+				var tagStrings = tagObjects.Select(t => t?.ToString()?.ToLower()).Where(t => t != null).ToList();
+
+				if (tagStrings.Any())
 				{
-					// Tags are invalid
-					var tags = tagValue.Split(",");
-					values.Add(ExamineFields.Tag, tags.Select(t => t.ToLower()));
+					values.Add(ExamineFields.Tag, tagStrings);
 				}
 			}
-			return values;
 		}
 
 		private Dictionary<string, IEnumerable<object>> AddPathFields(IndexingItemEventArgs e)
@@ -204,7 +231,15 @@ namespace Gibe.Umbraco.Blog.Composing
 
 		private string GetUserName(int userId)
 		{
-			return _userService.GetUserById(userId).Name;
+			return _userService.GetUserById(userId)?.Name ?? string.Empty;
+		}
+
+		private string GetAuthorName(Udi authorUid)
+		{
+			using (var context = _umbracoContextFactory.EnsureUmbracoContext())
+			{
+				return context.UmbracoContext.Content.GetById(authorUid)?.Name ?? string.Empty;
+			}
 		}
 
 		public void Terminate()

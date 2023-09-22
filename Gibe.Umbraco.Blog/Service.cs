@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
+using Umbraco.Cms.Core.Logging.Viewer;
 using Umbraco.Extensions;
 
 namespace Gibe.Umbraco.Blog
@@ -24,6 +25,8 @@ namespace Gibe.Umbraco.Blog
 			services.AddTransient<IPagerService, PagerService>();
 			services.AddTransient<IBlogSettings, HardCodedBlogSettings>();
 			services.AddTransient<IBlogService<T>, BlogService<T>>();
+			services.AddTransient<IUnpagedBlogService<T>, UnpagedBlogService<T>>();
+			services.AddTransient<IBlogPostMapper<T>, BlogPostMapper<T>>();
 
 			services.AddUnique<IBlogContentRepository, BlogContentRepository>();
 			services.AddUnique<IBlogArchive, BlogArchive>();
@@ -46,9 +49,9 @@ namespace Gibe.Umbraco.Blog
 
 		public class CurrentUrlService : ICurrentUrlService
 		{
-			private readonly HttpContextAccessor _httpContextAccessor;
+			private readonly IHttpContextAccessor _httpContextAccessor;
 
-			public CurrentUrlService(HttpContextAccessor httpContextAccessor)
+			public CurrentUrlService(IHttpContextAccessor httpContextAccessor)
 			{
 				_httpContextAccessor = httpContextAccessor;
 			}
