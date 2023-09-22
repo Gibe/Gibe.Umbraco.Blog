@@ -14,7 +14,7 @@ namespace Gibe.Umbraco.Blog.Filters
 
 		public IBooleanOperation GetCriteria(IQuery query)
 		{
-			return query.Field(ExamineFields.BodyText, SearchTerm.Fuzzy());
+			return query.Field(ExamineFields.BodyText, SearchTerm.MultipleCharacterWildcard());
 		}
 	}
 }
