@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Examine;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Wrappers;
-using Umbraco.Core;
 using Umbraco.Examine;
 using Umbraco.Web;
 
@@ -25,7 +25,7 @@ namespace Gibe.Umbraco.Blog
 		public IEnumerable<T> All()
 		{
 			var results = SearchForBlogSections();
-			return results.Select(r => Activator.Activate<T>(_umbracoContextAccessor.UmbracoContext.Content.GetById(GuidUdi.Parse(r.Id))));
+			return results.Select(r => Activator.Activate<T>(_umbracoContextAccessor.UmbracoContext.Content.GetById(Int32.Parse(r.Id))));
 		}
 		
 		private ISearchResults SearchForBlogSections()
