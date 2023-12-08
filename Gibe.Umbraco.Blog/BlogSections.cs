@@ -3,6 +3,7 @@ using System.Linq;
 using Examine;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Wrappers;
+using Umbraco.Core;
 using Umbraco.Examine;
 using Umbraco.Web;
 
@@ -10,13 +11,13 @@ namespace Gibe.Umbraco.Blog
 {
 	public class BlogSections<T> : IBlogSections<T> where T : class
 	{
-		private readonly UmbracoHelper _umbracoHelper;
+		private readonly IUmbracoContextAccessor _umbracoContextAccessor;
 		private readonly ISearchIndex _searchIndex;
 		private readonly IBlogSettings _blogSettings;
 
-		public BlogSections(UmbracoHelper umbracoHelper, ISearchIndex searchIndex, IBlogSettings blogSettings)
+		public BlogSections(IUmbracoContextAccessor umbracoContextAccessor, ISearchIndex searchIndex, IBlogSettings blogSettings)
 		{
-			_umbracoHelper = umbracoHelper;
+			_umbracoContextAccessor = umbracoContextAccessor;
 			_searchIndex = searchIndex;
 			_blogSettings = blogSettings;
 		}
@@ -24,7 +25,7 @@ namespace Gibe.Umbraco.Blog
 		public IEnumerable<T> All()
 		{
 			var results = SearchForBlogSections();
-			return results.Select(r => Activator.Activate<T>(_umbracoHelper.Content(r.Id)));
+			return results.Select(r => Activator.Activate<T>(_umbracoContextAccessor.UmbracoContext.Content.GetById(GuidUdi.Parse(r.Id))));
 		}
 		
 		private ISearchResults SearchForBlogSections()
