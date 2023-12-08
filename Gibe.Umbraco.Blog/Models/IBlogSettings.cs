@@ -4,6 +4,8 @@
 	{
 		string IndexName { get; }
 
+		string BlogSectionTypeAlias { get; }
+
 		string BlogPostDocumentTypeAlias { get; }
 
 		string UserPickerPropertyEditorAlias { get; }

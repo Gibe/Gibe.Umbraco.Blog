@@ -1,35 +1,36 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Examine;
+using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Wrappers;
-using Gibe.UmbracoWrappers;
 using Umbraco.Examine;
+using Umbraco.Web;
 
 namespace Gibe.Umbraco.Blog
 {
 	public class BlogSections<T> : IBlogSections<T> where T : class
 	{
-		private const string BlogSectionDocType = ""; // TODO
-		private readonly IUmbracoWrapper _umbracoWrapper;
+		private readonly UmbracoHelper _umbracoHelper;
 		private readonly ISearchIndex _searchIndex;
+		private readonly IBlogSettings _blogSettings;
 
-		public BlogSections(IUmbracoWrapper umbracoWrapper, ISearchIndex searchIndex)
+		public BlogSections(UmbracoHelper umbracoHelper, ISearchIndex searchIndex, IBlogSettings blogSettings)
 		{
-			_umbracoWrapper = umbracoWrapper;
+			_umbracoHelper = umbracoHelper;
 			_searchIndex = searchIndex;
+			_blogSettings = blogSettings;
 		}
 
 		public IEnumerable<T> All()
 		{
 			var results = SearchForBlogSections();
-			return Enumerable.Empty<T>();
-			//return results.Select(r => Activator.Activate<T>(_umbracoWrapper.TypedContent(r.Id)));
+			return results.Select(r => Activator.Activate<T>(_umbracoHelper.Content(r.Id)));
 		}
 		
 		private ISearchResults SearchForBlogSections()
 		{
 			var query = _searchIndex.CreateSearchQuery()
-				.NodeTypeAlias(BlogSectionDocType);
+				.NodeTypeAlias(_blogSettings.BlogSectionTypeAlias);
 
 			return query.Execute();
 		}
