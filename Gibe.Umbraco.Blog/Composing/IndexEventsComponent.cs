@@ -14,8 +14,6 @@ using Examine.LuceneEngine.Indexing;
 using Umbraco.Web;
 using Umbraco.Core;
 using Examine.LuceneEngine.Providers;
-using Examine.Search;
-using Lucene.Net.Analysis;
 
 namespace Gibe.Umbraco.Blog.Composing
 {
@@ -48,9 +46,9 @@ namespace Gibe.Umbraco.Blog.Composing
 
 			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDate, FieldDefinitionTypes.DateTime));
 			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateSort, FieldDefinitionTypes.Long));
-			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateYear, FieldDefinitionTypes.DateYear));
-			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateMonth, FieldDefinitionTypes.DateMonth));
-			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateDay, FieldDefinitionTypes.DateDay));
+			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateYear, FieldDefinitionTypes.Raw));
+			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateMonth, FieldDefinitionTypes.Raw));
+			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.PostDateDay, FieldDefinitionTypes.Raw));
 			((LuceneIndex)index).FieldValueTypeCollection.ValueTypeFactories.TryAdd(ExamineFields.Tag,
 				name => new RawStringType(ExamineFields.Tag, true));
 			((LuceneIndex)index).FieldDefinitionCollection.AddOrUpdate(new FieldDefinition(ExamineFields.Tag, ExamineFields.Tag));
@@ -84,9 +82,9 @@ namespace Gibe.Umbraco.Blog.Composing
 		{
 			var postDate = document.GetSingleValue<DateTime>(ExamineFields.PostDate);
 			
-			document.TryAdd(ExamineFields.PostDateYear, postDate);
-			document.TryAdd(ExamineFields.PostDateMonth, postDate);
-			document.TryAdd(ExamineFields.PostDateDay, postDate);
+			document.TryAdd(ExamineFields.PostDateYear, postDate.Year.ToString("00"));
+			document.TryAdd(ExamineFields.PostDateMonth, postDate.Month.ToString("00"));
+			document.TryAdd(ExamineFields.PostDateDay, postDate.Day.ToString("00"));
 			document.TryAdd(ExamineFields.PostDateSort, postDate.Ticks);
 		}
 

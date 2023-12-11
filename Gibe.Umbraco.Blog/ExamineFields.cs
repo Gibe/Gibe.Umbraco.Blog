@@ -5,17 +5,18 @@
 		public static string Tag => "tag";
 
 		public static string PostDate => "postDate";
-		public static string PostDateSort => "postDateSort";
 
-		public static string PostDateYear => "postDateYear";
+		public static string PostDateSort => "blogPostDateSort";
 
-		public static string PostDateMonth => "postDateMonth";
+		public static string PostDateYear => "blogPostDateYear";
 
-		public static string PostDateDay => "postDateDay";
+		public static string PostDateMonth => "blogPostDateMonth";
 
-		public static string PostAuthor => "postAuthor";
+		public static string PostDateDay => "blogPostDateDay";
 
-		public static string PostAuthorName => "postAuthorName";
+		public static string PostAuthor => "blogPostAuthor";
+
+		public static string PostAuthorName => "blogPostAuthorName";
 
 		public static string Path => "path";
 
