@@ -19,15 +19,15 @@ namespace Gibe.Umbraco.Blog.Composing
 
 			composition.Register<IPagerService, PagerService>();
 			composition.Register<ISettingsService, SettingsService>();
-			composition.RegisterUnique<IBlogSettings, BlogConfigSettings>();
+			composition.Register<IBlogSettings, BlogConfigSettings>();
 
-			composition.RegisterUnique<IBlogContentRepository, BlogContentRepository>();
-			composition.RegisterUnique<IBlogArchive, BlogArchive>();
-			composition.RegisterUnique<IBlogAuthors, BlogAuthors>();
-			composition.RegisterUnique<IBlogSearch, BlogSearch>();
-			composition.RegisterUnique<IBlogTags, BlogTags>();	
-			composition.RegisterUnique<IBlogCategories, BlogCategories>();
-			composition.RegisterUnique<ISearchIndex, NewsIndex>();
+			composition.Register<IBlogContentRepository, BlogContentRepository>();
+			composition.Register<IBlogArchive, BlogArchive>();
+			composition.Register<IBlogAuthors, BlogAuthors>();
+			composition.Register<IBlogSearch, BlogSearch>();
+			composition.Register<IBlogTags, BlogTags>();	
+			composition.Register<IBlogCategories, BlogCategories>();
+			composition.Register<ISearchIndex, NewsIndex>();
 		}
 	}
 }
