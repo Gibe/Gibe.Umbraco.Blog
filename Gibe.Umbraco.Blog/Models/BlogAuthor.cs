@@ -1,8 +1,4 @@
-﻿#if NET6
-using Umbraco.Cms.Core.Models.Membership;
-#elif NET472
-using Umbraco.Core.Models.Membership;
-#endif
+﻿using Umbraco.Cms.Core.Models.Membership;
 
 namespace Gibe.Umbraco.Blog.Models
 {

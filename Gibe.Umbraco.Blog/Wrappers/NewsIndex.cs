@@ -20,7 +20,7 @@ namespace Gibe.Umbraco.Blog.Wrappers
 		public IQuery CreateSearchQuery()
 		{
 			return GetIndex()
-				.GetSearcher()
+				.Searcher
 				.CreateQuery();
 		}
 
