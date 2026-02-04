@@ -1,0 +1,15 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Admin" />
+    <BuildType Name="Debug" />
+    <BuildType Name="Release" />
+  </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path="Readme.md" />
+    <File Path="VERSION.txt" />
+  </Folder>
+  <Project Path="Gibe.Umbraco.Blog.Tests/Gibe.Umbraco.Blog.Tests.csproj">
+    <BuildType Solution="Admin|*" Project="Release" />
+  </Project>
+  <Project Path="Gibe.Umbraco.Blog/Gibe.Umbraco.Blog.csproj" />
+</Solution>
