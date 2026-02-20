@@ -5,6 +5,7 @@ using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Sort;
 using Gibe.Umbraco.Blog.Wrappers;
+using Microsoft.Extensions.Options;
 using StackExchange.Profiling;
 using Umbraco.Extensions;
 
@@ -13,13 +14,13 @@ namespace Gibe.Umbraco.Blog
 	public class BlogSearch : IBlogSearch
 	{
 		private readonly ISearchIndex _newsIndex;
-		private readonly IBlogSettings _blogSettings;
+		private readonly BlogSettings _blogSettings;
 
 		public BlogSearch(ISearchIndex newsIndex,
-			IBlogSettings blogSettings)
+			IOptions<BlogSettings> blogSettings)
 		{
 			_newsIndex = newsIndex;
-			_blogSettings = blogSettings;
+			_blogSettings = blogSettings.Value;
 		}
 		
 		public ISearchResults Search(IBlogPostFilter filter, ISort sort)
