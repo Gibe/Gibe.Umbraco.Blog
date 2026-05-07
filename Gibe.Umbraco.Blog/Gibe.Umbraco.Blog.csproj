@@ -17,10 +17,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Umbraco.Cms.Web.Website" Version="13.13.0" />
+		<PackageReference Include="Umbraco.Cms.Web.Website" Version="13.14.0" />
+		<PackageReference Include="Gibe.Pager" Version="2.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Gibe.Pager" Version="2.0.0" />
+	  <ProjectReference Include="..\Gibe.Umbraco.Blog.Core\Gibe.Umbraco.Blog.Core.csproj" />
 	</ItemGroup>
 </Project>
