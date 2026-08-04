@@ -1,11 +1,5 @@
-﻿#if NET6
-using Umbraco.Cms.Core.Models.PublishedContent;
+﻿using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
-#elif NET472
-using Umbraco.Core.Models.PublishedContent;
-using Umbraco.Web;
-#endif
-
 
 
 namespace Gibe.Umbraco.Blog.Repositories

@@ -1,5 +1,7 @@
 ﻿using Examine;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Gibe.Umbraco.Blog.Extensions;
 using Gibe.Umbraco.Blog.Exceptions;
 using Gibe.Umbraco.Blog.Models;
@@ -70,7 +72,7 @@ namespace Gibe.Umbraco.Blog.Composing
 		}
 	}
 
-	public class IndexEventsComponent : IComponent
+	public class IndexEventsComponent : IAsyncComponent
 	{
 		private readonly IExamineManager _examineManager;
 		private readonly IUserService _userService;
@@ -88,7 +90,7 @@ namespace Gibe.Umbraco.Blog.Composing
 			_umbracoContextFactory = umbracoContextFactory;
 		}
 
-		public void Initialize()
+		public Task InitializeAsync(bool isRestarting, CancellationToken cancellationToken)
 		{
 			_examineManager.TryGetIndex(_blogSettings.IndexName, out var index);
 
@@ -98,6 +100,8 @@ namespace Gibe.Umbraco.Blog.Composing
 			}
 
 			((BaseIndexProvider)index).TransformingIndexValues += ExternalIndexTransformingIndexValues;
+
+			return Task.CompletedTask;
 		}
 
 		private void ExternalIndexTransformingIndexValues(object sender, IndexingItemEventArgs e)
@@ -219,8 +223,8 @@ namespace Gibe.Umbraco.Blog.Composing
 					return values;
 				}
 
-				var udi = UdiParser.Parse(categoryId);
-				var category = context.UmbracoContext.Content.GetById(udi);
+				var udi = (GuidUdi)UdiParser.Parse(categoryId);
+				var category = context.UmbracoContext.Content.GetById(udi.Guid);
 				if (category != null)
 				{
 					values.Add(ExamineFields.CategoryName, new[] { category.Name });
@@ -238,13 +242,13 @@ namespace Gibe.Umbraco.Blog.Composing
 		{
 			using (var context = _umbracoContextFactory.EnsureUmbracoContext())
 			{
-				return context.UmbracoContext.Content.GetById(authorUid)?.Name ?? string.Empty;
+				return context.UmbracoContext.Content.GetById(((GuidUdi)authorUid).Guid)?.Name ?? string.Empty;
 			}
 		}
 
-		public void Terminate()
+		public Task TerminateAsync(bool isRestarting, CancellationToken cancellationToken)
 		{
-
+			return Task.CompletedTask;
 		}
 	}
 }

@@ -28,7 +28,7 @@ namespace Gibe.Umbraco.Blog.Wrappers
 		public IQuery CreateSearchQuery()
 		{
 			return GetIndex()
-				.GetSearcher()
+				.Searcher
 				.CreateQuery();
 		}
 
@@ -44,14 +44,4 @@ namespace Gibe.Umbraco.Blog.Wrappers
 				.First();
 		}
 	}
-
-#if NET6
-	public static class IndexExtensions
-	{
-		public  static ISearcher GetSearcher(this IIndex index)
-		{
-			return index.Searcher;
-		}
-	}
-#endif
 }
