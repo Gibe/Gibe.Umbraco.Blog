@@ -172,7 +172,18 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddGibeBlog<BlogPost${GT}();}"
 printf '%s\n' "$PROGRAM_CONTENT" > "$PROGRAM_PATH"
 
-# Step 6: Copy the checked-in uSync seed content (doctypes + demo blog posts) into the site,
+# Step 6: Copy the demo Controllers/Views/CSS (plain MVC routes for /, /blog and /blog/{id} -
+# these render via IBlogService<T> directly rather than Umbraco content templates).
+echo "Copying demo templates and CSS..."
+DEMO_TEMPLATES_DIR="scripts/demo-templates"
+mkdir -p "${DEMO_SITE_DIR}/Controllers"
+cp -r "$DEMO_TEMPLATES_DIR"/Controllers/* "${DEMO_SITE_DIR}/Controllers"/
+mkdir -p "${DEMO_SITE_DIR}/Views/Demo"
+cp -r "$DEMO_TEMPLATES_DIR"/Views/Demo/* "${DEMO_SITE_DIR}/Views/Demo"/
+mkdir -p "${DEMO_SITE_DIR}/wwwroot/css"
+cp -r "$DEMO_TEMPLATES_DIR"/wwwroot/css/* "${DEMO_SITE_DIR}/wwwroot/css"/
+
+# Step 7: Copy the checked-in uSync seed content (doctypes + demo blog posts) into the site,
 # and ask uSync to import it on startup so the demo site boots with content already in place.
 echo "Copying uSync seed content..."
 SEED_SOURCE="${USYNC_SEED_DIR}/${USYNC_VERSION_FOLDER}"
@@ -212,7 +223,7 @@ JSON_EOF
     mv "${DEV_SETTINGS_PATH}.tmp" "$DEV_SETTINGS_PATH"
 fi
 
-# Step 7: Create unified solution
+# Step 8: Create unified solution
 echo "Creating unified solution..."
 dotnet new sln -n "$SOLUTION_NAME" --force
 dotnet sln "${SOLUTION_NAME}.slnx" add "$LIBRARY_PROJECT" --solution-folder "Library"

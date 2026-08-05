@@ -36,3 +36,11 @@ scripts/install-demo-site.ps1
 ```
 
 This creates `demo/Gibe.Umbraco.Blog.DemoSite` plus a `Gibe.Umbraco.Blog.local.slnx` solution referencing both the library and the demo site. Open the solution, build, and run - uSync is configured to import the seed content at startup. If it doesn't appear, log into `/umbraco` and run the import manually from the uSync dashboard. Login is `admin@example.com` / `password1234`.
+
+The demo site also ships a handful of test pages (`scripts/demo-templates`) that exercise `IBlogService<T>` directly via plain MVC routes rather than Umbraco content templates:
+
+| Route            | Purpose                                                          |
+|-------------------|-------------------------------------------------------------------|
+| `/`                | Homepage listing the 3 most recent posts                          |
+| `/blog`            | All posts, 5 per page, with tag/category filters (`?tag=`, `?category=`) |
+| `/blog/{id}`       | A single blog post                                                 |

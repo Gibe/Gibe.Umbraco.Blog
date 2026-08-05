@@ -149,7 +149,18 @@ $programContent = $programContent -replace
     "using Gibe.Umbraco.Blog;`r`nusing Gibe.Umbraco.Blog.DemoSite.Models;`r`n`r`n`$1`r`n`r`nbuilder.Services.AddGibeBlog<BlogPost>();"
 $programContent | Out-File -FilePath $programPath -Encoding utf8 -Force
 
-# Step 6: Copy the checked-in uSync seed content (doctypes + demo blog posts) into the site,
+# Step 6: Copy the demo Controllers/Views/CSS (plain MVC routes for /, /blog and /blog/{id} -
+# these render via IBlogService<T> directly rather than Umbraco content templates).
+Write-Host "Copying demo templates and CSS..." -ForegroundColor Green
+$demoTemplatesDir = "scripts\demo-templates"
+New-Item -ItemType Directory -Path "$DemoSiteDir\Controllers" -Force | Out-Null
+Copy-Item -Path "$demoTemplatesDir\Controllers\*" -Destination "$DemoSiteDir\Controllers" -Recurse -Force
+New-Item -ItemType Directory -Path "$DemoSiteDir\Views\Demo" -Force | Out-Null
+Copy-Item -Path "$demoTemplatesDir\Views\Demo\*" -Destination "$DemoSiteDir\Views\Demo" -Recurse -Force
+New-Item -ItemType Directory -Path "$DemoSiteDir\wwwroot\css" -Force | Out-Null
+Copy-Item -Path "$demoTemplatesDir\wwwroot\css\*" -Destination "$DemoSiteDir\wwwroot\css" -Recurse -Force
+
+# Step 7: Copy the checked-in uSync seed content (doctypes + demo blog posts) into the site,
 # and ask uSync to import it on startup so the demo site boots with content already in place.
 Write-Host "Copying uSync seed content..." -ForegroundColor Green
 $seedSource = Join-Path $USyncSeedDir $USyncVersionFolder
@@ -172,7 +183,7 @@ $uSyncSettings = [PSCustomObject]@{
 $devSettings | Add-Member -NotePropertyName "uSync" -NotePropertyValue $uSyncSettings -Force
 $devSettings | ConvertTo-Json -Depth 10 | Out-File -FilePath $devSettingsPath -Encoding utf8 -Force
 
-# Step 7: Create unified solution
+# Step 8: Create unified solution
 Write-Host "Creating unified solution..." -ForegroundColor Green
 dotnet new sln -n $SolutionName --force
 dotnet sln "$SolutionName.slnx" add $LibraryProject --solution-folder "Library"

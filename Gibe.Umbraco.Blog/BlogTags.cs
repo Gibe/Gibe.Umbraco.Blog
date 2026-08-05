@@ -26,7 +26,7 @@ namespace Gibe.Umbraco.Blog
 			var posts = _blogSearch.Search(new SectionBlogPostFilter(blogRoot.Id ), new DateSort());
 
 			var applicablePosts = posts.Where(post => post.Values.ContainsKey($"{_propertyName}") && !string.IsNullOrEmpty(post.Values[$"{_propertyName}"]))
-				.SelectMany(post => JsonConvert.DeserializeObject<IEnumerable<string>>(post.Values[$"{_propertyName}"]));
+				.SelectMany(post => ParseTags(post.Values[$"{_propertyName}"]));
 
 			foreach (var tag in applicablePosts) // TODO not hard coded
 			{
@@ -40,6 +40,19 @@ namespace Gibe.Umbraco.Blog
 				}
 			}
 			return allTags.Values;
+		}
+
+		private static IEnumerable<string> ParseTags(string rawValue)
+		{
+			try
+			{
+				return JsonConvert.DeserializeObject<IEnumerable<string>>(rawValue) ?? Enumerable.Empty<string>();
+			}
+			catch (JsonReaderException)
+			{
+				// Tags are likely csv rather than JSON
+				return rawValue.Split(',');
+			}
 		}
 	}
 }

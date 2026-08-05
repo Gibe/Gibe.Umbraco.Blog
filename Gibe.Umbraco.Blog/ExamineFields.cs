@@ -18,7 +18,7 @@
 
 		public static string Path => "path";
 
-		public static string Tags => "tags";
+		public static string Tags => "settingsNewsTags";
 
 		public static string Category => "category";
 
