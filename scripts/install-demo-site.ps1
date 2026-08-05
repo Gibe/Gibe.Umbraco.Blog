@@ -166,7 +166,7 @@ $devSettingsPath = "$DemoSiteDir\appsettings.Development.json"
 $devSettings = Get-Content $devSettingsPath -Raw | ConvertFrom-Json
 $uSyncSettings = [PSCustomObject]@{
     Settings = [PSCustomObject]@{
-        ImportAtStartup = $true
+        ImportAtStartup = "All"
     }
 }
 $devSettings | Add-Member -NotePropertyName "uSync" -NotePropertyValue $uSyncSettings -Force

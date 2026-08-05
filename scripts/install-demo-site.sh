@@ -160,12 +160,16 @@ EOF
 echo "Wiring AddGibeBlog<BlogPost>() into Program.cs..."
 PROGRAM_PATH="${DEMO_SITE_DIR}/Program.cs"
 PROGRAM_CONTENT=$(cat "$PROGRAM_PATH")
+# NOTE: ">(" is process-substitution syntax to bash's parser and gets misinterpreted even inside
+# double quotes if it appears literally in the replacement text, so the ">" is kept in its own
+# variable to avoid "AddGibeBlog<BlogPost>();" ever appearing as a literal ">(" in the script.
+GT=">"
 PROGRAM_CONTENT="${PROGRAM_CONTENT/WebApplicationBuilder builder = WebApplication.CreateBuilder(args);/using Gibe.Umbraco.Blog;
 using Gibe.Umbraco.Blog.DemoSite.Models;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddGibeBlog<BlogPost>();}"
+builder.Services.AddGibeBlog<BlogPost${GT}();}"
 printf '%s\n' "$PROGRAM_CONTENT" > "$PROGRAM_PATH"
 
 # Step 6: Copy the checked-in uSync seed content (doctypes + demo blog posts) into the site,
@@ -183,7 +187,7 @@ fi
 echo "Enabling uSync import at startup..."
 DEV_SETTINGS_PATH="${DEMO_SITE_DIR}/appsettings.Development.json"
 if command -v jq >/dev/null 2>&1; then
-    jq '.uSync = { "Settings": { "ImportAtStartup": true } }' "$DEV_SETTINGS_PATH" > "${DEV_SETTINGS_PATH}.tmp"
+    jq '.uSync = { "Settings": { "ImportAtStartup": "All" } }' "$DEV_SETTINGS_PATH" > "${DEV_SETTINGS_PATH}.tmp"
     mv "${DEV_SETTINGS_PATH}.tmp" "$DEV_SETTINGS_PATH"
 else
     # jq isn't guaranteed to be installed; fall back to a plain text insert. This relies on the
@@ -199,7 +203,7 @@ else
 ,
   "uSync": {
     "Settings": {
-      "ImportAtStartup": true
+      "ImportAtStartup": "All"
     }
   }
 }
