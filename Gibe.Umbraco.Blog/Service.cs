@@ -20,9 +20,12 @@ namespace Gibe.Umbraco.Blog
 	{
 		public static void AddGibeBlog<T>(this IServiceCollection services) where T : class, IBlogPostModel
 		{
+			services.AddOptions<BlogSettings>()
+				.BindConfiguration("Gibe:Umbraco:Blog")
+				.ValidateOnStart();
+
 			services.AddGibePager<CurrentUrlService>();
 			services.AddTransient<IPagerService, PagerService>();
-			services.AddTransient<IBlogSettings, HardCodedBlogSettings>();
 			services.AddTransient<IBlogService<T>, BlogService<T>>();
 			services.AddTransient<IUnpagedBlogService<T>, UnpagedBlogService<T>>();
 			services.AddTransient<IBlogPostMapper<T>, BlogPostMapper<T>>();
