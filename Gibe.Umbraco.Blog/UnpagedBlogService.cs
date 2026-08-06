@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
@@ -13,15 +13,15 @@ namespace Gibe.Umbraco.Blog
 		private readonly IBlogPostMapper<T> _blogPostMapper;
 
 		public UnpagedBlogService(
-			IBlogSearch blogSearch,
-			IBlogPostMapper<T> blogPostMapper)
+				IBlogSearch blogSearch,
+				IBlogPostMapper<T> blogPostMapper)
 		{
 			_blogSearch = blogSearch;
 			_blogPostMapper = blogPostMapper;
 		}
 
 		public UnpagedBlogSearchResults<T> GetPosts(int startPost, int postCount, ISort sort = null,
-			IEnumerable<IBlogPostFilter> filters = null)
+				IEnumerable<IBlogPostFilter> filters = null)
 		{
 			if (sort == null) sort = new DateSort();
 			if (filters == null) filters = Enumerable.Empty<IBlogPostFilter>();

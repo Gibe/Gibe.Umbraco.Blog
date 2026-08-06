@@ -1,12 +1,12 @@
-﻿using Examine;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Examine;
 using Gibe.Pager.Interfaces;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace Gibe.Umbraco.Blog.Tests
@@ -23,7 +23,7 @@ namespace Gibe.Umbraco.Blog.Tests
 			_pagerService = new Mock<IPagerService>();
 			_blogPostMapper = new Mock<IBlogPostMapper<BlogModel>>();
 			_blogPostMapper.Setup(x => x.ToBlogPosts(It.IsAny<IEnumerable<ISearchResult>>(), It.IsAny<IPublishedValueFallback>()))
-				.Returns((IEnumerable<ISearchResult> results, IPublishedValueFallback fb) => results.Select(x => new BlogModel()));
+					.Returns((IEnumerable<ISearchResult> results, IPublishedValueFallback fb) => results.Select(x => new BlogModel()));
 		}
 
 		[Test]
@@ -34,11 +34,11 @@ namespace Gibe.Umbraco.Blog.Tests
 			var testPost = new BlogModel
 			{
 				Tags = new List<string>
-				{
-					"test",
-					"post",
-					"1"
-				}
+								{
+										"test",
+										"post",
+										"1"
+								}
 			};
 			var relatedPosts = blogService.GetRelatedPosts(testPost, 3);
 
@@ -56,11 +56,11 @@ namespace Gibe.Umbraco.Blog.Tests
 		private FakeSearchResults GetSearchResults()
 		{
 			return new FakeSearchResults(new List<SearchResult>
-			{
-				SearchResult("1"),
-				SearchResult("2"),
-				SearchResult("3")
-			});
+						{
+								SearchResult("1"),
+								SearchResult("2"),
+								SearchResult("3")
+						});
 		}
 
 		private SearchResult SearchResult(string id)

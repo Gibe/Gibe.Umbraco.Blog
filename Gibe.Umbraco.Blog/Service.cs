@@ -1,4 +1,4 @@
-﻿using Examine.Lucene;
+using Examine.Lucene;
 using Gibe.Pager.Extensions;
 using Gibe.Pager.Interfaces;
 using Gibe.Pager.Services;
@@ -42,7 +42,7 @@ namespace Gibe.Umbraco.Blog
 		{
 			public void Compose(IUmbracoBuilder builder)
 			{
-				
+
 			}
 		}
 

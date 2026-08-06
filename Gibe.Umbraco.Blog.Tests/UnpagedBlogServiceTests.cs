@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Examine;
 using Gibe.Umbraco.Blog;
@@ -56,7 +56,7 @@ namespace Gibe.UmbracoBlog.Tests
 		}
 
 		private IUnpagedBlogService<BlogModel> Service(IBlogSearch blogSearch, IBlogPostMapper<BlogModel> blogPostMapper)
-			=> new UnpagedBlogService<BlogModel>(blogSearch, blogPostMapper);
+				=> new UnpagedBlogService<BlogModel>(blogSearch, blogPostMapper);
 
 		[TestCase(1, 5, false)]
 		[TestCase(2, 7, false)]

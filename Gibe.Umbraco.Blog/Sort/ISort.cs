@@ -1,4 +1,4 @@
-﻿using Examine.Search;
+using Examine.Search;
 
 namespace Gibe.Umbraco.Blog.Sort
 {

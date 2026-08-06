@@ -1,9 +1,9 @@
-﻿using Examine;
-using Gibe.Umbraco.Blog.Models;
-using Gibe.Umbraco.Blog.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Examine;
+using Gibe.Umbraco.Blog.Models;
+using Gibe.Umbraco.Blog.Repositories;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace Gibe.Umbraco.Blog

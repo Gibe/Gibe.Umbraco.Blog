@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Examine;
@@ -25,10 +25,10 @@ namespace Gibe.Umbraco.Blog
 		{
 			_searchResults = searchResults;
 		}
-		
+
 		public ISearchResults Search(IBlogPostFilter filter, ISort sort)
 		{
-			_filters = new []{filter};
+			_filters = new[] { filter };
 			return _searchResults;
 		}
 
@@ -63,15 +63,15 @@ namespace Gibe.Umbraco.Blog
 		}
 
 		public IEnumerator<ISearchResult> GetEnumerator()
-			=> _results.GetEnumerator();
+				=> _results.GetEnumerator();
 
 		IEnumerator IEnumerable.GetEnumerator()
-			=> _results.GetEnumerator();
+				=> _results.GetEnumerator();
 
 		public IEnumerable<ISearchResult> Skip(int skip)
-			=> _results.Skip(skip);
+				=> _results.Skip(skip);
 
 		long ISearchResults.TotalItemCount =>
-			_results.Count();
+				_results.Count();
 	}
 }

@@ -1,5 +1,5 @@
-﻿using Gibe.Umbraco.Blog.Models;
 using System.Collections.Generic;
+using Gibe.Umbraco.Blog.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace Gibe.Umbraco.Blog

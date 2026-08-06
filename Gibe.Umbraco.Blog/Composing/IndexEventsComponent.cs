@@ -1,22 +1,22 @@
-﻿using Examine;
 using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Gibe.Umbraco.Blog.Extensions;
-using Gibe.Umbraco.Blog.Exceptions;
-using Gibe.Umbraco.Blog.Models;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-using Examine.Lucene.Indexing;
+using System.Threading;
+using System.Threading.Tasks;
+using Examine;
 using Examine.Lucene;
+using Examine.Lucene.Indexing;
+using Gibe.Umbraco.Blog.Exceptions;
+using Gibe.Umbraco.Blog.Extensions;
+using Gibe.Umbraco.Blog.Models;
 using Microsoft.Extensions.Logging;
-using Umbraco.Cms.Core.Composing;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Umbraco.Cms.Core;
+using Umbraco.Cms.Core.Composing;
+using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
-using Microsoft.Extensions.Options;
-using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Extensions;
 
 
@@ -33,7 +33,7 @@ namespace Gibe.Umbraco.Blog.Composing
 		}
 
 		public void Configure(LuceneDirectoryIndexOptions options)
-			=> throw new NotImplementedException("This is never called and is just part of the interface");
+				=> throw new NotImplementedException("This is never called and is just part of the interface");
 
 
 		public void Configure(string name, LuceneDirectoryIndexOptions options)
@@ -52,11 +52,11 @@ namespace Gibe.Umbraco.Blog.Composing
 					options.IndexValueTypesFactory = new Dictionary<string, IFieldValueTypeFactory>
 					{
 						[ExamineFields.Tag] = new DelegateFieldValueTypeFactory(n =>
-							new RawStringType(n, _logger, true)),
+								new RawStringType(n, _logger, true)),
 						[ExamineFields.CategoryName] = new DelegateFieldValueTypeFactory(n =>
-							new RawStringType(n, _logger, true)),
+								new RawStringType(n, _logger, true)),
 						[ExamineFields.PostAuthorName] = new DelegateFieldValueTypeFactory(n =>
-							new RawStringType(n, _logger, true)),
+								new RawStringType(n, _logger, true)),
 
 					};
 					break;
@@ -80,9 +80,9 @@ namespace Gibe.Umbraco.Blog.Composing
 		private readonly IUmbracoContextFactory _umbracoContextFactory;
 
 		public IndexEventsComponent(IExamineManager examineManager,
-			IUserService userService,
-			IBlogSettings blogSettings,
-			IUmbracoContextFactory umbracoContextFactory)
+				IUserService userService,
+				IBlogSettings blogSettings,
+				IUmbracoContextFactory umbracoContextFactory)
 		{
 			_examineManager = examineManager;
 			_userService = userService;
@@ -114,8 +114,8 @@ namespace Gibe.Umbraco.Blog.Composing
 			}
 
 			IDictionary<string, IEnumerable<object>>
-				values = e.ValueSet.Values.ToDictionary(x => x.Key, x => x.Value.ToList().AsEnumerable());
-			
+					values = e.ValueSet.Values.ToDictionary(x => x.Key, x => x.Value.ToList().AsEnumerable());
+
 			values.MergeLeft(AddPostDateFields(e));
 			values.MergeLeft(AddAuthorFields(e));
 			values.MergeLeft(AddTagFields(e));
@@ -127,9 +127,9 @@ namespace Gibe.Umbraco.Blog.Composing
 		private IDictionary<string, IEnumerable<object>> AddPostDateFields(IndexingItemEventArgs e)
 		{
 			var postDate = e.ValueSet.GetSingleValue<DateTime>(ExamineFields.PostDate);
-			Dictionary<string, IEnumerable<object>> values = new Dictionary<string, IEnumerable<object>>();
-			
-			values.Add(ExamineFields.PostDateYear, new [] { postDate.Year.ToString()});
+			var values = new Dictionary<string, IEnumerable<object>>();
+
+			values.Add(ExamineFields.PostDateYear, new[] { postDate.Year.ToString() });
 			values.Add(ExamineFields.PostDateMonth, new[] { postDate.Month.ToString() });
 			values.Add(ExamineFields.PostDateDay, new[] { postDate.Day.ToString() });
 			return values;
@@ -139,7 +139,7 @@ namespace Gibe.Umbraco.Blog.Composing
 		{
 			var authorIdString = e.ValueSet.GetSingleValue(ExamineFields.PostAuthor);
 			var authorName = string.Empty;
-			if(int.TryParse(authorIdString, out var authorId))
+			if (int.TryParse(authorIdString, out var authorId))
 			{
 				authorName = GetUserName(authorId);
 			}
@@ -147,11 +147,11 @@ namespace Gibe.Umbraco.Blog.Composing
 			{
 				authorName = GetAuthorName(authorUid);
 			}
-			Dictionary<string, IEnumerable<object>> values = new Dictionary<string, IEnumerable<object>>();
+			var values = new Dictionary<string, IEnumerable<object>>();
 
 			if (!string.IsNullOrEmpty(authorName))
 			{
-				values.Add(ExamineFields.PostAuthorName, new[] { authorName.ToLower()});
+				values.Add(ExamineFields.PostAuthorName, new[] { authorName.ToLower() });
 			}
 
 			return values;
@@ -202,7 +202,7 @@ namespace Gibe.Umbraco.Blog.Composing
 
 		private Dictionary<string, IEnumerable<object>> AddPathFields(IndexingItemEventArgs e)
 		{
-			Dictionary<string, IEnumerable<object>> values = new Dictionary<string, IEnumerable<object>>();
+			var values = new Dictionary<string, IEnumerable<object>>();
 			var path = e.ValueSet.GetSingleValue(ExamineFields.Path);
 			if (path != null)
 			{
@@ -213,7 +213,7 @@ namespace Gibe.Umbraco.Blog.Composing
 
 		private Dictionary<string, IEnumerable<object>> AddCategoryFields(IndexingItemEventArgs e)
 		{
-			Dictionary<string, IEnumerable<object>> values = new Dictionary<string, IEnumerable<object>>();
+			var values = new Dictionary<string, IEnumerable<object>>();
 			using (var context = _umbracoContextFactory.EnsureUmbracoContext())
 			{
 				var categoryId = e.ValueSet.GetSingleValue(ExamineFields.Category);

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Examine;
 using Gibe.Umbraco.Blog.Models;
@@ -17,9 +17,9 @@ namespace Gibe.Umbraco.Blog
 		private readonly IPublishedValueFallback _publishedValueFallback;
 
 		public BlogSections(ISearchIndex searchIndex,
-			 IBlogSettings blogSettings,
-			 IPublishedContentQuery publishedContentQuery,
-			 IPublishedValueFallback publishedValueFallback)
+				 IBlogSettings blogSettings,
+				 IPublishedContentQuery publishedContentQuery,
+				 IPublishedValueFallback publishedValueFallback)
 		{
 			_searchIndex = searchIndex;
 			_blogSettings = blogSettings;
@@ -32,11 +32,11 @@ namespace Gibe.Umbraco.Blog
 			var results = SearchForBlogSections();
 			return results.Select(r => Activator.Activate<T>(_publishedContentQuery.Content(r.Id), _publishedValueFallback));
 		}
-		
+
 		private ISearchResults SearchForBlogSections()
 		{
 			var query = _searchIndex.CreateSearchQuery()
-				.NodeTypeAlias(_blogSettings.BlogSectionDocumentTypeAlias);
+					.NodeTypeAlias(_blogSettings.BlogSectionDocumentTypeAlias);
 
 			return query.Execute();
 		}

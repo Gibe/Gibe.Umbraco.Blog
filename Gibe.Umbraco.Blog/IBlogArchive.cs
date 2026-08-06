@@ -1,4 +1,4 @@
-﻿using Gibe.Umbraco.Blog.Models;
+using Gibe.Umbraco.Blog.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace Gibe.Umbraco.Blog
@@ -8,7 +8,7 @@ namespace Gibe.Umbraco.Blog
 		BlogArchiveModel All(IPublishedContent blogRoot);
 	}
 
-	public class FakeBlogArchive :IBlogArchive
+	public class FakeBlogArchive : IBlogArchive
 	{
 		private readonly BlogArchiveModel _blogArchiveModel;
 

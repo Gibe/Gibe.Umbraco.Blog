@@ -1,4 +1,4 @@
-﻿namespace Gibe.Umbraco.Blog.Models
+namespace Gibe.Umbraco.Blog.Models
 {
 	public interface IBlogPostSection
 	{

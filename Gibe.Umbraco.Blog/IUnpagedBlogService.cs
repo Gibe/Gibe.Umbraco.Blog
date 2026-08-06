@@ -1,7 +1,7 @@
-﻿using Gibe.Umbraco.Blog.Filters;
+using System.Collections.Generic;
+using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Sort;
-using System.Collections.Generic;
 
 namespace Gibe.Umbraco.Blog
 {

@@ -1,10 +1,10 @@
-﻿using Gibe.Pager.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
+using Gibe.Pager.Interfaces;
 using Gibe.Pager.Models;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Sort;
-using System.Collections.Generic;
-using System.Linq;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace Gibe.Umbraco.Blog
@@ -16,9 +16,9 @@ namespace Gibe.Umbraco.Blog
 		private readonly IBlogPostMapper<T> _blogPostMapper;
 
 		public BlogService(
-			IPagerService pagerService, 
-			IBlogSearch blogSearch, 
-			IBlogPostMapper<T> blogPostMapper)
+				IPagerService pagerService,
+				IBlogSearch blogSearch,
+				IBlogPostMapper<T> blogPostMapper)
 		{
 			_pagerService = pagerService;
 			_blogSearch = blogSearch;

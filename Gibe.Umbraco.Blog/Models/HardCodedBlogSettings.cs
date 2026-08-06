@@ -1,4 +1,4 @@
-﻿using Gibe.Umbraco.Blog.Models;
+using Gibe.Umbraco.Blog.Models;
 
 public class HardCodedBlogSettings : IBlogSettings
 {

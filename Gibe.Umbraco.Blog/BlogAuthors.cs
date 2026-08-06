@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gibe.Umbraco.Blog.Filters;
@@ -25,7 +25,7 @@ namespace Gibe.Umbraco.Blog
 			var allUserIds = posts.Select(p => Convert.ToInt32(p.Values[ExamineFields.PostAuthor])).Distinct();
 
 			return allUserIds.Select(id => _userService.GetUserById(id))
-				.Select(user => new BlogAuthor {User = user, Url = $"{rootPath}?author={user.Name}"});
+					.Select(user => new BlogAuthor { User = user, Url = $"{rootPath}?author={user.Name}" });
 		}
 	}
 }

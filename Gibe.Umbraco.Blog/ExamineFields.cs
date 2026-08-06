@@ -1,4 +1,4 @@
-﻿namespace Gibe.Umbraco.Blog
+namespace Gibe.Umbraco.Blog
 {
 	public class ExamineFields
 	{

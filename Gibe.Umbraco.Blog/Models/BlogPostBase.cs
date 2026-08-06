@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -9,7 +9,7 @@ namespace Gibe.Umbraco.Blog.Models
 	public abstract class BlogPostBase : PublishedContentModel, IBlogPostModel
 	{
 		protected BlogPostBase(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
-			: base(content, publishedValueFallback) { }
+				: base(content, publishedValueFallback) { }
 
 		public DateTime PostDate => this.Value<DateTime>("postDate");
 

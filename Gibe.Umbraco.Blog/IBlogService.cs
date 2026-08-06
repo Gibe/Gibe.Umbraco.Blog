@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Gibe.Pager.Models;
 using Gibe.Umbraco.Blog.Filters;

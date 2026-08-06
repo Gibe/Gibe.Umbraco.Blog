@@ -1,4 +1,4 @@
-﻿using Examine;
+using Examine;
 using Examine.Search;
 using Gibe.Umbraco.Blog.Exceptions;
 using Gibe.Umbraco.Blog.Models;
@@ -11,7 +11,7 @@ namespace Gibe.Umbraco.Blog.Wrappers
 		private readonly IBlogSettings _blogSettings;
 
 		public NewsIndex(IExamineManager examineManager,
-			IBlogSettings blogSettings)
+				IBlogSettings blogSettings)
 		{
 			_examineManager = examineManager;
 			_blogSettings = blogSettings;
@@ -20,8 +20,8 @@ namespace Gibe.Umbraco.Blog.Wrappers
 		public IQuery CreateSearchQuery()
 		{
 			return GetIndex()
-				.Searcher
-				.CreateQuery();
+					.Searcher
+					.CreateQuery();
 		}
 
 		public ISearchResults Search(IBooleanOperation operation)

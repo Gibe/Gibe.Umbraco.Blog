@@ -1,5 +1,5 @@
-﻿using Examine;
 using System.Collections.Generic;
+using Examine;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace Gibe.Umbraco.Blog

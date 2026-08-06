@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -29,7 +29,7 @@ namespace Gibe.Umbraco.Blog
 
 			using (MiniProfiler.Current.Step("Activator Blog Model"))
 			{
-				return ((ObjectActivator<T>) Cached[typeof(T)])(model, fallback);
+				return ((ObjectActivator<T>)Cached[typeof(T)])(model, fallback);
 			}
 		}
 
@@ -50,10 +50,10 @@ namespace Gibe.Umbraco.Blog
 				var paramType = paramsInfo[i].ParameterType;
 
 				var paramAccessorExp =
-					Expression.ArrayIndex(param, index);
+						Expression.ArrayIndex(param, index);
 
 				var paramCastExp =
-					Expression.Convert(paramAccessorExp, paramType);
+						Expression.Convert(paramAccessorExp, paramType);
 
 				argsExp[i] = paramCastExp;
 			}

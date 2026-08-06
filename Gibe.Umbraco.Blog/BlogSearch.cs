@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Examine;
 using Examine.Search;
 using Gibe.Umbraco.Blog.Filters;
@@ -16,17 +16,17 @@ namespace Gibe.Umbraco.Blog
 		private readonly IBlogSettings _blogSettings;
 
 		public BlogSearch(ISearchIndex newsIndex,
-			IBlogSettings blogSettings)
+				IBlogSettings blogSettings)
 		{
 			_newsIndex = newsIndex;
 			_blogSettings = blogSettings;
 		}
-		
+
 		public ISearchResults Search(IBlogPostFilter filter, ISort sort)
 		{
 			return Search(new List<IBlogPostFilter> { filter }, sort);
 		}
-		
+
 		public ISearchResults Search(IEnumerable<IBlogPostFilter> filters, ISort sort)
 		{
 			return SearchForBlogPosts(GetSearchQuery(filters, sort));
@@ -43,7 +43,7 @@ namespace Gibe.Umbraco.Blog
 		}
 
 		private IOrdering GetSearchQuery(IEnumerable<IBlogPostFilter> filters, ISort sort)
-		{		
+		{
 			return sort.GetCriteria(GetQuery(filters));
 		}
 
@@ -69,5 +69,5 @@ namespace Gibe.Umbraco.Blog
 			}
 		}
 	}
-	
+
 }

@@ -1,13 +1,13 @@
-﻿using Examine;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Examine;
 
 namespace Gibe.Umbraco.Blog.Extensions
 {
 	public static class ValueSetExtensions
 	{
-		public static string GetSingleValue(this ValueSet valueSet, string key) 
+		public static string GetSingleValue(this ValueSet valueSet, string key)
 		{
 			IReadOnlyList<object> values;
 			if (!valueSet.Values.TryGetValue(key, out values))
@@ -31,6 +31,6 @@ namespace Gibe.Umbraco.Blog.Extensions
 			return (T)converter.ConvertFrom(value);
 		}
 
-		
+
 	}
 }

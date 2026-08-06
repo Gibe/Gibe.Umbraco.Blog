@@ -1,6 +1,6 @@
-﻿using Examine;
-using Examine.Search;
 using System.Linq;
+using Examine;
+using Examine.Search;
 
 namespace Gibe.Umbraco.Blog.Wrappers
 {
@@ -19,7 +19,7 @@ namespace Gibe.Umbraco.Blog.Wrappers
 		private readonly IExamineManager _examineManager;
 
 		public FakeSearchIndex(ISearchResults searchResults,
-			IExamineManager examineManager)
+				IExamineManager examineManager)
 		{
 			_searchResults = searchResults;
 			_examineManager = examineManager;
@@ -28,8 +28,8 @@ namespace Gibe.Umbraco.Blog.Wrappers
 		public IQuery CreateSearchQuery()
 		{
 			return GetIndex()
-				.Searcher
-				.CreateQuery();
+					.Searcher
+					.CreateQuery();
 		}
 
 		public ISearchResults Search(IBooleanOperation operation)
@@ -40,8 +40,8 @@ namespace Gibe.Umbraco.Blog.Wrappers
 		public IIndex GetIndex()
 		{
 			return _examineManager
-				.Indexes
-				.First();
+					.Indexes
+					.First();
 		}
 	}
 }
