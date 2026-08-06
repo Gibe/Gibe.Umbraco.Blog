@@ -12,12 +12,12 @@ namespace Gibe.Umbraco.Blog
 	public class BlogTags : IBlogTags
 	{
 		private readonly IBlogSearch _blogSearch;
-		private readonly string _propertyName;
-		
-		public BlogTags(IBlogSearch blogSearch)
+        private readonly string _propertyName = ExamineFields.Tags;
+
+
+        public BlogTags(IBlogSearch blogSearch)
 		{
 			_blogSearch = blogSearch;
-			_propertyName = ExamineFields.Tags;
 		}
 
 		public IEnumerable<BlogTag> All(IPublishedContent blogRoot)
@@ -28,11 +28,11 @@ namespace Gibe.Umbraco.Blog
 			var applicablePosts = posts.Where(post => post.Values.ContainsKey($"{_propertyName}") && !string.IsNullOrEmpty(post.Values[$"{_propertyName}"]))
 				.SelectMany(post => ParseTags(post.Values[$"{_propertyName}"]));
 
-			foreach (var tag in applicablePosts) // TODO not hard coded
+			foreach (var tag in applicablePosts)
 			{
-				if (allTags.ContainsKey(tag))
+				if (allTags.TryGetValue(tag, out var allTag))
 				{
-					allTags[tag].Count++;
+					allTag.Count++;
 				}
 				else
 				{
