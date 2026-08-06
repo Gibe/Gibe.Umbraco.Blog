@@ -12,4 +12,5 @@
     <BuildType Solution="Admin|*" Project="Release" />
   </Project>
   <Project Path="Gibe.Umbraco.Blog/Gibe.Umbraco.Blog.csproj" />
+  <Project Path="Gibe.Umbraco.Blog.Core/Gibe.Umbraco.Blog.Core.csproj" />
 </Solution>
