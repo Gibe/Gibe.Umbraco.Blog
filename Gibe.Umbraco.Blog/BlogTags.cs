@@ -3,7 +3,6 @@ using System.Linq;
 using Gibe.Umbraco.Blog.Filters;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Sort;
-using Newtonsoft.Json;
 using Umbraco.Extensions;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
