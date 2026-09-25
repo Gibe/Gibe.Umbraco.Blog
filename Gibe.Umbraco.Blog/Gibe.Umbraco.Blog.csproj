@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net10.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 	</PropertyGroup>
 	<PropertyGroup>
 		<PackageId>Gibe.Umbraco.V13.Blog</PackageId>
@@ -10,10 +10,6 @@
 		<PackageTags>Gibe Umbraco Blog</PackageTags>
 		<Authors>Gibe Digital Ltd</Authors>
 		<Version>13.0.0</Version>
-	</PropertyGroup>
-
-	<PropertyGroup>
-		<DefineConstants>NET10,NET10</DefineConstants>
 	</PropertyGroup>
 
 	<ItemGroup>
