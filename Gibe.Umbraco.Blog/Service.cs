@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
-using Umbraco.Cms.Core.Logging.Viewer;
 using Umbraco.Extensions;
 
 namespace Gibe.Umbraco.Blog
@@ -21,9 +20,12 @@ namespace Gibe.Umbraco.Blog
 	{
 		public static void AddGibeBlog<T>(this IServiceCollection services) where T : class, IBlogPostModel
 		{
+			services.AddOptions<BlogSettings>()
+				.BindConfiguration("Gibe:Umbraco:Blog")
+				.ValidateOnStart();
+
 			services.AddGibePager<CurrentUrlService>();
 			services.AddTransient<IPagerService, PagerService>();
-			services.AddTransient<IBlogSettings, HardCodedBlogSettings>();
 			services.AddTransient<IBlogService<T>, BlogService<T>>();
 			services.AddTransient<IUnpagedBlogService<T>, UnpagedBlogService<T>>();
 			services.AddTransient<IBlogPostMapper<T>, BlogPostMapper<T>>();
