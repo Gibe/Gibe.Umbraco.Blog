@@ -1,16 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
-	
-	<PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
-		<DefineConstants>NET6</DefineConstants>
-	</PropertyGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-		<PackageReference Include="Umbraco.Cms.Web.Website" Version="10.0.1" />
+	<ItemGroup>
+		<PackageReference Include="Umbraco.Cms.Web.Website" Version="13.14.0" />
 	</ItemGroup>
 
 	<ItemGroup>

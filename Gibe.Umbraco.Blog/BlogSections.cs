@@ -3,6 +3,7 @@ using System.Linq;
 using Examine;
 using Gibe.Umbraco.Blog.Models;
 using Gibe.Umbraco.Blog.Wrappers;
+using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
@@ -12,17 +13,17 @@ namespace Gibe.Umbraco.Blog
 	public class BlogSections<T> : IBlogSections<T> where T : class
 	{
 		private readonly ISearchIndex _searchIndex;
-		private readonly IBlogSettings _blogSettings;
+		private readonly BlogSettings _blogSettings;
 		private readonly IPublishedContentQuery _publishedContentQuery;
 		private readonly IPublishedValueFallback _publishedValueFallback;
 
 		public BlogSections(ISearchIndex searchIndex,
-			 IBlogSettings blogSettings,
+			 IOptions<BlogSettings> blogSettings,
 			 IPublishedContentQuery publishedContentQuery,
 			 IPublishedValueFallback publishedValueFallback)
 		{
 			_searchIndex = searchIndex;
-			_blogSettings = blogSettings;
+			_blogSettings = blogSettings.Value;
 			_publishedContentQuery = publishedContentQuery;
 			_publishedValueFallback = publishedValueFallback;
 		}

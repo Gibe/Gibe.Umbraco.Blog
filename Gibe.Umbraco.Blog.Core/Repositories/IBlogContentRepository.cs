@@ -1,8 +1,4 @@
-﻿#if NET6
-using Umbraco.Cms.Core.Models.PublishedContent;
-#elif NET472
-using Umbraco.Core.Models.PublishedContent;
-#endif
+﻿using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace Gibe.Umbraco.Blog.Repositories
 {

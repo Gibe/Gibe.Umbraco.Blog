@@ -2,25 +2,26 @@
 using Examine.Search;
 using Gibe.Umbraco.Blog.Exceptions;
 using Gibe.Umbraco.Blog.Models;
+using Microsoft.Extensions.Options;
 
 namespace Gibe.Umbraco.Blog.Wrappers
 {
 	public class NewsIndex : ISearchIndex
 	{
 		private readonly IExamineManager _examineManager;
-		private readonly IBlogSettings _blogSettings;
+		private readonly BlogSettings _blogSettings;
 
 		public NewsIndex(IExamineManager examineManager,
-			IBlogSettings blogSettings)
+			IOptions<BlogSettings> blogSettings)
 		{
 			_examineManager = examineManager;
-			_blogSettings = blogSettings;
+			_blogSettings = blogSettings.Value;
 		}
 
 		public IQuery CreateSearchQuery()
 		{
 			return GetIndex()
-				.GetSearcher()
+				.Searcher
 				.CreateQuery();
 		}
 

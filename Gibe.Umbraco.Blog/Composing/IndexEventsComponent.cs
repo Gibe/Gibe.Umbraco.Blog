@@ -74,17 +74,17 @@ namespace Gibe.Umbraco.Blog.Composing
 	{
 		private readonly IExamineManager _examineManager;
 		private readonly IUserService _userService;
-		private readonly IBlogSettings _blogSettings;
+		private readonly BlogSettings _blogSettings;
 		private readonly IUmbracoContextFactory _umbracoContextFactory;
 
 		public IndexEventsComponent(IExamineManager examineManager,
 			IUserService userService,
-			IBlogSettings blogSettings,
+			IOptions<BlogSettings> blogSettings,
 			IUmbracoContextFactory umbracoContextFactory)
 		{
 			_examineManager = examineManager;
 			_userService = userService;
-			_blogSettings = blogSettings;
+			_blogSettings = blogSettings.Value;
 			_umbracoContextFactory = umbracoContextFactory;
 		}
 
